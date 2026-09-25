@@ -5,15 +5,17 @@ import {
   Filter, Grid2X2, LayoutDashboard, ListTodo, Minus, NotebookPen, Pause, Pencil, Play, Plus,
   Rows3, RotateCcw, Target, Trash2, X
 } from "lucide-react";
+import { MODULES, buildClassTasks, buildStudyTasks, buildDeadlineTasks, buildStageTasks } from "./data/studyData";
 
 type Task = { id: string; title: string; module: string; date: string; time?: string; duration?: number; done: boolean; color: string; kind?: "task" | "deadline" | "class" | "personal" };
 type Goal = { id: string; title: string; detail: string; current: number; target: number; color: string };
 type Note = { id: string; title: string; body: string; done: boolean; updated: string; color: string };
 type Session = { id: string; label: string; minutes: number; date: string };
 
-const modules = ["Dissertation", "Data Science & AI for Health Innovation", "Using Routine Data", "Computer Programming for Health Research", "Artificial Intelligence for Health", "Practical & Responsible AI"];
-const moduleFilters = [...modules, "Career development", "Personal / rest"];
+const modules = MODULES;
+const moduleFilters = [...modules, "Self-study", "Career development", "Personal / rest"];
 const colors = ["coral", "lilac", "sage", "apricot"];
+const colorForModule = (module: string) => colors[Math.max(0, moduleFilters.indexOf(module)) % colors.length];
 const uid = () => Math.random().toString(36).slice(2, 9);
 const dateKey = (date: Date) => { const d = new Date(date); d.setHours(12, 0, 0, 0); return d.toISOString().slice(0, 10); };
 const addDays = (date: Date, amount: number) => { const d = new Date(date); d.setDate(d.getDate() + amount); return d; };
@@ -23,32 +25,25 @@ const prettyDate = (key: string, options?: Intl.DateTimeFormatOptions) => new In
 const todayKey = dateKey(new Date());
 
 function seedTasks(): Task[] {
-  const d = new Date();
-  const keys = Array.from({ length: 14 }, (_, i) => dateKey(addDays(d, i - 2)));
   return [
-    { id: "t1", title: "Read methods chapter and mark questions", module: "Dissertation", date: keys[2], time: "09:00", duration: 90, done: false, color: "coral" },
-    { id: "t2", title: "Seminar: Using Routine Data", module: "Using Routine Data", date: keys[2], time: "14:00", duration: 60, done: true, color: "lilac", kind: "class" },
-    { id: "t3", title: "Clean interview transcripts · batch 02", module: "Dissertation", date: keys[3], time: "10:30", duration: 75, done: false, color: "sage" },
-    { id: "t4", title: "Submit notebook: feature selection", module: "Computer Programming for Health Research", date: keys[4], time: "16:00", duration: 45, done: false, color: "apricot", kind: "deadline" },
-    { id: "t5", title: "Review lecture 4: model evaluation", module: "Artificial Intelligence for Health", date: keys[5], time: "09:30", duration: 50, done: false, color: "lilac" },
-    { id: "t6", title: "Draft responsible AI case study outline", module: "Practical & Responsible AI", date: keys[6], time: "11:00", duration: 60, done: false, color: "coral" },
-    { id: "t7", title: "Update CV with health data project", module: "Career development", date: keys[8], time: "13:30", duration: 45, done: false, color: "sage" },
-    { id: "t8", title: "Data Science & AI reading group", module: "Data Science & AI for Health Innovation", date: keys[9], time: "15:00", duration: 60, done: false, color: "lilac", kind: "class" },
-    { id: "t9", title: "Dissertation proposal: supervisor notes", module: "Dissertation", date: keys[11], time: "12:00", duration: 90, done: false, color: "coral", kind: "deadline" },
-  ];
+    ...buildClassTasks(colorForModule, uid),
+    ...buildStudyTasks(colorForModule, uid),
+    ...buildStageTasks(colorForModule, uid),
+    ...buildDeadlineTasks(colorForModule, uid),
+  ] as Task[];
 }
 function seedGoals(): Goal[] {
   return [
-    { id: "g1", title: "Build a steady dissertation rhythm", detail: "Complete two meaningful writing blocks each week through the end of term.", current: 5, target: 8, color: "coral" },
-    { id: "g2", title: "Make the methods feel familiar", detail: "Finish the routine data and model evaluation reading set.", current: 7, target: 10, color: "lilac" },
-    { id: "g3", title: "Leave space for the next chapter", detail: "Spend one focused hour each Friday on portfolio and career work.", current: 3, target: 6, color: "sage" },
+    { id: "g1", title: "Submit every Semester 1 assessment", detail: "All 10 DASC500-513 deadlines, from the Week 6 stakeholder workshop through DASC513's Week 12 portfolio report.", current: 0, target: 10, color: "coral" },
+    { id: "g2", title: "Lock in a dissertation supervisor", detail: "Build a shortlist through the term, then formally express interest in Semester 2 Week 3 (19 Feb 2027).", current: 0, target: 5, color: "lilac" },
+    { id: "g3", title: "Build a security-minded portfolio", detail: "TryHackMe + Kaggle accounts, a documented GitHub project, and one certification path chosen by the end of term.", current: 0, target: 6, color: "sage" },
   ];
 }
 function seedNotes(): Note[] {
   return [
-    { id: "n1", title: "Ask at supervision", body: "Should the interview sample be described as purposive or convenience? Bring the revised inclusion criteria.", done: false, updated: "Today", color: "apricot" },
-    { id: "n2", title: "Tiny win", body: "The data dictionary is finally making sense. Keep the next session small: one table, one question.", done: true, updated: "Yesterday", color: "sage" },
-    { id: "n3", title: "Friday reminder", body: "Save a clean version of the notebook before trying the new preprocessing step.", done: false, updated: "This week", color: "lilac" },
+    { id: "n1", title: "Two things to double-check", body: "Monday's DASC500 session lists 'DASC510(?)' alongside it - worth confirming with the department whether that's a real module. And Wednesday's DASC509 slot shows as 11pm-1pm on the timetable, which is almost certainly meant to be 11am-1pm.", done: false, updated: "Today", color: "apricot" },
+    { id: "n2", title: "Deadlines still TBC on Canvas", body: "DASC503's Assessment 1 (poster + oral) and Assessment 2 (written report) don't have confirmed dates yet - usually released around Week 4 and Week 8. Check Canvas as soon as they land and update the dates here.", done: false, updated: "Today", color: "coral" },
+    { id: "n3", title: "For the harder weeks", body: "Rest is part of the plan, not a failure of it.", done: false, updated: "This week", color: "sage" },
   ];
 }
 
@@ -230,7 +225,7 @@ function WeekPage({ tasks, setTasks }: { tasks: Task[]; setTasks: React.Dispatch
   const [editing, setEditing] = useState<{ task?: Task; date?: string } | null>(null);
   const [view, setView] = useState<"planner" | "timeline">("planner");
   const [activeModule, setActiveModule] = useState("All");
-  const [weeklyCapacity, setWeeklyCapacity] = useStored<number>("study-bloom-weekly-capacity", 12);
+  const [weeklyCapacity, setWeeklyCapacity] = useStored<number>("study-bloom-weekly-capacity", 32);
   const days = Array.from({ length: 7 }, (_, i) => addDays(week, i));
   const weekStart = dateKey(week);
   const weekEnd = dateKey(addDays(week, 6));
