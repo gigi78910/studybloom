@@ -1,0 +1,1223 @@
+{
+ "termStart": "2026-09-28",
+ "moduleNames": {
+  "DASC500": "DASC500 · Dissertation",
+  "DASC501": "DASC501 · Data Science & AI for Health Innovation",
+  "DASC503": "DASC503 · Using Routine Data",
+  "DASC509": "DASC509 · Computer Programming for Health Research",
+  "DASC512": "DASC512 · Artificial Intelligence for Health",
+  "DASC513": "DASC513 · Practical & Responsible AI for Health Innovation"
+ },
+ "timetable": [
+  {
+   "day": "Mon",
+   "start": "10:00",
+   "end": "12:00",
+   "module": "DASC500",
+   "label": "DASC500 + DASC510(?)",
+   "location": "Sherrington Building"
+  },
+  {
+   "day": "Mon",
+   "start": "13:00",
+   "end": "15:00",
+   "module": "DASC501",
+   "label": "DASC501",
+   "location": "Waterhouse Block J"
+  },
+  {
+   "day": "Tue",
+   "start": "10:00",
+   "end": "12:00",
+   "module": "DASC513",
+   "label": "DASC513",
+   "location": "Waterhouse Block J"
+  },
+  {
+   "day": "Wed",
+   "start": "10:00",
+   "end": "11:00",
+   "module": "DASC513",
+   "label": "DASC513",
+   "location": "Life Sciences Building"
+  },
+  {
+   "day": "Wed",
+   "start": "11:00",
+   "end": "13:00",
+   "module": "DASC509",
+   "label": "DASC509",
+   "location": "Life Sciences PC Teaching Centre"
+  },
+  {
+   "day": "Thu",
+   "start": "09:00",
+   "end": "10:00",
+   "module": "DASC513",
+   "label": "DASC513",
+   "location": "Eleanor Rathbone Building"
+  },
+  {
+   "day": "Thu",
+   "start": "10:00",
+   "end": "12:00",
+   "module": "DASC509",
+   "label": "DASC509",
+   "location": "South Campus Teaching Hub"
+  },
+  {
+   "day": "Fri",
+   "start": "09:00",
+   "end": "11:00",
+   "module": "DASC503",
+   "label": "DASC503",
+   "location": "Eleanor Rathbone Building"
+  },
+  {
+   "day": "Fri",
+   "start": "11:00",
+   "end": "13:00",
+   "module": "DASC503",
+   "label": "DASC503",
+   "location": "South Campus Teaching Hub"
+  }
+ ],
+ "weeks": [
+  {
+   "week": 1,
+   "range": "Mon 28 Sep - Fri 2 Oct 2026",
+   "theme": "Orientation: get every tool installed, meet every module, and open your dissertation notebook.",
+   "encouragement": "First week nerves are normal. You don't need to understand everything yet, you just need to get set up so the next 11 weeks run smoothly.",
+   "days": {
+    "Mon": {
+     "slots": [
+      "09:00-10:00",
+      "15:00-17:00"
+     ],
+     "tasks": [
+      "Before class: skim the DASC500 and DASC501 module guides so today's intro sessions make sense.",
+      "After DASC501: create your EndNote library now (empty is fine) so it's ready from day one rather than at Week 3's referencing session.",
+      "Start a running 'dissertation ideas' note (even 3 rough topic areas in Biostatistics, AI or Epidemiology count)."
+     ],
+     "career": "Skim the NIST Cybersecurity Framework 2.0 overview page (20 min) - just the five functions (Govern, Identify, Protect, Detect, Respond, Recover). You'll recognise this shape again in DASC513."
+    },
+    "Tue": {
+     "slots": [
+      "09:00-10:00",
+      "13:00-17:00"
+     ],
+     "tasks": [
+      "After DASC513: read the two 'before week 1' essential readings (Patient & Public Involvement handbook; Deep Medicine excerpt) - skim for now, you'll need the detail for Assessment 1.",
+      "Install R + RStudio and Python + Anaconda today if you haven't already - DASC503, DASC509 and DASC512 all assume this is done by Week 1.",
+      "Set up a single shared folder structure (by module code) for notes, labs and readings - saves hours later."
+     ],
+     "career": null
+    },
+    "Wed": {
+     "slots": [
+      "09:00-10:00",
+      "14:00-17:00"
+     ],
+     "tasks": [
+      "After DASC509: work through the 'Introduction to R' data lab exercises again slowly - this is the foundation for DASC503's labs all semester.",
+      "Bookmark the DASC509 SQL, R and Python reading recommendations for when you need a refresher.",
+      "Register a free GitHub account now if you don't have one - you'll need it for Week 11's Git content and it's genuinely useful to have early."
+     ],
+     "career": null
+    },
+    "Thu": {
+     "slots": [
+      "13:00-17:00"
+     ],
+     "tasks": [
+      "Re-read your DASC509 SQL notes from this morning and redo the join examples from memory.",
+      "Read the DASC500 'Summary of Module Content' table in full so you know what's coming across the dissertation timeline.",
+      "Start a spreadsheet or note tracking all 10 assessments with their weights and due dates (or just keep the one I gave you to hand)."
+     ],
+     "career": "Create free accounts on TryHackMe and Kaggle - you'll use Kaggle directly for DASC512's portfolio project later, and TryHackMe is a low-pressure way to build hands-on security skills alongside your degree."
+    },
+    "Fri": {
+     "slots": [
+      "14:00-17:00"
+     ],
+     "tasks": [
+      "Review everything covered this week across all 6 modules - just topic titles, not depth, to consolidate the map of the semester.",
+      "Re-read the DASC503 R introduction lab once more before the pace picks up next week.",
+      "Plan next week: note that DASC500's academic sources session and DASC513's PPIE content are coming up."
+     ],
+     "career": "Read Ross Anderson's 'Security Engineering' preface and chapter 1 (free online, see Resources tab) - the best free foundation text in the field, and worth having open in a tab all semester."
+    }
+   }
+  },
+  {
+   "week": 2,
+   "range": "Mon 5 - Fri 9 Oct 2026",
+   "theme": "Bias, consent and aggregation: the semester's first real technical content lands this week.",
+   "encouragement": "You've survived the admin. This is the first week that actually feels like the course - go steady, not fast.",
+   "days": {
+    "Mon": {
+     "slots": [
+      "09:00-10:00",
+      "15:00-17:00"
+     ],
+     "tasks": [
+      "Before class: note two consultancy skills you already have and two you want to build (DASC501's session is more useful if you go in with this).",
+      "After DASC501: write 3 sentences on how data science/AI has already tried to address a public health challenge you know of - warms you up for critical appraisal later.",
+      "Add a recurring 15-min slot to review your dissertation ideas note each Monday - consistency beats a big effort once a month."
+     ],
+     "career": null
+    },
+    "Tue": {
+     "slots": [
+      "09:00-10:00",
+      "13:00-17:00"
+     ],
+     "tasks": [
+      "After DASC513: write a one-paragraph definition, in your own words, of informed consent's four pillars (legal requirement, autonomy, beneficence, justice) - you'll use this exact framing in Assessment 1.",
+      "Read the 'Informed Consent in Research' supplemental reading if you have time; if not, note it for later.",
+      "Start a running glossary doc for DASC513 terms (PPIE, GDPR, HIPAA, FAIR) - you'll thank yourself in Week 12."
+     ],
+     "career": "Watch a 15-min explainer on GDPR's core principles (ICO's own summary is best). It's the regulatory backbone of DASC513 and of any UK health-data security role."
+    },
+    "Wed": {
+     "slots": [
+      "09:00-10:00",
+      "14:00-17:00"
+     ],
+     "tasks": [
+      "After DASC509: redo today's SQL aggregation exercises unaided - GROUP BY and HAVING trip most people up the first time.",
+      "Try writing 3 of your own aggregation queries against a practice database (W3Schools' sandbox works fine).",
+      "Note down any SQL syntax you keep forgetting into your glossary doc."
+     ],
+     "career": null
+    },
+    "Thu": {
+     "slots": [
+      "13:00-17:00"
+     ],
+     "tasks": [
+      "Practice the numpy/pandas basics from DASC512's numeric computing session - load a small CSV and try 5 operations on it.",
+      "Sketch (on paper is fine) what a simple public-health dashboard might show - you'll build one for real in the DASC512 tutorial track.",
+      "Review this week's DASC503 bias-in-routine-data content and write 2 examples of bias you can imagine in a routine health dataset."
+     ],
+     "career": "Read the OWASP Top 10 list once, just the ten category names and one-line descriptions. It's the standard reference for web/application security and comes up constantly in the field."
+    },
+    "Fri": {
+     "slots": [
+      "14:00-17:00"
+     ],
+     "tasks": [
+      "Consolidate: re-read your consent, GDPR and bias notes from this week together - they connect more than they first appear to.",
+      "Check Canvas for the DASC501 critical appraisal article - it's meant to be issued around now; start skimming it once you have it.",
+      "Rest properly this weekend once this session ends - Week 3 introduces referencing, epidemiology and clustering all at once."
+     ],
+     "career": null
+    }
+   }
+  },
+  {
+   "week": 3,
+   "range": "Mon 12 - Fri 16 Oct 2026",
+   "theme": "Referencing tools, epidemiology foundations, clinical coding, GDPR/HIPAA and your first ML model.",
+   "encouragement": "This is a genuinely dense week. If you only do the 'must' tasks and skip the rest, that's a completely reasonable call.",
+   "days": {
+    "Mon": {
+     "slots": [
+      "09:00-10:00",
+      "15:00-17:00"
+     ],
+     "tasks": [
+      "Before class: import 5 real sources into your EndNote library so Wednesday's referencing session has something to work with.",
+      "After DASC501: read the assigned 'brief history of epidemiology' pages (4-12) ahead of next week's causation/bias session.",
+      "Log any dissertation-relevant papers you find into EndNote as you go, not in a separate pile."
+     ],
+     "career": null
+    },
+    "Tue": {
+     "slots": [
+      "09:00-10:00",
+      "13:00-17:00"
+     ],
+     "tasks": [
+      "After DASC513: write out the difference between GDPR and HIPAA in 4 bullet points - one is EU/UK, one is US, and health data science roles need to know both.",
+      "Draft a rough accountability-framework diagram for a fictional health AI project (who's responsible for what) - good practice for Assessment 1's stakeholder thinking."
+     ],
+     "career": "Read the ICO's page on 'accountability and governance' under UK GDPR - directly overlaps with today's DASC513 content and is core knowledge for any data protection/security role."
+    },
+    "Wed": {
+     "slots": [
+      "14:00-17:00"
+     ],
+     "tasks": [
+      "(Referencing session is 10-11 today, not library time.) After DASC509: redo the ICD-10 disease identification exercise on a different condition than the one used in class.",
+      "Look up how SNOMED CT and ICD-10 differ in purpose - one line each is enough for now.",
+      "Practice EndNote's Harvard and Vancouver citation styles on the same 3 sources so you can see the difference directly."
+     ],
+     "career": null
+    },
+    "Thu": {
+     "slots": [
+      "13:00-17:00"
+     ],
+     "tasks": [
+      "Work through the DASC512 K-Means/DBSCAN tutorial dataset again, and try re-running it with a different number of clusters to see how the result changes.",
+      "Write one paragraph explaining, in plain English, when you'd choose K-Means over DBSCAN - this kind of justification is exactly what markers reward.",
+      "Note today's clinical coding + accountability content together: both matter for how you'll frame data governance in DASC513's Assessment 2 later."
+     ],
+     "career": "Read the first two pages of the NHS Data Security and Protection Toolkit (DSPT) overview - the standard every NHS-linked organisation must meet, and a very concrete link between your degree and a security career in health data."
+    },
+    "Fri": {
+     "slots": [
+      "14:00-17:00"
+     ],
+     "tasks": [
+      "Check on the DASC501 critical appraisal article - start your first real read-through and jot initial impressions (methodology, sample size, anything that looks off).",
+      "Tidy your EndNote library and glossary doc - a 10-minute tidy now saves an hour of confusion in Week 9.",
+      "Look ahead: Week 4 covers literature reviews, RCTs' precursor content, and your first classification models."
+     ],
+     "career": null
+    }
+   }
+  },
+  {
+   "week": 4,
+   "range": "Mon 19 - Fri 23 Oct 2026",
+   "theme": "Literature reviews, causation & bias, descriptive epidemiology, ggplot2, and classification models begin.",
+   "encouragement": "You're a third of the way into the term already. Notice what's starting to feel familiar compared to Week 1.",
+   "days": {
+    "Mon": {
+     "slots": [
+      "09:00-10:00",
+      "15:00-17:00"
+     ],
+     "tasks": [
+      "Before class: note 2 questions you have about how to structure a literature review - ask them in today's session.",
+      "After DASC501: apply today's causation/bias/confounding concepts directly to your critical appraisal article - annotate where each might appear.",
+      "If you're proposing your own dissertation topic, this is a good week to draft your Initial Project Proposal Form (window closes ~Week 6)."
+     ],
+     "career": null
+    },
+    "Tue": {
+     "slots": [
+      "09:00-10:00",
+      "13:00-17:00"
+     ],
+     "tasks": [
+      "After DASC513: re-read the case studies on stakeholder involvement from this week's content and note what made the 'unsuccessful' ones fail.",
+      "Start thinking about who you'd want in your Assessment 1 group (groups of 3-4) if you haven't already."
+     ],
+     "career": null
+    },
+    "Wed": {
+     "slots": [
+      "14:00-17:00"
+     ],
+     "tasks": [
+      "Redo today's ggplot2 examples from memory, then try plotting a variable of your own choosing from a sample dataset.",
+      "Check Canvas: DASC503's Assessment 1 brief (poster + oral) is usually released around Week 4 - read it as soon as it lands, even if you're not starting yet."
+     ],
+     "career": null
+    },
+    "Thu": {
+     "slots": [
+      "13:00-17:00"
+     ],
+     "tasks": [
+      "Redo the KNN/SVM decision-boundary exercise from today's DASC512 tutorial, and try it with a different value of k.",
+      "Write 2 sentences comparing KNN and SVM - when would each struggle?",
+      "Check your DASC503 A1 brief (if released) against your R lab notes so far - you should already have most of the pieces you need for the cohort-building parts."
+     ],
+     "career": "Skim the OWASP Machine Learning Security Top 10 list - the ML-specific sibling of the web OWASP list, and the clearest single document connecting your AI modules to security thinking."
+    },
+    "Fri": {
+     "slots": [
+      "14:00-17:00"
+     ],
+     "tasks": [
+      "Write a rough 200-word outline of your critical appraisal article's structure, methods and results - not the final piece, just orientation.",
+      "Consolidate this week's literature-review guidance with your dissertation notes - you'll need both skills together eventually.",
+      "Rest - Week 5 is when RCTs (crucial for Assessment 1) and systematic reviews land together."
+     ],
+     "career": null
+    }
+   }
+  },
+  {
+   "week": 5,
+   "range": "Mon 26 - Fri 30 Oct 2026",
+   "theme": "RCTs (vital for DASC501 A1), systematic reviews, R functions, ensemble models, and data engineering begins.",
+   "encouragement": "This week's RCT and critical-appraisal content is the backbone of your biggest single assessment. Give it real attention.",
+   "days": {
+    "Mon": {
+     "slots": [
+      "09:00-10:00",
+      "15:00-17:00"
+     ],
+     "tasks": [
+      "Before class: read chapters 3 & 10 of the essential textbook (RCT design/interpretation) - flagged as vital for Assessment 1.",
+      "After DASC501: re-map your critical appraisal article against RCT design principles - does it follow them, and where does it deviate?",
+      "Log 2 more supervisor/topic ideas in your dissertation note if a lecture today sparked one."
+     ],
+     "career": null
+    },
+    "Tue": {
+     "slots": [
+      "09:00-10:00",
+      "13:00-17:00"
+     ],
+     "tasks": [
+      "After DASC513: read the FAIR data principles paper (Wilkinson et al.) - short, and it's core vocabulary for Assessment 2 later.",
+      "Draft a simple anonymisation-vs-pseudonymisation comparison table (2 rows is enough) for your glossary doc."
+     ],
+     "career": "Read the FAIR principles alongside NIST's Data Governance guidance side by side - notice how much overlap there already is between 'good data science' and 'good security practice'."
+    },
+    "Wed": {
+     "slots": [
+      "14:00-17:00"
+     ],
+     "tasks": [
+      "Redo today's R for-loop and apply-function exercises, then rewrite one loop as an apply function instead - the switch teaches you both properly.",
+      "Practice querying a SQL database from within R using today's method."
+     ],
+     "career": null
+    },
+    "Thu": {
+     "slots": [
+      "13:00-17:00"
+     ],
+     "tasks": [
+      "Rebuild today's random forest / XGBoost tutorial from scratch without looking at the walkthrough, then compare.",
+      "Write a short note on class imbalance: why it's a problem and one method to address it - this comes up in DASC512's Assessment 2 too.",
+      "Draft your DASC503 A1 poster's structure (headings only) if the brief is out - key findings, interpretation, limitations."
+     ],
+     "career": null
+    },
+    "Fri": {
+     "slots": [
+      "14:00-17:00"
+     ],
+     "tasks": [
+      "Write your first full draft paragraph of the critical appraisal (methods critique) - a rough first attempt now beats a blank page in Week 9.",
+      "Review this week's RCT + systematic review content together - they're two sides of the same evidence-hierarchy coin.",
+      "Look ahead: Week 6 is a big one - DASC513 Assessment 1 (stakeholder workshop) is due Friday."
+     ],
+     "career": null
+    }
+   }
+  },
+  {
+   "week": 6,
+   "range": "Mon 2 - Fri 6 Nov 2026",
+   "theme": "DEADLINE WEEK: DASC513 Assessment 1 (Stakeholder Workshop) due Friday. Also: critical appraisal techniques and Communication Skills 1.",
+   "encouragement": "Your first real deadline. Trust the prep you've done since Week 1 - go in with your group, deliver it, and treat it as a dry run for the bigger ones ahead.",
+   "days": {
+    "Mon": {
+     "slots": [
+      "09:00-10:00",
+      "15:00-17:00"
+     ],
+     "tasks": [
+      "PRIORITY: finalise your DASC513 group's planning document draft today if it isn't done - due Friday.",
+      "After DASC501: apply today's critical-appraisal techniques directly onto your article - this is the core skill for Assessment 1.",
+      "Confirm your DASC501 Assessment 2 interview pairing by 4pm Friday - don't leave this to Friday itself."
+     ],
+     "career": null
+    },
+    "Tue": {
+     "slots": [
+      "09:00-10:00",
+      "13:00-17:00"
+     ],
+     "tasks": [
+      "PRIORITY: rehearse your stakeholder workshop delivery with your group (aim for the full 15 minutes, timed).",
+      "Cross-check your planning document against the marking criteria on Canvas line by line."
+     ],
+     "career": null
+    },
+    "Wed": {
+     "slots": [
+      "14:00-17:00"
+     ],
+     "tasks": [
+      "PRIORITY: finalise and submit your DASC513 planning document.",
+      "Take a short break once it's submitted before diving back into DASC501/DASC509 - you've earned it."
+     ],
+     "career": null
+    },
+    "Thu": {
+     "slots": [
+      "13:00-17:00"
+     ],
+     "tasks": [
+      "Final rehearsal of your workshop delivery for tomorrow's tutorial slot.",
+      "If your workshop is delivered this week rather than next, prioritise this over everything else today.",
+      "Once delivered: note 2 things that went well and 1 to improve - useful reflection for BuddyCheck and for Assessment 2's group dynamics."
+     ],
+     "career": null
+    },
+    "Fri": {
+     "slots": [
+      "14:00-17:00"
+     ],
+     "tasks": [
+      "Deliver/submit DASC513 Assessment 1 if not already done.",
+      "Now that the deadline has passed, return to your DASC501 critical appraisal draft and add 30 more minutes of work.",
+      "Confirm interview pairing for DASC501 Assessment 2 by 4pm today if you haven't already - this is a hard cutoff."
+     ],
+     "career": "Once the deadline's behind you, treat yourself to something other than a screen for an hour. Sustainable pace beats short bursts of burnout."
+    }
+   }
+  },
+  {
+   "week": 7,
+   "range": "Mon 9 - Fri 13 Nov 2026",
+   "theme": "DEADLINE WEEK: DASC509 Assessment 1 (SQL Analysis) due Friday. Also: cohort studies and cybersecurity content in DASC513.",
+   "encouragement": "Two deadline weeks back to back is genuinely tough - if you're tired, that's information, not a failure. Pace yourself through this one.",
+   "days": {
+    "Mon": {
+     "slots": [
+      "09:00-10:00",
+      "15:00-17:00"
+     ],
+     "tasks": [
+      "PRIORITY: run your SQL analysis queries against the actual assignment database if you haven't started - don't leave this to Thursday.",
+      "After DASC501: read chapter 8 of the essential textbook (cohort studies) ahead of today's session content."
+     ],
+     "career": null
+    },
+    "Tue": {
+     "slots": [
+      "09:00-10:00",
+      "13:00-17:00"
+     ],
+     "tasks": [
+      "PRIORITY: draft the written commentary sections of your SQL report (methodology, what each query shows) - the code alone isn't the deliverable.",
+      "After DASC513: note the difference between information governance and cybersecurity as covered today - they overlap but aren't the same thing, and Assessment 2 will expect you to know both."
+     ],
+     "career": "Read the NCSC's 'Cyber security for the health sector' guidance summary - a UK-specific, very practical companion to today's DASC513 content."
+    },
+    "Wed": {
+     "slots": [
+      "14:00-17:00"
+     ],
+     "tasks": [
+      "PRIORITY: finish and proofread your SQL Analysis report - check every query actually runs before you submit.",
+      "Submit DASC509 Assessment 1 once you're confident in it - don't wait until Friday 4pm if it's ready sooner."
+     ],
+     "career": null
+    },
+    "Thu": {
+     "slots": [
+      "13:00-17:00"
+     ],
+     "tasks": [
+      "If DASC509 A1 isn't submitted yet, this is the priority block - everything else can wait.",
+      "Once submitted: catch up on this week's Python file-reading/numpy content with a short practice script."
+     ],
+     "career": null
+    },
+    "Fri": {
+     "slots": [
+      "14:00-17:00"
+     ],
+     "tasks": [
+      "Final check and submission of DASC509 Assessment 1 (due 4pm today).",
+      "Return to your DASC512 literature-review paper choice - pick it now if you haven't, since Assessment 1 is due in a week.",
+      "Breathe. Two deadlines down."
+     ],
+     "career": null
+    }
+   }
+  },
+  {
+   "week": 8,
+   "range": "Mon 16 - Fri 20 Nov 2026",
+   "theme": "DEADLINE WEEK: DASC512 Assessment 1 (Literature Review Presentation) due around Friday. Also: case-control studies and explainable AI begins.",
+   "encouragement": "A recorded presentation is less pressure than a live one - you can redo a take if it's not right. Use that to your advantage.",
+   "days": {
+    "Mon": {
+     "slots": [
+      "09:00-10:00",
+      "15:00-17:00"
+     ],
+     "tasks": [
+      "PRIORITY: finish reading/annotating your chosen ML/AI public health paper for DASC512's presentation.",
+      "After DASC501: note today's case-control study content next to last week's cohort studies - compare strengths/weaknesses of each design."
+     ],
+     "career": null
+    },
+    "Tue": {
+     "slots": [
+      "09:00-10:00",
+      "13:00-17:00"
+     ],
+     "tasks": [
+      "PRIORITY: outline your presentation - methodology, results, and (most important for marks) drawbacks of the paper.",
+      "After DASC513: read about SHAP and LIME briefly (even just the intros) - today's session introduces the interpretability methods central to Assessment 2 later."
+     ],
+     "career": "Look up one real SHAP explanation example online (any tutorial with a plot) - seeing what model interpretability actually looks like makes the theory click faster."
+    },
+    "Wed": {
+     "slots": [
+      "14:00-17:00"
+     ],
+     "tasks": [
+      "PRIORITY: build your presentation slides.",
+      "Practice recording a 2-minute segment to check your setup (audio, screen share) works before you commit to the full take."
+     ],
+     "career": null
+    },
+    "Thu": {
+     "slots": [
+      "13:00-17:00"
+     ],
+     "tasks": [
+      "PRIORITY: record your full 10-minute presentation, keeping to time.",
+      "Listen back once and note anything unclear - re-record only what needs it, not the whole thing.",
+      "If your DASC503 A1 poster or oral is due around now, treat it as equal priority this week - check your exact date."
+     ],
+     "career": null
+    },
+    "Fri": {
+     "slots": [
+      "14:00-17:00"
+     ],
+     "tasks": [
+      "Final review and submission of your DASC512 presentation.",
+      "Check on DASC503's Assessment 1 status - poster/oral deadlines vary by cohort, confirm yours on Canvas.",
+      "Start your DASC501 Assessment 2 interview if you haven't yet - the plain language summary is due in exactly 2 weeks."
+     ],
+     "career": null
+    }
+   }
+  },
+  {
+   "week": 9,
+   "range": "Mon 23 - Fri 27 Nov 2026",
+   "theme": "DEADLINE WEEK: DASC501 Assessment 2 (Plain Language Summary) due Friday. Also: supervisor conversations begin and deep learning starts.",
+   "encouragement": "600 words sounds small, but plain-language writing is a real skill - budget more editing time for it than the word count suggests.",
+   "days": {
+    "Mon": {
+     "slots": [
+      "09:00-10:00",
+      "15:00-17:00"
+     ],
+     "tasks": [
+      "PRIORITY: draft your plain language summary of the interview if you haven't started - write it as if explaining to a curious friend, not a professional peer.",
+      "This week supervisor project suggestions are shared - start a shortlist of who you'd like to approach for your dissertation."
+     ],
+     "career": null
+    },
+    "Tue": {
+     "slots": [
+      "09:00-10:00",
+      "13:00-17:00"
+     ],
+     "tasks": [
+      "PRIORITY: edit your plain language summary - cut jargon, check it reads naturally aloud.",
+      "After DASC513: note today's validation strategies (internal vs external) - directly useful for DASC512's model evaluation work too."
+     ],
+     "career": null
+    },
+    "Wed": {
+     "slots": [
+      "14:00-17:00"
+     ],
+     "tasks": [
+      "PRIORITY: get a second pair of eyes on your summary if possible (a coursemate, friend, or read it aloud to yourself) - plain language is hard to self-edit.",
+      "Submit DASC501 Assessment 2 once it's ready rather than waiting for Friday."
+     ],
+     "career": null
+    },
+    "Thu": {
+     "slots": [
+      "13:00-17:00"
+     ],
+     "tasks": [
+      "If not yet submitted, this is priority: finish and submit your plain language summary (due Friday 4pm).",
+      "Email 1-2 potential dissertation supervisors this week if you haven't already - don't wait until the list narrows."
+     ],
+     "career": null
+    },
+    "Fri": {
+     "slots": [
+      "14:00-17:00"
+     ],
+     "tasks": [
+      "Final submission check for DASC501 Assessment 2 (due 4pm today).",
+      "Start your DASC501 Assessment 1 (critical appraisal) writing properly now - it's due in exactly a week.",
+      "Practice today's deep learning / ANN content on a small tabular dataset."
+     ],
+     "career": null
+    }
+   }
+  },
+  {
+   "week": 10,
+   "range": "Mon 30 Nov - Fri 4 Dec 2026",
+   "theme": "DEADLINE WEEK: DASC501 Assessment 1 (Critical Appraisal) due Friday - your single biggest single-module weight this term.",
+   "encouragement": "This is the assessment worth the most of any single piece this semester. Give it the focused hours it deserves, and don't let perfectionism stop you from finishing a full draft early.",
+   "days": {
+    "Mon": {
+     "slots": [
+      "09:00-10:00",
+      "15:00-17:00"
+     ],
+     "tasks": [
+      "PRIORITY: write a complete first draft of your critical appraisal today, even if rough - momentum matters more than polish right now.",
+      "Follow up with any supervisors who haven't replied yet."
+     ],
+     "career": null
+    },
+    "Tue": {
+     "slots": [
+      "09:00-10:00",
+      "13:00-17:00"
+     ],
+     "tasks": [
+      "PRIORITY: revise your 5 suggested improvements - make sure each is specific and justified, not generic.",
+      "After DASC513: note today's confounding-variable content - it's exactly the kind of issue markers want to see you spot in your appraisal article."
+     ],
+     "career": null
+    },
+    "Wed": {
+     "slots": [
+      "14:00-17:00"
+     ],
+     "tasks": [
+      "PRIORITY: tighten your appraisal to the 1500-word limit and check your references are formatted consistently.",
+      "Read your draft aloud once - it catches more awkward phrasing than silent reading does."
+     ],
+     "career": null
+    },
+    "Thu": {
+     "slots": [
+      "13:00-17:00"
+     ],
+     "tasks": [
+      "PRIORITY: final proofread and submit DASC501 Assessment 1 - don't wait for the Friday deadline if it's ready.",
+      "Once submitted: catch up on this week's CNN content with a short practical exercise."
+     ],
+     "career": null
+    },
+    "Fri": {
+     "slots": [
+      "14:00-17:00"
+     ],
+     "tasks": [
+      "Final submission check for DASC501 Assessment 1 (due 4pm today) if not already done.",
+      "You've now finished DASC501 entirely. Take a moment to notice that.",
+      "Narrow your dissertation supervisor/project preferences to a ranked shortlist of 3."
+     ],
+     "career": null
+    }
+   }
+  },
+  {
+   "week": 11,
+   "range": "Mon 7 - Fri 11 Dec 2026",
+   "theme": "Git, standardisation techniques, transformers/LLMs, and bias & ethics in AI - the last full teaching week.",
+   "encouragement": "One module down, four to wrap up over the next two weeks. Keep the pace steady rather than sprinting now and crashing in Week 12.",
+   "days": {
+    "Mon": {
+     "slots": [
+      "09:00-10:00",
+      "15:00-17:00"
+     ],
+     "tasks": [
+      "Finalise your ranked list of up to 3 preferred dissertation projects, ready for formal expression of interest in Semester 2 Week 3.",
+      "Start planning your DASC513 Assessment 2 report structure - data engineering schematic, interpretability, validation, bias, communication."
+     ],
+     "career": null
+    },
+    "Tue": {
+     "slots": [
+      "09:00-10:00",
+      "13:00-17:00"
+     ],
+     "tasks": [
+      "After DASC513: draft the bias-detection section of your Assessment 2 report using today's content.",
+      "Read the Weapons of Math Destruction excerpt on bias if you haven't yet - short, and directly citable in Assessment 2."
+     ],
+     "career": "Read one real case study of algorithmic bias causing harm (e.g. a healthcare risk-scoring algorithm) - grounds today's theory in a concrete, citable example for your report."
+    },
+    "Wed": {
+     "slots": [
+      "14:00-17:00"
+     ],
+     "tasks": [
+      "Redo today's Git exercises: initialise a repo, make 3 commits, create and merge a branch - do this once for real, not just watch it demonstrated.",
+      "Push your DASC509 practice code to GitHub - the start of a visible portfolio."
+     ],
+     "career": "A GitHub profile with real, documented projects is one of the highest-value things you can build this year for security/data roles - today's Git session is the technical key that unlocks it."
+    },
+    "Thu": {
+     "slots": [
+      "13:00-17:00"
+     ],
+     "tasks": [
+      "Practice today's transformer/LLM content with a small sentiment-analysis exercise on public text data.",
+      "Draft the interpretability section of your DASC513 Assessment 2 report (SHAP/LIME/GradCAM, pros and cons)."
+     ],
+     "career": null
+    },
+    "Fri": {
+     "slots": [
+      "14:00-17:00"
+     ],
+     "tasks": [
+      "Draft the validation-strategies section of your DASC513 Assessment 2 report.",
+      "Consolidate everything DASC513 has covered this term (stakeholders, data engineering, equitable modelling) into one outline for the final report.",
+      "Look ahead: next week is the last teaching week and DASC513's final assessment is due."
+     ],
+     "career": null
+    }
+   }
+  },
+  {
+   "week": 12,
+   "range": "Mon 14 - Fri 18 Dec 2026",
+   "theme": "DEADLINE WEEK: DASC513 Assessment 2 (Portfolio Project) due Friday - the last deadline of the semester.",
+   "encouragement": "Last one before the break. Finish this and you'll have completed five full modules in twelve weeks - that's genuinely a lot.",
+   "days": {
+    "Mon": {
+     "slots": [
+      "09:00-10:00",
+      "15:00-17:00"
+     ],
+     "tasks": [
+      "PRIORITY: write a complete first draft of your DASC513 Assessment 2 report today - data engineering schematic, interpretability, validation, bias, and stakeholder communication."
+     ],
+     "career": null
+    },
+    "Tue": {
+     "slots": [
+      "13:00-17:00"
+     ],
+     "tasks": [
+      "PRIORITY: revise your data-flow schematic for clarity - a marker should be able to follow it without your report's text.",
+      "Check your report against the marking criteria on Canvas section by section."
+     ],
+     "career": null
+    },
+    "Wed": {
+     "slots": [
+      "14:00-17:00"
+     ],
+     "tasks": [
+      "PRIORITY: tighten to the 2,000-word limit and proofread.",
+      "Submit DASC513 Assessment 2 once ready rather than waiting for Friday."
+     ],
+     "career": null
+    },
+    "Thu": {
+     "slots": [
+      "13:00-17:00"
+     ],
+     "tasks": [
+      "If not submitted yet, this is the priority: finish DASC513 Assessment 2.",
+      "Once submitted: start planning your DASC512 Assessment 2 dataset choice (due early January) so the break isn't a cold start."
+     ],
+     "career": null
+    },
+    "Fri": {
+     "slots": [
+      "14:00-17:00"
+     ],
+     "tasks": [
+      "Final submission check for DASC513 Assessment 2 (due 4pm today).",
+      "You've now finished the taught content for 5 of your 6 Semester 1 modules. Well done - genuinely.",
+      "Before you switch off for the break: note where DASC509 A2 (due 18 Jan) and DASC512 A2 (due ~2 Jan) stand, so January isn't a shock."
+     ],
+     "career": "Treat the break as real rest, not just 'lighter work'. A sustainable pace across a whole MSc matters more than any single week of extra hours."
+    }
+   }
+  }
+ ],
+ "assignments": [
+  {
+   "id": "d513a1",
+   "module": "DASC513",
+   "title": "Assessment 1 - Stakeholder Workshop",
+   "weight": "30%",
+   "due": "2026-11-06",
+   "dueLabel": "Fri, Week 6 (date TBC on Canvas)",
+   "brief": "Plan and deliver a 15-minute stakeholder-involvement workshop in a group of 3-4, plus a 1,000-word planning document justifying your design choices.",
+   "stages": [
+    {
+     "by": "Week 2",
+     "task": "Form your group of 3-4 and agree who's doing what."
+    },
+    {
+     "by": "Week 3",
+     "task": "Pick your grant/trial outline (provided by staff) and assign roles within the group."
+    },
+    {
+     "by": "Week 3-4",
+     "task": "Research stakeholder engagement methodologies and information governance principles to cite in your justification."
+    },
+    {
+     "by": "Week 4",
+     "task": "Draft the planning document's structure (design rationale, methodology choice, participant needs, IG alignment)."
+    },
+    {
+     "by": "Week 5",
+     "task": "Write the full 1,000-word planning document draft."
+    },
+    {
+     "by": "Week 5-6",
+     "task": "Rehearse your 15-minute delivery as a group, timed."
+    },
+    {
+     "by": "Week 6",
+     "task": "Finalise, submit the planning document, and deliver the workshop in your tutorial slot."
+    }
+   ]
+  },
+  {
+   "id": "d513a2",
+   "module": "DASC513",
+   "title": "Assessment 2 - Portfolio Project",
+   "weight": "70%",
+   "due": "2026-12-18",
+   "dueLabel": "Fri, Week 12 (date TBC on Canvas)",
+   "brief": "A 2,000-word individual report addressing challenges from your group's information package: a data-flow schematic, interpretability strategy, validation approach, bias mitigation, and stakeholder communication plan.",
+   "stages": [
+    {
+     "by": "Week 6-7",
+     "task": "Receive your group's information package and read it closely - note the specific real-world challenges named."
+    },
+    {
+     "by": "Week 7-8",
+     "task": "Sketch your data-flow schematic (how data moves through the proposed system)."
+    },
+    {
+     "by": "Week 8-9",
+     "task": "Research interpretability methods (SHAP, LIME, GradCAM) relevant to your scenario."
+    },
+    {
+     "by": "Week 9-10",
+     "task": "Draft the validation-approach and bias-mitigation sections."
+    },
+    {
+     "by": "Week 10-11",
+     "task": "Draft the stakeholder-communication section, tying it back to your Assessment 1 workshop."
+    },
+    {
+     "by": "Week 11",
+     "task": "Write a complete first full draft."
+    },
+    {
+     "by": "Week 12",
+     "task": "Revise to 2,000 words, proofread, and submit."
+    }
+   ]
+  },
+  {
+   "id": "d501a1",
+   "module": "DASC501",
+   "title": "Assessment 1 - Critical Appraisal of a Journal Article",
+   "weight": "70%",
+   "due": "2026-12-04",
+   "dueLabel": "Fri 4 Dec, 4pm",
+   "brief": "A 1,500-word critical appraisal of a given journal article, including 5 specific suggestions to improve the paper or study design.",
+   "stages": [
+    {
+     "by": "Week 1",
+     "task": "Receive your article - do a first skim read even before the relevant lecture content lands."
+    },
+    {
+     "by": "Week 4-6",
+     "task": "Learn the appraisal frameworks (RCT design, critical appraisal techniques) as they're taught."
+    },
+    {
+     "by": "Week 6-7",
+     "task": "Do a full close read using a CASP checklist, annotating methodology, bias and sample size issues."
+    },
+    {
+     "by": "Week 7-8",
+     "task": "Draft your 5 specific, justified improvement suggestions."
+    },
+    {
+     "by": "Week 8-9",
+     "task": "Write a complete first draft of the 1,500 words."
+    },
+    {
+     "by": "Week 9",
+     "task": "Revise, tighten to length, and check references."
+    },
+    {
+     "by": "Week 10",
+     "task": "Final proofread and submit by Friday 4pm."
+    }
+   ]
+  },
+  {
+   "id": "d501a2",
+   "module": "DASC501",
+   "title": "Assessment 2 - Plain Language Summary of an Interview",
+   "weight": "30%",
+   "due": "2026-11-27",
+   "dueLabel": "Fri 27 Nov, 4pm",
+   "brief": "A 600-word plain-language summary of a paired interview with a health data scientist, written for a non-specialist audience.",
+   "stages": [
+    {
+     "by": "Week 6",
+     "task": "Confirm your interview pairing by 4pm Friday - this is a hard cutoff."
+    },
+    {
+     "by": "Week 6-7",
+     "task": "Prepare 5-8 interview questions in advance."
+    },
+    {
+     "by": "Week 7-8",
+     "task": "Conduct the interview and take detailed notes."
+    },
+    {
+     "by": "Week 8",
+     "task": "Draft the summary - explain, don't just report; imagine a curious friend as your reader."
+    },
+    {
+     "by": "Week 9",
+     "task": "Edit for plain language (cut jargon, read aloud) and submit by Friday 4pm."
+    }
+   ]
+  },
+  {
+   "id": "d509a1",
+   "module": "DASC509",
+   "title": "Assessment 1 - SQL Analysis",
+   "weight": "50%",
+   "due": "2026-11-13",
+   "dueLabel": "Fri 13 Nov, 4pm",
+   "brief": "A report analysing and summarising a clinical database using SQL, with the queries included as evidence.",
+   "stages": [
+    {
+     "by": "Weeks 1-3",
+     "task": "Build SQL fluency through the taught sessions (retrieval, filtering, joins, aggregation, normalisation)."
+    },
+    {
+     "by": "Week 4",
+     "task": "Practice on a sample database end-to-end once the core syntax feels solid."
+    },
+    {
+     "by": "Week 5-6",
+     "task": "Once the brief/dataset is issued, draft your core queries."
+    },
+    {
+     "by": "Week 6-7",
+     "task": "Write the report narrative explaining what each query shows and why you chose that approach."
+    },
+    {
+     "by": "Week 7",
+     "task": "Test every query runs cleanly, then submit by Friday 4pm."
+    }
+   ]
+  },
+  {
+   "id": "d509a2",
+   "module": "DASC509",
+   "title": "Assessment 2 - Python Coding Exercise",
+   "weight": "50%",
+   "due": "2027-01-18",
+   "dueLabel": "Mon 18 Jan 2027, 4pm",
+   "brief": "Data preprocessing, debugging and basic analysis on a dataset, written up with commented code.",
+   "stages": [
+    {
+     "by": "Weeks 5-10",
+     "task": "Build Python fluency through the taught sessions (files, pandas, loops, OOP, debugging)."
+    },
+    {
+     "by": "Week 9-10",
+     "task": "Practice cleaning/preprocessing exercises on a sample dataset before the real brief lands."
+    },
+    {
+     "by": "Week 11-12",
+     "task": "Once the brief is issued, draft your preprocessing and analysis code."
+    },
+    {
+     "by": "Over the break",
+     "task": "Write up your findings and comments alongside the code."
+    },
+    {
+     "by": "Mid-January",
+     "task": "Final debug pass and submit by 18 Jan, 4pm."
+    }
+   ]
+  },
+  {
+   "id": "d512a1",
+   "module": "DASC512",
+   "title": "Assessment 1 - Literature Review Presentation",
+   "weight": "30%",
+   "due": "2026-11-20",
+   "dueLabel": "Around Fri, Week 8 (date TBC on Canvas)",
+   "brief": "A maximum 10-minute recorded presentation critically evaluating an ML/AI public health paper - methodology, results, and drawbacks.",
+   "stages": [
+    {
+     "by": "Week 5-6",
+     "task": "Choose your paper early - don't leave this to Week 8."
+    },
+    {
+     "by": "Week 6",
+     "task": "Read and annotate the paper closely."
+    },
+    {
+     "by": "Week 7",
+     "task": "Outline your critique structure: methodology, results, drawbacks."
+    },
+    {
+     "by": "Week 7-8",
+     "task": "Build your slides."
+    },
+    {
+     "by": "Week 8",
+     "task": "Record the presentation, keeping to 10 minutes, and submit."
+    }
+   ]
+  },
+  {
+   "id": "d512a2",
+   "module": "DASC512",
+   "title": "Assessment 2 - Portfolio Project",
+   "weight": "70%",
+   "due": "2027-01-02",
+   "dueLabel": "Around 'Week 14' (estimate; confirm on Canvas)",
+   "brief": "A 1,000-word report building an ML pipeline on a public health dataset, including at least one shallow and one deep learning model.",
+   "stages": [
+    {
+     "by": "Week 8-9",
+     "task": "Pick your dataset (Kaggle's public-health sets fit well)."
+    },
+    {
+     "by": "Week 9",
+     "task": "Do exploratory data analysis and clean the data."
+    },
+    {
+     "by": "Week 9-10",
+     "task": "Build your shallow model (e.g. random forest or logistic regression)."
+    },
+    {
+     "by": "Week 10-11",
+     "task": "Build your deep model (e.g. a simple ANN or CNN depending on data type)."
+    },
+    {
+     "by": "Week 11",
+     "task": "Evaluate and compare both models with appropriate metrics."
+    },
+    {
+     "by": "Week 11-12",
+     "task": "Write the lay abstract, methods, results and discussion."
+    },
+    {
+     "by": "Over the break",
+     "task": "Final polish and submit."
+    }
+   ]
+  },
+  {
+   "id": "d503a1",
+   "module": "DASC503",
+   "title": "Assessment 1 - Poster + Pre-recorded Oral",
+   "weight": "30%",
+   "due": null,
+   "dueLabel": "TBC - check Canvas (brief usually given Week 4)",
+   "brief": "A poster plus a 5-minute pre-recorded oral highlighting the key findings, interpretation and limitations of your database project.",
+   "stages": [
+    {
+     "by": "Weeks 1-6",
+     "task": "Build your cohort and derive exposure/outcome variables through the weekly R labs - this is the raw material for the poster."
+    },
+    {
+     "by": "Week 4",
+     "task": "Read the brief as soon as it's released."
+    },
+    {
+     "by": "Week 6-7",
+     "task": "Finalise your analysis and results."
+    },
+    {
+     "by": "Week 7",
+     "task": "Design the poster: key findings, interpretation, limitations."
+    },
+    {
+     "by": "Week 7-8",
+     "task": "Record your 5-minute oral, focused on a single main point."
+    }
+   ]
+  },
+  {
+   "id": "d503a2",
+   "module": "DASC503",
+   "title": "Assessment 2 - Written Critical Report",
+   "weight": "70%",
+   "due": null,
+   "dueLabel": "TBC - check Canvas (brief usually given Week 8)",
+   "brief": "A 1,500-word report critically appraising the approaches used in your database project, including a reflective summary of skills and lessons learnt.",
+   "stages": [
+    {
+     "by": "Weeks 1-8",
+     "task": "Keep a brief weekly note of what worked and didn't in each lab - this becomes your reflective summary later."
+    },
+    {
+     "by": "Week 8",
+     "task": "Read the brief as soon as it's released."
+    },
+    {
+     "by": "Week 9-10",
+     "task": "Draft your critical appraisal of the approaches used."
+    },
+    {
+     "by": "Week 10-11",
+     "task": "Write the reflective summary section."
+    },
+    {
+     "by": "Week 11-12",
+     "task": "Proofread, tighten to 1,500 words, and submit."
+    }
+   ]
+  }
+ ],
+ "milestones": [
+  {
+   "by": "Weeks 1-2",
+   "task": "Attend taught sessions: intro, academic sources, referencing. Set up EndNote."
+  },
+  {
+   "by": "Weeks 3-6",
+   "task": "If proposing your own topic: submit the Initial Project Proposal Form (window closes around Week 6, 6 Nov)."
+  },
+  {
+   "by": "Week 9",
+   "task": "Supervisor project suggestions are communicated - start approaching potential supervisors."
+  },
+  {
+   "by": "Weeks 10-11",
+   "task": "Follow up with supervisors and narrow down your preferences."
+  },
+  {
+   "by": "Week 12",
+   "task": "Finalise your ranked shortlist of up to 3 preferred projects."
+  },
+  {
+   "by": "Semester 2, Week 3 (19 Feb 2027)",
+   "task": "Formally express interest in your ranked projects by email."
+  },
+  {
+   "by": "Semester 2, Week 8 (16 Apr 2027)",
+   "task": "Projects are confirmed."
+  },
+  {
+   "by": "Semester 2, Weeks 9-12",
+   "task": "Work on the Full Project Proposal Form with your supervisor."
+  },
+  {
+   "by": "Semester 2, Week 12 (14 May 2027)",
+   "task": "Submit the full project proposal form."
+  },
+  {
+   "by": "Semester 3, Week 1 (7 Jun 2027)",
+   "task": "Dissertation research officially begins."
+  }
+ ]
+}
