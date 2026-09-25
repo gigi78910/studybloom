@@ -1,0 +1,1515 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Field Notes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&family=Space+Grotesk:wght@500;600;700&family=Nunito+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.9.3/confetti.browser.min.js"></script>
+<style>
+  :root{
+    --bg:#f3ecdd;
+    --surface:#faf5e9;
+    --surface-2:#ece2cb;
+    --ink:#241b10;
+    --muted:#7a6c52;
+    --faint:#c3b494;
+    --line:#a68f64;
+    --line-soft:#e3d6b8;
+    --accent:#e8709e;
+    --accent-ink:#241b10;
+    --accent-2:#a99bdc;
+    --warn:#eea23f;
+    --warn-bg:#faecd1;
+    --danger:#ef7362;
+    --danger-bg:#fbe3dc;
+    --good:#b6cf63;
+    --good-bg:#eef2d7;
+    --shadow: 0 2px 0 rgba(166,143,100,0.55);
+    --shadow-soft: 0 1px 2px rgba(36,27,16,0.08);
+    --radius:20px;
+    --serif:'Playfair Display', Georgia, 'Times New Roman', serif;
+    --display:'Space Grotesk', 'Nunito Sans', sans-serif;
+    --sans:'Nunito Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --mono:'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    --hand:'Caveat', cursive;
+    --tape-1: rgba(232,112,158,0.5);
+    --tape-2: rgba(169,155,220,0.5);
+    --tape-3: rgba(182,207,99,0.45);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#18140f;
+      --surface:#201a14;
+      --surface-2:#2a2219;
+      --ink:#f4ecd9;
+      --muted:#bcad91;
+      --faint:#6b5f4b;
+      --line:#a2895b;
+      --line-soft:#3c3324;
+      --accent:#f095b8;
+      --accent-ink:#18140f;
+      --accent-2:#c3b6ee;
+      --warn:#f3bd6f;
+      --warn-bg:#3a2e17;
+      --danger:#f5988a;
+      --danger-bg:#3a241d;
+      --good:#cfe28e;
+      --good-bg:#26311a;
+      --shadow: 0 2px 0 rgba(162,137,91,0.5);
+      --shadow-soft: 0 1px 2px rgba(0,0,0,0.4);
+      --tape-1: rgba(240,149,184,0.35);
+      --tape-2: rgba(195,182,238,0.35);
+      --tape-3: rgba(207,226,142,0.3);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#18140f;
+    --surface:#201a14;
+    --surface-2:#2a2219;
+    --ink:#f4ecd9;
+    --muted:#bcad91;
+    --faint:#6b5f4b;
+    --line:#a2895b;
+    --line-soft:#3c3324;
+    --accent:#f095b8;
+    --accent-ink:#18140f;
+    --accent-2:#c3b6ee;
+    --warn:#f3bd6f;
+    --warn-bg:#3a2e17;
+    --danger:#f5988a;
+    --danger-bg:#3a241d;
+    --good:#cfe28e;
+    --good-bg:#26311a;
+    --shadow: 0 2px 0 rgba(162,137,91,0.5);
+    --shadow-soft: 0 1px 2px rgba(0,0,0,0.4);
+    --tape-1: rgba(240,149,184,0.35);
+    --tape-2: rgba(195,182,238,0.35);
+    --tape-3: rgba(207,226,142,0.3);
+    color-scheme: dark;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background-color:var(--bg);
+    background-image:
+      radial-gradient(circle at 12% 6%, rgba(232,112,158,0.10), transparent 34%),
+      radial-gradient(circle at 90% 14%, rgba(169,155,220,0.10), transparent 36%);
+    background-attachment:fixed;
+    color:var(--ink);
+    font-family:var(--sans);
+    margin:0;
+    padding-inline:0;
+    -webkit-font-smoothing:antialiased;
+    border-top:1.5px solid var(--ink);
+  }
+  a{color:var(--accent);}
+  .wrap{max-width:920px; margin:0 auto; padding-inline:20px; padding-bottom:64px;}
+
+  /* ---------- header ---------- */
+  header.top{
+    position:sticky; top:env(safe-area-inset-top,0px); z-index:20;
+    background:var(--bg);
+    border-bottom:1.5px solid var(--ink);
+  }
+  .top-inner{max-width:920px; margin:0 auto; padding:16px 20px 0 20px; position:relative;}
+  .top-inner::after{
+    content:""; position:absolute; top:8px; right:20px; width:22px; height:22px;
+    background-color:var(--ink);
+    -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 0 L61 39 L100 50 L61 61 L50 100 L39 61 L0 50 L39 39 Z'/%3E%3C/svg%3E");
+    mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 0 L61 39 L100 50 L61 61 L50 100 L39 61 L0 50 L39 39 Z'/%3E%3C/svg%3E");
+    -webkit-mask-size:contain; mask-size:contain; -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
+    animation:spin-slow 12s linear infinite;
+  }
+  @keyframes spin-slow{ from{transform:rotate(0deg);} to{transform:rotate(360deg);} }
+  .brand-row{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;}
+  .brand{
+    font-family:var(--display); font-weight:700; font-size:1.7rem; letter-spacing:-0.02em;
+    display:flex; align-items:center; gap:9px; color:var(--ink);
+  }
+  .brand .fox{
+    font-size:1.15rem; display:inline-flex; align-items:center; justify-content:center;
+    width:34px; height:34px; border-radius:50%; background:var(--accent);
+    border:2px solid var(--ink); transform:rotate(-6deg);
+  }
+  .brand small{
+    display:block; font-family:var(--mono); font-size:0.66rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); font-weight:500; margin-top:3px;
+  }
+  .streak-chip{
+    display:flex; align-items:center; gap:6px;
+    font-family:var(--mono); font-size:0.82rem; color:var(--ink); font-weight:700;
+    background:var(--surface); border:2px solid var(--ink); border-radius:999px; padding:6px 14px;
+    white-space:nowrap; box-shadow:var(--shadow);
+  }
+  .streak-chip b{color:var(--ink); font-weight:800; font-family:var(--mono); font-size:0.88rem;}
+  nav.tabs{
+    display:flex; gap:8px; margin-top:16px; padding-bottom:14px; overflow-x:auto; scrollbar-width:none;
+  }
+  nav.tabs::-webkit-scrollbar{display:none;}
+  nav.tabs button{
+    font-family:var(--sans); font-weight:700; font-size:0.84rem;
+    background:var(--surface); color:var(--ink); border:2px solid var(--ink);
+    padding:8px 15px; cursor:pointer; white-space:nowrap;
+    border-radius:999px;
+    transition:transform .12s ease, background .15s ease, color .15s ease;
+  }
+  nav.tabs button:hover{transform:translateY(-2px);}
+  nav.tabs button.active{color:var(--surface); background:var(--ink); box-shadow:var(--shadow);}
+
+  /* ---------- generic ---------- */
+  .card{
+    background:var(--surface); border:2px solid var(--line); border-radius:var(--radius);
+    box-shadow:var(--shadow); padding:20px; margin-bottom:18px;
+  }
+  .eyebrow{
+    font-family:var(--mono); font-size:0.7rem; letter-spacing:0.09em; text-transform:uppercase; color:var(--muted); font-weight:500;
+  }
+  h2.section-title{
+    font-family:var(--serif); font-style:italic; font-size:1.55rem; font-weight:700; margin:30px 0 4px; letter-spacing:-0.01em;
+    text-wrap:balance;
+  }
+  h2.section-title:first-child{margin-top:20px;}
+  h2.section-title::after{
+    content:""; display:block; width:58px; height:9px; margin-top:6px;
+    background-color:var(--accent);
+    -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='10' viewBox='0 0 60 10'%3E%3Cpath d='M1 5 Q8 1 15 5 T29 5 T43 5 T57 5' stroke='%23000' stroke-width='2.4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='10' viewBox='0 0 60 10'%3E%3Cpath d='M1 5 Q8 1 15 5 T29 5 T43 5 T57 5' stroke='%23000' stroke-width='2.4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    -webkit-mask-size:contain; mask-size:contain; -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
+  }
+  p.section-lead{color:var(--muted); font-size:0.92rem; margin:0 0 16px; max-width:64ch;}
+
+  .module-chip{
+    display:inline-flex; align-items:center; gap:5px;
+    font-family:var(--mono); font-size:0.7rem; font-weight:700; letter-spacing:0.02em; text-transform:uppercase;
+    padding:3px 11px; border-radius:999px; color:var(--ink); border:1.5px solid var(--ink);
+  }
+  .module-chip .ic{font-size:0.9rem; line-height:1;}
+
+  /* ---------- right-now stat strip ---------- */
+  .stat-strip{
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(112px,1fr)); gap:10px;
+    margin:22px 0 0;
+  }
+  .stat-tile{
+    background:var(--surface); border:1.5px solid var(--line); border-radius:14px;
+    padding:11px 13px; box-shadow:var(--shadow);
+  }
+  .stat-label{
+    font-family:var(--mono); font-size:0.62rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--muted); font-weight:600;
+  }
+  .stat-val{font-weight:700; font-size:0.92rem; margin-top:3px; line-height:1.3;}
+
+  /* ---------- add/delete controls ---------- */
+  .add-row{display:flex; gap:8px; margin-top:10px;}
+  .add-row input[type=text]{
+    flex:1; min-width:0; font-family:var(--sans); font-size:0.86rem; padding:8px 12px;
+    border:1.5px solid var(--line-soft); border-radius:999px; background:var(--surface-2); color:var(--ink);
+  }
+  .add-row input[type=text]:focus{outline:2px solid var(--accent); outline-offset:1px;}
+  .add-row input[type=date]{
+    font-family:var(--sans); font-size:0.78rem; padding:7px 10px; flex:0 0 auto; max-width:132px;
+    border:1.5px solid var(--line-soft); border-radius:999px; background:var(--surface-2); color:var(--ink);
+  }
+  .add-row button{
+    font-family:var(--sans); font-weight:700; font-size:0.82rem; padding:8px 16px;
+    background:var(--ink); color:var(--surface); border:1.5px solid var(--ink); border-radius:999px; cursor:pointer;
+  }
+  .task-item.custom{position:relative; padding-right:32px;}
+  .del-btn{
+    position:absolute; right:6px; top:6px; width:22px; height:22px; border-radius:50%;
+    background:var(--surface-2); border:1.5px solid var(--line-soft); color:var(--muted);
+    font-size:0.95rem; line-height:1; cursor:pointer;
+  }
+  .del-btn:hover{background:var(--danger-bg); color:var(--danger); border-color:var(--danger);}
+  .del-btn--inline{position:static; flex:0 0 auto; margin-top:2px;}
+
+  /* ---------- hero / encouragement ---------- */
+  .hero{
+    position:relative; overflow:visible;
+    background:var(--surface);
+    border:1.5px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow);
+    padding:24px 22px 20px; margin:26px 0 36px;
+  }
+  .hero::before{
+    content:""; position:absolute; top:-11px; left:28px; width:60px; height:20px;
+    background:var(--tape-2); transform:rotate(-4deg); border-radius:2px; border:1.5px solid var(--ink);
+  }
+  .hero::after{
+    content:""; position:absolute; bottom:-30px; right:6px; width:58px; height:84px;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 92'%3E%3Cpath d='M30 39 C30 39 29 60 29 80' stroke='%237fa15a' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3Cellipse cx='20' cy='66' rx='9' ry='5' fill='%237fa15a' transform='rotate(-25 20 66)'/%3E%3Cellipse cx='40' cy='72' rx='9' ry='5' fill='%236f9450' transform='rotate(20 40 72)'/%3E%3Ccircle cx='44' cy='30' r='11' fill='%23e8709e'/%3E%3Ccircle cx='37' cy='42' r='11' fill='%23e8709e'/%3E%3Ccircle cx='23' cy='42' r='11' fill='%23eb8bab'/%3E%3Ccircle cx='16' cy='30' r='11' fill='%23eb8bab'/%3E%3Ccircle cx='23' cy='18' r='11' fill='%23e8709e'/%3E%3Ccircle cx='37' cy='18' r='11' fill='%23eb8bab'/%3E%3Ccircle cx='30' cy='30' r='9' fill='%23f6c877'/%3E%3C/svg%3E");
+    background-repeat:no-repeat; background-size:contain; transform:rotate(8deg);
+    pointer-events:none; opacity:0.95;
+  }
+  .mascot-row{display:flex; align-items:flex-start; gap:14px;}
+  .mascot-face{
+    flex:0 0 auto; width:54px; height:54px; border-radius:50%;
+    background:var(--accent-2); border:2px solid var(--line);
+    display:flex; align-items:center; justify-content:center; font-size:1.7rem;
+    box-shadow:var(--shadow);
+    animation:bob 3.5s ease-in-out infinite;
+  }
+  @keyframes bob{ 0%,100%{transform:translateY(0) rotate(-2deg);} 50%{transform:translateY(-4px) rotate(2deg);} }
+  .speech-bubble{
+    position:relative; flex:1; min-width:0;
+    background:var(--surface-2); border:2px solid var(--line); border-radius:16px 16px 16px 4px;
+    padding:12px 16px 10px;
+  }
+  .hand-label{
+    font-family:var(--hand); font-size:1.05rem; font-weight:700; color:var(--accent);
+    display:block; margin-bottom:1px;
+  }
+  .hero .date-line{font-family:var(--mono); font-size:0.72rem; color:var(--muted); letter-spacing:0.02em;}
+  .hero .quote{
+    font-family:var(--serif); font-size:1.14rem; line-height:1.4; margin:6px 0 2px; font-weight:600;
+    text-wrap:balance;
+  }
+  .hero .quote.urgent{color:var(--danger);}
+  .hero .quote.warn{color:var(--warn);}
+  .hero .sub{color:var(--muted); font-size:0.88rem; margin-top:6px;}
+  .hero .next-deadline{
+    margin-top:14px; padding-top:14px; border-top:1px dashed var(--line);
+    display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  }
+  .next-deadline .label{font-family:var(--mono); font-size:0.7rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted);}
+  .next-deadline .name{font-weight:600; font-size:0.95rem; margin-top:2px;}
+  .countdown{
+    font-family:var(--mono); font-weight:700; font-size:1rem;
+    background:var(--surface); border:2px solid var(--line); border-radius:999px; padding:6px 14px;
+    white-space:nowrap;
+  }
+  .countdown.urgent{color:var(--ink); background:var(--danger);}
+  .countdown.soon{color:var(--ink); background:var(--warn);}
+
+  /* ---------- week grid ---------- */
+  .week-grid{
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(240px,1fr)); gap:16px;
+    margin-top:20px; align-items:start;
+  }
+  .week-grid .day-card{ margin:0; }
+  .day-card.in-grid .day-head{ cursor:pointer; user-select:none; }
+  .day-card.in-grid.collapsed{ padding-bottom:16px; }
+  .day-card.in-grid.collapsed .task-list,
+  .day-card.in-grid.collapsed .add-row,
+  .day-card.in-grid.collapsed .celebrate-banner{ display:none; }
+  .task-count-badge{
+    font-family:var(--mono); font-size:0.72rem; font-weight:700; color:var(--muted);
+    background:var(--surface-2); border:1.5px solid var(--line-soft); border-radius:999px; padding:2px 10px;
+  }
+
+  /* ---------- day card ---------- */
+  .day-card{
+    position:relative; overflow:visible;
+    background:var(--surface); border:2px solid var(--line); border-radius:var(--radius);
+    box-shadow:var(--shadow); padding:20px 18px 16px; margin:24px 0 16px;
+  }
+  .day-card::before{
+    content:""; position:absolute; top:-11px; left:22px; width:50px; height:18px;
+    transform:rotate(-3deg); border-radius:2px; border:1.5px solid var(--ink);
+    background:var(--tape-1);
+  }
+  .day-card:nth-of-type(2n)::before{ background:var(--tape-3); transform:rotate(3deg); left:auto; right:26px; }
+  .day-card:nth-of-type(3n)::before{ background:var(--tape-2); transform:rotate(-2deg); }
+  .day-card.is-today{box-shadow:0 0 0 2px var(--accent), var(--shadow);}
+  .day-card.all-done{background:var(--good-bg);}
+  .celebrate-banner{
+    display:flex; align-items:center; gap:8px; margin-top:10px; padding:9px 14px;
+    background:var(--good); border:2px solid var(--ink); border-radius:12px;
+    font-family:var(--hand); font-size:1.15rem; font-weight:700; color:var(--ink);
+    animation:pop-in .35s cubic-bezier(.34,1.56,.64,1);
+  }
+  @keyframes pop-in{ from{transform:scale(0.85); opacity:0;} to{transform:scale(1); opacity:1;} }
+  .day-head{display:flex; align-items:baseline; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:10px;}
+  .day-name{font-family:var(--serif); font-style:italic; font-weight:700; font-size:1.2rem;}
+  .day-date{font-family:var(--mono); font-size:0.74rem; color:var(--muted);}
+  .today-badge{
+    font-family:var(--mono); font-size:0.64rem; letter-spacing:0.06em; text-transform:uppercase;
+    background:var(--accent); color:var(--accent-ink); padding:2px 9px; border-radius:999px; font-weight:700;
+    border:1.5px solid var(--ink);
+  }
+  .class-strip{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px;}
+  .class-pill{
+    font-family:var(--mono); font-size:0.7rem; border-radius:8px; padding:4px 9px;
+    background:var(--surface-2); border:1.5px solid var(--line-soft); color:var(--muted);
+  }
+  .class-pill b{color:var(--ink);}
+  .task-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px;}
+  .task-item{
+    display:flex; align-items:flex-start; gap:10px; font-size:0.92rem; line-height:1.42;
+    padding:8px 10px; border-radius:9px; cursor:pointer;
+    transition:background .12s ease;
+  }
+  .task-item:hover{background:var(--surface-2);}
+  .task-item input[type=checkbox]{
+    appearance:none; -webkit-appearance:none; width:20px; height:20px; flex:0 0 20px; margin-top:1px;
+    border:2px solid var(--ink); border-radius:50%; cursor:pointer; position:relative;
+    background:var(--surface);
+    transition:transform .18s cubic-bezier(.34,1.56,.64,1), background .15s ease, border-color .15s ease;
+  }
+  .task-item input[type=checkbox]:checked{background:var(--good); border-color:var(--ink); transform:scale(1.12);}
+  .task-item input[type=checkbox]:checked::after{
+    content:""; position:absolute; left:6px; top:2px; width:4px; height:9px;
+    border:solid var(--ink); border-width:0 2.5px 2.5px 0; transform:rotate(40deg);
+  }
+  .task-item.done span.txt{color:var(--faint); text-decoration:line-through;}
+  .task-item.career{background:var(--surface-2); border:1.5px dashed var(--line-soft);}
+  .task-item.career .tag{
+    font-family:var(--mono); font-size:0.62rem; text-transform:uppercase; letter-spacing:0.06em;
+    color:var(--accent); font-weight:600; display:block; margin-bottom:2px;
+  }
+  .weekend-note, .empty-note{
+    font-size:0.92rem; color:var(--muted); font-style:italic; padding:6px 2px;
+  }
+  .mascot-note{
+    display:flex; align-items:center; gap:12px; padding:6px 4px;
+  }
+  .mascot-note .ic{font-size:1.8rem;}
+  .mascot-note p{
+    font-family:var(--hand); font-size:1.25rem; font-weight:600; color:var(--accent-2); margin:0; line-height:1.3;
+  }
+
+  /* ---------- week nav ---------- */
+  .week-switch{
+    display:flex; align-items:center; justify-content:space-between; gap:10px; margin:18px 0 10px;
+  }
+  .week-switch button{
+    font-family:var(--mono); font-weight:600; font-size:0.8rem; background:var(--surface); border:2px solid var(--line);
+    border-radius:999px; padding:8px 14px; cursor:pointer; color:var(--ink); transition:transform .12s ease;
+  }
+  .week-switch button:hover:not(:disabled){transform:translateY(-2px);}
+  .week-switch button:disabled{opacity:0.3; cursor:default;}
+  .week-switch .label{font-family:var(--mono); font-size:0.8rem; color:var(--muted); text-align:center;}
+  .week-theme{font-size:0.94rem; color:var(--muted); margin:2px 0 14px; max-width:70ch;}
+
+  /* ---------- month calendar ---------- */
+  .month-grid{
+    display:grid; grid-template-columns:repeat(7,1fr); gap:4px; margin-top:14px;
+  }
+  .month-dow{
+    font-family:var(--mono); font-size:0.62rem; text-transform:uppercase; letter-spacing:0.04em;
+    color:var(--muted); text-align:center; padding-bottom:4px; font-weight:600;
+  }
+  .month-cell{
+    position:relative; aspect-ratio:1/1; min-height:40px;
+    background:var(--surface); border:1.5px solid var(--line-soft); border-radius:10px;
+    padding:4px 5px; cursor:pointer; transition:border-color .12s ease, transform .12s ease;
+    display:flex; flex-direction:column; justify-content:space-between;
+  }
+  .month-cell:hover{transform:translateY(-1px); border-color:var(--line);}
+  .month-cell.other-month{ background:transparent; border-color:transparent; cursor:default; }
+  .month-cell.other-month:hover{ transform:none; }
+  .month-cell.is-today{ border-color:var(--ink); border-width:2px; }
+  .month-cell.selected{ background:var(--surface-2); box-shadow:var(--shadow); border-color:var(--ink); }
+  .mo-num{font-family:var(--mono); font-size:0.76rem; font-weight:600; color:var(--ink);}
+  .mo-dots{display:flex; flex-wrap:wrap; gap:2px;}
+  .mo-dot{
+    width:7px; height:7px; border-radius:50%; display:inline-block; background:var(--faint);
+  }
+  .mo-dot--due{ background:var(--danger); }
+  .mo-dot--note{ background:var(--accent-2); }
+  .month-legend{
+    display:flex; gap:16px; flex-wrap:wrap; margin-top:12px; font-size:0.76rem; color:var(--muted);
+    align-items:center;
+  }
+  .month-legend span{display:inline-flex; align-items:center; gap:5px;}
+  .month-legend .mo-dot{position:relative; top:0;}
+  .month-detail{margin-top:20px;}
+  .month-note-input{
+    width:100%; margin-top:6px; font-family:var(--sans); font-size:0.88rem; color:var(--ink);
+    background:var(--surface-2); border:1.5px solid var(--line-soft); border-radius:14px; padding:10px 12px;
+    resize:vertical;
+  }
+  .month-note-input:focus{outline:2px solid var(--accent); outline-offset:1px;}
+
+  /* ---------- assignment cards ---------- */
+  .assign-card{
+    position:relative; overflow:visible;
+    background:var(--surface); border:2px solid var(--line); border-radius:var(--radius);
+    box-shadow:var(--shadow); padding:20px 18px 18px; margin:24px 0 16px;
+  }
+  .assign-card::before{
+    content:""; position:absolute; top:-11px; left:24px; width:50px; height:18px;
+    transform:rotate(-3deg); border-radius:2px; border:1.5px solid var(--ink);
+    background:var(--tape-2);
+  }
+  .assign-card:nth-of-type(2n)::before{ background:var(--tape-1); transform:rotate(3deg); }
+  .stamp{
+    position:absolute; top:14px; right:16px;
+    font-family:var(--hand); font-weight:700; font-size:1.25rem; color:var(--ink);
+    background:var(--good);
+    border:2.5px solid var(--ink); border-radius:10px; padding:3px 12px 4px;
+    transform:rotate(-9deg); opacity:0.96; pointer-events:none;
+  }
+  .assign-top{display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap;}
+  .assign-title{font-family:var(--serif); font-weight:700; font-size:1.08rem; margin:6px 0 4px;}
+  .assign-meta{font-family:var(--mono); font-size:0.74rem; color:var(--muted);}
+  .assign-brief{font-size:0.88rem; color:var(--muted); margin:8px 0 12px; max-width:66ch;}
+  .stage-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px;}
+  .stage-list li{font-size:0.86rem; display:flex; gap:8px;}
+  .stage-list .by{font-family:var(--mono); font-size:0.72rem; color:var(--accent); flex:0 0 auto; min-width:96px;}
+  .submit-toggle{
+    margin-top:12px; display:inline-flex; align-items:center; gap:8px; cursor:pointer;
+    font-family:var(--mono); font-size:0.76rem; color:var(--muted); user-select:none;
+  }
+  .submit-toggle input{width:15px; height:15px;}
+  .assign-card.submitted{opacity:0.72;}
+
+  .milestone-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px;}
+  .milestone-list li{display:flex; gap:12px; font-size:0.88rem;}
+  .milestone-list .by{font-family:var(--mono); font-size:0.72rem; color:var(--muted); flex:0 0 132px;}
+
+  /* ---------- career tab ---------- */
+  .res-note{
+    background:var(--surface-2); border:2px solid var(--line); border-radius:14px;
+    padding:14px 16px; font-size:0.85rem; color:var(--muted); margin-bottom:20px;
+  }
+  .res-grid{display:grid; grid-template-columns:1fr; gap:10px;}
+  .res-item{
+    background:var(--surface); border:2px solid var(--line); border-radius:14px; padding:14px 16px;
+    box-shadow:var(--shadow);
+  }
+  .res-item .name{font-weight:700; font-size:0.94rem; margin-bottom:3px;}
+  .res-item .why{font-size:0.85rem; color:var(--muted); line-height:1.45;}
+  .res-item .tag{
+    display:inline-block; font-family:var(--mono); font-size:0.62rem; text-transform:uppercase; letter-spacing:0.05em;
+    color:var(--ink); border:1.5px solid var(--ink); border-radius:999px; padding:2px 9px; margin-top:8px;
+  }
+  .portfolio-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px;}
+  .portfolio-list li{
+    font-size:0.9rem; padding:12px 14px; background:var(--surface); border:2px solid var(--line);
+    border-radius:14px; box-shadow:var(--shadow); line-height:1.5;
+  }
+
+  footer.foot{
+    position:relative;
+    max-width:920px; margin:40px auto 0; padding:18px 20px 40px; color:var(--muted); font-size:0.76rem; text-align:center;
+    border-top:1.5px solid var(--ink);
+  }
+  footer.foot::before{
+    content:""; position:absolute; top:10px; left:18px; width:34px; height:50px;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 92'%3E%3Cpath d='M30 39 C30 39 29 60 29 80' stroke='%237fa15a' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3Cellipse cx='20' cy='66' rx='9' ry='5' fill='%237fa15a' transform='rotate(-25 20 66)'/%3E%3Ccircle cx='44' cy='30' r='11' fill='%23a99bdc'/%3E%3Ccircle cx='37' cy='42' r='11' fill='%23a99bdc'/%3E%3Ccircle cx='23' cy='42' r='11' fill='%23bcafe4'/%3E%3Ccircle cx='16' cy='30' r='11' fill='%23bcafe4'/%3E%3Ccircle cx='23' cy='18' r='11' fill='%23a99bdc'/%3E%3Ccircle cx='37' cy='18' r='11' fill='%23bcafe4'/%3E%3Ccircle cx='30' cy='30' r='9' fill='%23f6c877'/%3E%3C/svg%3E");
+    background-repeat:no-repeat; background-size:contain; transform:rotate(-10deg);
+    pointer-events:none; opacity:0.85;
+  }
+
+  [hidden]{display:none !important;}
+
+  /* ---------- page turn transition + page nav ---------- */
+  @keyframes page-in{
+    from{ opacity:0; transform:translateX(22px); }
+    to{ opacity:1; transform:translateX(0); }
+  }
+  .wrap > section.page-enter{ animation:page-in .38s cubic-bezier(.22,1,.36,1); }
+
+  .page-nav{
+    display:flex; align-items:center; justify-content:center; gap:16px;
+    margin:34px 0 6px;
+  }
+  .page-nav button{
+    width:42px; height:42px; border-radius:50%; flex:0 0 auto;
+    background:var(--surface); border:1.5px solid var(--ink); color:var(--ink);
+    font-size:1.1rem; cursor:pointer; box-shadow:var(--shadow);
+    transition:transform .15s ease;
+  }
+  .page-nav button:hover{transform:translateX(2px);}
+  .page-nav button:disabled{opacity:0.3; cursor:default; box-shadow:none;}
+  .page-label{
+    font-family:var(--serif); font-style:italic; font-weight:700; font-size:1rem; color:var(--ink);
+  }
+
+  @media (max-width:520px){
+    .brand{font-size:1.4rem;}
+    .stage-list .by, .milestone-list .by{min-width:78px;}
+  }
+</style>
+
+<header class="top">
+  <div class="top-inner">
+    <div class="brand-row">
+      <div class="brand"><span class="fox">🦊</span>Field Notes<small>DASC · Semester 1 Companion</small></div>
+      <div class="streak-chip" id="streakChip">🔥 <b id="streakVal">–</b> day streak</div>
+    </div>
+    <nav class="tabs" id="tabs">
+      <button data-tab="today" class="active">📔 Today</button>
+      <button data-tab="week">🗓️ This Week</button>
+      <button data-tab="month">📅 This Month</button>
+      <button data-tab="assign">🎯 Goals</button>
+      <button data-tab="career">🗒️ Notes</button>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <section id="view-today"></section>
+  <section id="view-month" hidden></section>
+  <section id="view-week" hidden></section>
+  <section id="view-assign" hidden></section>
+  <section id="view-career" hidden></section>
+
+  <div class="page-nav">
+    <button id="pagePrev" aria-label="Previous page">&larr;</button>
+    <span class="page-label" id="pageLabel">Page 1 of 4</span>
+    <button id="pageNext" aria-label="Next page">&rarr;</button>
+  </div>
+</div>
+
+<footer class="foot">
+  Built for your Semester 1 timetable (28 Sep – 18 Dec 2026). Progress saves to this artifact so it follows you across devices.
+  Ask Claude any time to refresh the research library with the newest papers or news on a topic.
+</footer>
+
+<script>
+const DATA = {"moduleNames": {"DASC500": "Dissertation", "DASC501": "Intro to Data Science & AI for Health Innovation", "DASC503": "Using Routine Data", "DASC509": "Computer Programming for Health Research", "DASC512": "Artificial Intelligence for Health", "DASC513": "Practical & Responsible AI for Health Innovation"}, "moduleColors": {"DASC500": "#c9bfe8", "DASC501": "#f3a8c4", "DASC509": "#c3dd8f", "DASC512": "#f6c877", "DASC513": "#b3a6e6", "DASC503": "#a8cbe8", "CAREER": "#8fd6c3"}, "timetable": [{"day": "Mon", "start": "10:00", "end": "12:00", "module": "DASC500", "label": "DASC500 + DASC510(?)", "location": "Sherrington Building"}, {"day": "Mon", "start": "13:00", "end": "15:00", "module": "DASC501", "label": "DASC501", "location": "Waterhouse Block J"}, {"day": "Tue", "start": "10:00", "end": "12:00", "module": "DASC513", "label": "DASC513", "location": "Waterhouse Block J"}, {"day": "Wed", "start": "10:00", "end": "11:00", "module": "DASC513", "label": "DASC513", "location": "Life Sciences Building"}, {"day": "Wed", "start": "11:00", "end": "13:00", "module": "DASC509", "label": "DASC509", "location": "Life Sciences PC Teaching Centre"}, {"day": "Thu", "start": "09:00", "end": "10:00", "module": "DASC513", "label": "DASC513", "location": "Eleanor Rathbone Building"}, {"day": "Thu", "start": "10:00", "end": "12:00", "module": "DASC509", "label": "DASC509", "location": "South Campus Teaching Hub"}, {"day": "Fri", "start": "09:00", "end": "11:00", "module": "DASC503", "label": "DASC503", "location": "Eleanor Rathbone Building"}, {"day": "Fri", "start": "11:00", "end": "13:00", "module": "DASC503", "label": "DASC503", "location": "South Campus Teaching Hub"}], "weeks": [{"week": 1, "range": "Mon 28 Sep - Fri 2 Oct 2026", "theme": "Orientation: get every tool installed, meet every module, and open your dissertation notebook.", "encouragement": "First week nerves are normal. You don't need to understand everything yet, you just need to get set up so the next 11 weeks run smoothly.", "days": {"Mon": {"slots": ["09:00-10:00", "15:00-17:00"], "tasks": ["Before class: skim the DASC500 and DASC501 module guides so today's intro sessions make sense.", "After DASC501: create your EndNote library now (empty is fine) so it's ready from day one rather than at Week 3's referencing session.", "Start a running 'dissertation ideas' note (even 3 rough topic areas in Biostatistics, AI or Epidemiology count)."], "career": "Skim the NIST Cybersecurity Framework 2.0 overview page (20 min) - just the five functions (Govern, Identify, Protect, Detect, Respond, Recover). You'll recognise this shape again in DASC513."}, "Tue": {"slots": ["09:00-10:00", "13:00-17:00"], "tasks": ["After DASC513: read the two 'before week 1' essential readings (Patient & Public Involvement handbook; Deep Medicine excerpt) - skim for now, you'll need the detail for Assessment 1.", "Install R + RStudio and Python + Anaconda today if you haven't already - DASC503, DASC509 and DASC512 all assume this is done by Week 1.", "Set up a single shared folder structure (by module code) for notes, labs and readings - saves hours later."], "career": null}, "Wed": {"slots": ["09:00-10:00", "14:00-17:00"], "tasks": ["After DASC509: work through the 'Introduction to R' data lab exercises again slowly - this is the foundation for DASC503's labs all semester.", "Bookmark the DASC509 SQL, R and Python reading recommendations for when you need a refresher.", "Register a free GitHub account now if you don't have one - you'll need it for Week 11's Git content and it's genuinely useful to have early."], "career": null}, "Thu": {"slots": ["13:00-17:00"], "tasks": ["Re-read your DASC509 SQL notes from this morning and redo the join examples from memory.", "Read the DASC500 'Summary of Module Content' table in full so you know what's coming across the dissertation timeline.", "Start a spreadsheet or note tracking all 10 assessments with their weights and due dates (or just keep the one I gave you to hand)."], "career": "Create free accounts on TryHackMe and Kaggle - you'll use Kaggle directly for DASC512's portfolio project later, and TryHackMe is a low-pressure way to build hands-on security skills alongside your degree."}, "Fri": {"slots": ["14:00-17:00"], "tasks": ["Review everything covered this week across all 6 modules - just topic titles, not depth, to consolidate the map of the semester.", "Re-read the DASC503 R introduction lab once more before the pace picks up next week.", "Plan next week: note that DASC500's academic sources session and DASC513's PPIE content are coming up."], "career": "Read Ross Anderson's 'Security Engineering' preface and chapter 1 (free online, see Resources tab) - the best free foundation text in the field, and worth having open in a tab all semester."}}}, {"week": 2, "range": "Mon 5 - Fri 9 Oct 2026", "theme": "Bias, consent and aggregation: the semester's first real technical content lands this week.", "encouragement": "You've survived the admin. This is the first week that actually feels like the course - go steady, not fast.", "days": {"Mon": {"slots": ["09:00-10:00", "15:00-17:00"], "tasks": ["Before class: note two consultancy skills you already have and two you want to build (DASC501's session is more useful if you go in with this).", "After DASC501: write 3 sentences on how data science/AI has already tried to address a public health challenge you know of - warms you up for critical appraisal later.", "Add a recurring 15-min slot to review your dissertation ideas note each Monday - consistency beats a big effort once a month."], "career": null}, "Tue": {"slots": ["09:00-10:00", "13:00-17:00"], "tasks": ["After DASC513: write a one-paragraph definition, in your own words, of informed consent's four pillars (legal requirement, autonomy, beneficence, justice) - you'll use this exact framing in Assessment 1.", "Read the 'Informed Consent in Research' supplemental reading if you have time; if not, note it for later.", "Start a running glossary doc for DASC513 terms (PPIE, GDPR, HIPAA, FAIR) - you'll thank yourself in Week 12."], "career": "Watch a 15-min explainer on GDPR's core principles (ICO's own summary is best). It's the regulatory backbone of DASC513 and of any UK health-data security role."}, "Wed": {"slots": ["09:00-10:00", "14:00-17:00"], "tasks": ["After DASC509: redo today's SQL aggregation exercises unaided - GROUP BY and HAVING trip most people up the first time.", "Try writing 3 of your own aggregation queries against a practice database (W3Schools' sandbox works fine).", "Note down any SQL syntax you keep forgetting into your glossary doc."], "career": null}, "Thu": {"slots": ["13:00-17:00"], "tasks": ["Practice the numpy/pandas basics from DASC512's numeric computing session - load a small CSV and try 5 operations on it.", "Sketch (on paper is fine) what a simple public-health dashboard might show - you'll build one for real in the DASC512 tutorial track.", "Review this week's DASC503 bias-in-routine-data content and write 2 examples of bias you can imagine in a routine health dataset."], "career": "Read the OWASP Top 10 list once, just the ten category names and one-line descriptions. It's the standard reference for web/application security and comes up constantly in the field."}, "Fri": {"slots": ["14:00-17:00"], "tasks": ["Consolidate: re-read your consent, GDPR and bias notes from this week together - they connect more than they first appear to.", "Check Canvas for the DASC501 critical appraisal article - it's meant to be issued around now; start skimming it once you have it.", "Rest properly this weekend once this session ends - Week 3 introduces referencing, epidemiology and clustering all at once."], "career": null}}}, {"week": 3, "range": "Mon 12 - Fri 16 Oct 2026", "theme": "Referencing tools, epidemiology foundations, clinical coding, GDPR/HIPAA and your first ML model.", "encouragement": "This is a genuinely dense week. If you only do the 'must' tasks and skip the rest, that's a completely reasonable call.", "days": {"Mon": {"slots": ["09:00-10:00", "15:00-17:00"], "tasks": ["Before class: import 5 real sources into your EndNote library so Wednesday's referencing session has something to work with.", "After DASC501: read the assigned 'brief history of epidemiology' pages (4-12) ahead of next week's causation/bias session.", "Log any dissertation-relevant papers you find into EndNote as you go, not in a separate pile."], "career": null}, "Tue": {"slots": ["09:00-10:00", "13:00-17:00"], "tasks": ["After DASC513: write out the difference between GDPR and HIPAA in 4 bullet points - one is EU/UK, one is US, and health data science roles need to know both.", "Draft a rough accountability-framework diagram for a fictional health AI project (who's responsible for what) - good practice for Assessment 1's stakeholder thinking."], "career": "Read the ICO's page on 'accountability and governance' under UK GDPR - directly overlaps with today's DASC513 content and is core knowledge for any data protection/security role."}, "Wed": {"slots": ["14:00-17:00"], "tasks": ["(Referencing session is 10-11 today, not library time.) After DASC509: redo the ICD-10 disease identification exercise on a different condition than the one used in class.", "Look up how SNOMED CT and ICD-10 differ in purpose - one line each is enough for now.", "Practice EndNote's Harvard and Vancouver citation styles on the same 3 sources so you can see the difference directly."], "career": null}, "Thu": {"slots": ["13:00-17:00"], "tasks": ["Work through the DASC512 K-Means/DBSCAN tutorial dataset again, and try re-running it with a different number of clusters to see how the result changes.", "Write one paragraph explaining, in plain English, when you'd choose K-Means over DBSCAN - this kind of justification is exactly what markers reward.", "Note today's clinical coding + accountability content together: both matter for how you'll frame data governance in DASC513's Assessment 2 later."], "career": "Read the first two pages of the NHS Data Security and Protection Toolkit (DSPT) overview - the standard every NHS-linked organisation must meet, and a very concrete link between your degree and a security career in health data."}, "Fri": {"slots": ["14:00-17:00"], "tasks": ["Check on the DASC501 critical appraisal article - start your first real read-through and jot initial impressions (methodology, sample size, anything that looks off).", "Tidy your EndNote library and glossary doc - a 10-minute tidy now saves an hour of confusion in Week 9.", "Look ahead: Week 4 covers literature reviews, RCTs' precursor content, and your first classification models."], "career": null}}}, {"week": 4, "range": "Mon 19 - Fri 23 Oct 2026", "theme": "Literature reviews, causation & bias, descriptive epidemiology, ggplot2, and classification models begin.", "encouragement": "You're a third of the way into the term already. Notice what's starting to feel familiar compared to Week 1.", "days": {"Mon": {"slots": ["09:00-10:00", "15:00-17:00"], "tasks": ["Before class: note 2 questions you have about how to structure a literature review - ask them in today's session.", "After DASC501: apply today's causation/bias/confounding concepts directly to your critical appraisal article - annotate where each might appear.", "If you're proposing your own dissertation topic, this is a good week to draft your Initial Project Proposal Form (window closes ~Week 6)."], "career": null}, "Tue": {"slots": ["09:00-10:00", "13:00-17:00"], "tasks": ["After DASC513: re-read the case studies on stakeholder involvement from this week's content and note what made the 'unsuccessful' ones fail.", "Start thinking about who you'd want in your Assessment 1 group (groups of 3-4) if you haven't already."], "career": null}, "Wed": {"slots": ["14:00-17:00"], "tasks": ["Redo today's ggplot2 examples from memory, then try plotting a variable of your own choosing from a sample dataset.", "Check Canvas: DASC503's Assessment 1 brief (poster + oral) is usually released around Week 4 - read it as soon as it lands, even if you're not starting yet."], "career": null}, "Thu": {"slots": ["13:00-17:00"], "tasks": ["Redo the KNN/SVM decision-boundary exercise from today's DASC512 tutorial, and try it with a different value of k.", "Write 2 sentences comparing KNN and SVM - when would each struggle?", "Check your DASC503 A1 brief (if released) against your R lab notes so far - you should already have most of the pieces you need for the cohort-building parts."], "career": "Skim the OWASP Machine Learning Security Top 10 list - the ML-specific sibling of the web OWASP list, and the clearest single document connecting your AI modules to security thinking."}, "Fri": {"slots": ["14:00-17:00"], "tasks": ["Write a rough 200-word outline of your critical appraisal article's structure, methods and results - not the final piece, just orientation.", "Consolidate this week's literature-review guidance with your dissertation notes - you'll need both skills together eventually.", "Rest - Week 5 is when RCTs (crucial for Assessment 1) and systematic reviews land together."], "career": null}}}, {"week": 5, "range": "Mon 26 - Fri 30 Oct 2026", "theme": "RCTs (vital for DASC501 A1), systematic reviews, R functions, ensemble models, and data engineering begins.", "encouragement": "This week's RCT and critical-appraisal content is the backbone of your biggest single assessment. Give it real attention.", "days": {"Mon": {"slots": ["09:00-10:00", "15:00-17:00"], "tasks": ["Before class: read chapters 3 & 10 of the essential textbook (RCT design/interpretation) - flagged as vital for Assessment 1.", "After DASC501: re-map your critical appraisal article against RCT design principles - does it follow them, and where does it deviate?", "Log 2 more supervisor/topic ideas in your dissertation note if a lecture today sparked one."], "career": null}, "Tue": {"slots": ["09:00-10:00", "13:00-17:00"], "tasks": ["After DASC513: read the FAIR data principles paper (Wilkinson et al.) - short, and it's core vocabulary for Assessment 2 later.", "Draft a simple anonymisation-vs-pseudonymisation comparison table (2 rows is enough) for your glossary doc."], "career": "Read the FAIR principles alongside NIST's Data Governance guidance side by side - notice how much overlap there already is between 'good data science' and 'good security practice'."}, "Wed": {"slots": ["14:00-17:00"], "tasks": ["Redo today's R for-loop and apply-function exercises, then rewrite one loop as an apply function instead - the switch teaches you both properly.", "Practice querying a SQL database from within R using today's method."], "career": null}, "Thu": {"slots": ["13:00-17:00"], "tasks": ["Rebuild today's random forest / XGBoost tutorial from scratch without looking at the walkthrough, then compare.", "Write a short note on class imbalance: why it's a problem and one method to address it - this comes up in DASC512's Assessment 2 too.", "Draft your DASC503 A1 poster's structure (headings only) if the brief is out - key findings, interpretation, limitations."], "career": null}, "Fri": {"slots": ["14:00-17:00"], "tasks": ["Write your first full draft paragraph of the critical appraisal (methods critique) - a rough first attempt now beats a blank page in Week 9.", "Review this week's RCT + systematic review content together - they're two sides of the same evidence-hierarchy coin.", "Look ahead: Week 6 is a big one - DASC513 Assessment 1 (stakeholder workshop) is due Friday."], "career": null}}}, {"week": 6, "range": "Mon 2 - Fri 6 Nov 2026", "theme": "DEADLINE WEEK: DASC513 Assessment 1 (Stakeholder Workshop) due Friday. Also: critical appraisal techniques and Communication Skills 1.", "encouragement": "Your first real deadline. Trust the prep you've done since Week 1 - go in with your group, deliver it, and treat it as a dry run for the bigger ones ahead.", "days": {"Mon": {"slots": ["09:00-10:00", "15:00-17:00"], "tasks": ["PRIORITY: finalise your DASC513 group's planning document draft today if it isn't done - due Friday.", "After DASC501: apply today's critical-appraisal techniques directly onto your article - this is the core skill for Assessment 1.", "Confirm your DASC501 Assessment 2 interview pairing by 4pm Friday - don't leave this to Friday itself."], "career": null}, "Tue": {"slots": ["09:00-10:00", "13:00-17:00"], "tasks": ["PRIORITY: rehearse your stakeholder workshop delivery with your group (aim for the full 15 minutes, timed).", "Cross-check your planning document against the marking criteria on Canvas line by line."], "career": null}, "Wed": {"slots": ["14:00-17:00"], "tasks": ["PRIORITY: finalise and submit your DASC513 planning document.", "Take a short break once it's submitted before diving back into DASC501/DASC509 - you've earned it."], "career": null}, "Thu": {"slots": ["13:00-17:00"], "tasks": ["Final rehearsal of your workshop delivery for tomorrow's tutorial slot.", "If your workshop is delivered this week rather than next, prioritise this over everything else today.", "Once delivered: note 2 things that went well and 1 to improve - useful reflection for BuddyCheck and for Assessment 2's group dynamics."], "career": null}, "Fri": {"slots": ["14:00-17:00"], "tasks": ["Deliver/submit DASC513 Assessment 1 if not already done.", "Now that the deadline has passed, return to your DASC501 critical appraisal draft and add 30 more minutes of work.", "Confirm interview pairing for DASC501 Assessment 2 by 4pm today if you haven't already - this is a hard cutoff."], "career": "Once the deadline's behind you, treat yourself to something other than a screen for an hour. Sustainable pace beats short bursts of burnout."}}}, {"week": 7, "range": "Mon 9 - Fri 13 Nov 2026", "theme": "DEADLINE WEEK: DASC509 Assessment 1 (SQL Analysis) due Friday. Also: cohort studies and cybersecurity content in DASC513.", "encouragement": "Two deadline weeks back to back is genuinely tough - if you're tired, that's information, not a failure. Pace yourself through this one.", "days": {"Mon": {"slots": ["09:00-10:00", "15:00-17:00"], "tasks": ["PRIORITY: run your SQL analysis queries against the actual assignment database if you haven't started - don't leave this to Thursday.", "After DASC501: read chapter 8 of the essential textbook (cohort studies) ahead of today's session content."], "career": null}, "Tue": {"slots": ["09:00-10:00", "13:00-17:00"], "tasks": ["PRIORITY: draft the written commentary sections of your SQL report (methodology, what each query shows) - the code alone isn't the deliverable.", "After DASC513: note the difference between information governance and cybersecurity as covered today - they overlap but aren't the same thing, and Assessment 2 will expect you to know both."], "career": "Read the NCSC's 'Cyber security for the health sector' guidance summary - a UK-specific, very practical companion to today's DASC513 content."}, "Wed": {"slots": ["14:00-17:00"], "tasks": ["PRIORITY: finish and proofread your SQL Analysis report - check every query actually runs before you submit.", "Submit DASC509 Assessment 1 once you're confident in it - don't wait until Friday 4pm if it's ready sooner."], "career": null}, "Thu": {"slots": ["13:00-17:00"], "tasks": ["If DASC509 A1 isn't submitted yet, this is the priority block - everything else can wait.", "Once submitted: catch up on this week's Python file-reading/numpy content with a short practice script."], "career": null}, "Fri": {"slots": ["14:00-17:00"], "tasks": ["Final check and submission of DASC509 Assessment 1 (due 4pm today).", "Return to your DASC512 literature-review paper choice - pick it now if you haven't, since Assessment 1 is due in a week.", "Breathe. Two deadlines down."], "career": null}}}, {"week": 8, "range": "Mon 16 - Fri 20 Nov 2026", "theme": "DEADLINE WEEK: DASC512 Assessment 1 (Literature Review Presentation) due around Friday. Also: case-control studies and explainable AI begins.", "encouragement": "A recorded presentation is less pressure than a live one - you can redo a take if it's not right. Use that to your advantage.", "days": {"Mon": {"slots": ["09:00-10:00", "15:00-17:00"], "tasks": ["PRIORITY: finish reading/annotating your chosen ML/AI public health paper for DASC512's presentation.", "After DASC501: note today's case-control study content next to last week's cohort studies - compare strengths/weaknesses of each design."], "career": null}, "Tue": {"slots": ["09:00-10:00", "13:00-17:00"], "tasks": ["PRIORITY: outline your presentation - methodology, results, and (most important for marks) drawbacks of the paper.", "After DASC513: read about SHAP and LIME briefly (even just the intros) - today's session introduces the interpretability methods central to Assessment 2 later."], "career": "Look up one real SHAP explanation example online (any tutorial with a plot) - seeing what model interpretability actually looks like makes the theory click faster."}, "Wed": {"slots": ["14:00-17:00"], "tasks": ["PRIORITY: build your presentation slides.", "Practice recording a 2-minute segment to check your setup (audio, screen share) works before you commit to the full take."], "career": null}, "Thu": {"slots": ["13:00-17:00"], "tasks": ["PRIORITY: record your full 10-minute presentation, keeping to time.", "Listen back once and note anything unclear - re-record only what needs it, not the whole thing.", "If your DASC503 A1 poster or oral is due around now, treat it as equal priority this week - check your exact date."], "career": null}, "Fri": {"slots": ["14:00-17:00"], "tasks": ["Final review and submission of your DASC512 presentation.", "Check on DASC503's Assessment 1 status - poster/oral deadlines vary by cohort, confirm yours on Canvas.", "Start your DASC501 Assessment 2 interview if you haven't yet - the plain language summary is due in exactly 2 weeks."], "career": null}}}, {"week": 9, "range": "Mon 23 - Fri 27 Nov 2026", "theme": "DEADLINE WEEK: DASC501 Assessment 2 (Plain Language Summary) due Friday. Also: supervisor conversations begin and deep learning starts.", "encouragement": "600 words sounds small, but plain-language writing is a real skill - budget more editing time for it than the word count suggests.", "days": {"Mon": {"slots": ["09:00-10:00", "15:00-17:00"], "tasks": ["PRIORITY: draft your plain language summary of the interview if you haven't started - write it as if explaining to a curious friend, not a professional peer.", "This week supervisor project suggestions are shared - start a shortlist of who you'd like to approach for your dissertation."], "career": null}, "Tue": {"slots": ["09:00-10:00", "13:00-17:00"], "tasks": ["PRIORITY: edit your plain language summary - cut jargon, check it reads naturally aloud.", "After DASC513: note today's validation strategies (internal vs external) - directly useful for DASC512's model evaluation work too."], "career": null}, "Wed": {"slots": ["14:00-17:00"], "tasks": ["PRIORITY: get a second pair of eyes on your summary if possible (a coursemate, friend, or read it aloud to yourself) - plain language is hard to self-edit.", "Submit DASC501 Assessment 2 once it's ready rather than waiting for Friday."], "career": null}, "Thu": {"slots": ["13:00-17:00"], "tasks": ["If not yet submitted, this is priority: finish and submit your plain language summary (due Friday 4pm).", "Email 1-2 potential dissertation supervisors this week if you haven't already - don't wait until the list narrows."], "career": null}, "Fri": {"slots": ["14:00-17:00"], "tasks": ["Final submission check for DASC501 Assessment 2 (due 4pm today).", "Start your DASC501 Assessment 1 (critical appraisal) writing properly now - it's due in exactly a week.", "Practice today's deep learning / ANN content on a small tabular dataset."], "career": null}}}, {"week": 10, "range": "Mon 30 Nov - Fri 4 Dec 2026", "theme": "DEADLINE WEEK: DASC501 Assessment 1 (Critical Appraisal) due Friday - your single biggest single-module weight this term.", "encouragement": "This is the assessment worth the most of any single piece this semester. Give it the focused hours it deserves, and don't let perfectionism stop you from finishing a full draft early.", "days": {"Mon": {"slots": ["09:00-10:00", "15:00-17:00"], "tasks": ["PRIORITY: write a complete first draft of your critical appraisal today, even if rough - momentum matters more than polish right now.", "Follow up with any supervisors who haven't replied yet."], "career": null}, "Tue": {"slots": ["09:00-10:00", "13:00-17:00"], "tasks": ["PRIORITY: revise your 5 suggested improvements - make sure each is specific and justified, not generic.", "After DASC513: note today's confounding-variable content - it's exactly the kind of issue markers want to see you spot in your appraisal article."], "career": null}, "Wed": {"slots": ["14:00-17:00"], "tasks": ["PRIORITY: tighten your appraisal to the 1500-word limit and check your references are formatted consistently.", "Read your draft aloud once - it catches more awkward phrasing than silent reading does."], "career": null}, "Thu": {"slots": ["13:00-17:00"], "tasks": ["PRIORITY: final proofread and submit DASC501 Assessment 1 - don't wait for the Friday deadline if it's ready.", "Once submitted: catch up on this week's CNN content with a short practical exercise."], "career": null}, "Fri": {"slots": ["14:00-17:00"], "tasks": ["Final submission check for DASC501 Assessment 1 (due 4pm today) if not already done.", "You've now finished DASC501 entirely. Take a moment to notice that.", "Narrow your dissertation supervisor/project preferences to a ranked shortlist of 3."], "career": null}}}, {"week": 11, "range": "Mon 7 - Fri 11 Dec 2026", "theme": "Git, standardisation techniques, transformers/LLMs, and bias & ethics in AI - the last full teaching week.", "encouragement": "One module down, four to wrap up over the next two weeks. Keep the pace steady rather than sprinting now and crashing in Week 12.", "days": {"Mon": {"slots": ["09:00-10:00", "15:00-17:00"], "tasks": ["Finalise your ranked list of up to 3 preferred dissertation projects, ready for formal expression of interest in Semester 2 Week 3.", "Start planning your DASC513 Assessment 2 report structure - data engineering schematic, interpretability, validation, bias, communication."], "career": null}, "Tue": {"slots": ["09:00-10:00", "13:00-17:00"], "tasks": ["After DASC513: draft the bias-detection section of your Assessment 2 report using today's content.", "Read the Weapons of Math Destruction excerpt on bias if you haven't yet - short, and directly citable in Assessment 2."], "career": "Read one real case study of algorithmic bias causing harm (e.g. a healthcare risk-scoring algorithm) - grounds today's theory in a concrete, citable example for your report."}, "Wed": {"slots": ["14:00-17:00"], "tasks": ["Redo today's Git exercises: initialise a repo, make 3 commits, create and merge a branch - do this once for real, not just watch it demonstrated.", "Push your DASC509 practice code to GitHub - the start of a visible portfolio."], "career": "A GitHub profile with real, documented projects is one of the highest-value things you can build this year for security/data roles - today's Git session is the technical key that unlocks it."}, "Thu": {"slots": ["13:00-17:00"], "tasks": ["Practice today's transformer/LLM content with a small sentiment-analysis exercise on public text data.", "Draft the interpretability section of your DASC513 Assessment 2 report (SHAP/LIME/GradCAM, pros and cons)."], "career": null}, "Fri": {"slots": ["14:00-17:00"], "tasks": ["Draft the validation-strategies section of your DASC513 Assessment 2 report.", "Consolidate everything DASC513 has covered this term (stakeholders, data engineering, equitable modelling) into one outline for the final report.", "Look ahead: next week is the last teaching week and DASC513's final assessment is due."], "career": null}}}, {"week": 12, "range": "Mon 14 - Fri 18 Dec 2026", "theme": "DEADLINE WEEK: DASC513 Assessment 2 (Portfolio Project) due Friday - the last deadline of the semester.", "encouragement": "Last one before the break. Finish this and you'll have completed five full modules in twelve weeks - that's genuinely a lot.", "days": {"Mon": {"slots": ["09:00-10:00", "15:00-17:00"], "tasks": ["PRIORITY: write a complete first draft of your DASC513 Assessment 2 report today - data engineering schematic, interpretability, validation, bias, and stakeholder communication."], "career": null}, "Tue": {"slots": ["13:00-17:00"], "tasks": ["PRIORITY: revise your data-flow schematic for clarity - a marker should be able to follow it without your report's text.", "Check your report against the marking criteria on Canvas section by section."], "career": null}, "Wed": {"slots": ["14:00-17:00"], "tasks": ["PRIORITY: tighten to the 2,000-word limit and proofread.", "Submit DASC513 Assessment 2 once ready rather than waiting for Friday."], "career": null}, "Thu": {"slots": ["13:00-17:00"], "tasks": ["If not submitted yet, this is the priority: finish DASC513 Assessment 2.", "Once submitted: start planning your DASC512 Assessment 2 dataset choice (due early January) so the break isn't a cold start."], "career": null}, "Fri": {"slots": ["14:00-17:00"], "tasks": ["Final submission check for DASC513 Assessment 2 (due 4pm today).", "You've now finished the taught content for 5 of your 6 Semester 1 modules. Well done - genuinely.", "Before you switch off for the break: note where DASC509 A2 (due 18 Jan) and DASC512 A2 (due ~2 Jan) stand, so January isn't a shock."], "career": "Treat the break as real rest, not just 'lighter work'. A sustainable pace across a whole MSc matters more than any single week of extra hours."}}}], "assignments": [{"id": "d513a1", "module": "DASC513", "title": "Assessment 1 - Stakeholder Workshop", "weight": "30%", "due": "2026-11-06", "dueLabel": "Fri, Week 6 (date TBC on Canvas)", "brief": "Plan and deliver a 15-minute stakeholder-involvement workshop in a group of 3-4, plus a 1,000-word planning document justifying your design choices.", "stages": [{"by": "Week 2", "task": "Form your group of 3-4 and agree who's doing what."}, {"by": "Week 3", "task": "Pick your grant/trial outline (provided by staff) and assign roles within the group."}, {"by": "Week 3-4", "task": "Research stakeholder engagement methodologies and information governance principles to cite in your justification."}, {"by": "Week 4", "task": "Draft the planning document's structure (design rationale, methodology choice, participant needs, IG alignment)."}, {"by": "Week 5", "task": "Write the full 1,000-word planning document draft."}, {"by": "Week 5-6", "task": "Rehearse your 15-minute delivery as a group, timed."}, {"by": "Week 6", "task": "Finalise, submit the planning document, and deliver the workshop in your tutorial slot."}]}, {"id": "d513a2", "module": "DASC513", "title": "Assessment 2 - Portfolio Project", "weight": "70%", "due": "2026-12-18", "dueLabel": "Fri, Week 12 (date TBC on Canvas)", "brief": "A 2,000-word individual report addressing challenges from your group's information package: a data-flow schematic, interpretability strategy, validation approach, bias mitigation, and stakeholder communication plan.", "stages": [{"by": "Week 6-7", "task": "Receive your group's information package and read it closely - note the specific real-world challenges named."}, {"by": "Week 7-8", "task": "Sketch your data-flow schematic (how data moves through the proposed system)."}, {"by": "Week 8-9", "task": "Research interpretability methods (SHAP, LIME, GradCAM) relevant to your scenario."}, {"by": "Week 9-10", "task": "Draft the validation-approach and bias-mitigation sections."}, {"by": "Week 10-11", "task": "Draft the stakeholder-communication section, tying it back to your Assessment 1 workshop."}, {"by": "Week 11", "task": "Write a complete first full draft."}, {"by": "Week 12", "task": "Revise to 2,000 words, proofread, and submit."}]}, {"id": "d501a1", "module": "DASC501", "title": "Assessment 1 - Critical Appraisal of a Journal Article", "weight": "70%", "due": "2026-12-04", "dueLabel": "Fri 4 Dec, 4pm", "brief": "A 1,500-word critical appraisal of a given journal article, including 5 specific suggestions to improve the paper or study design.", "stages": [{"by": "Week 1", "task": "Receive your article - do a first skim read even before the relevant lecture content lands."}, {"by": "Week 4-6", "task": "Learn the appraisal frameworks (RCT design, critical appraisal techniques) as they're taught."}, {"by": "Week 6-7", "task": "Do a full close read using a CASP checklist, annotating methodology, bias and sample size issues."}, {"by": "Week 7-8", "task": "Draft your 5 specific, justified improvement suggestions."}, {"by": "Week 8-9", "task": "Write a complete first draft of the 1,500 words."}, {"by": "Week 9", "task": "Revise, tighten to length, and check references."}, {"by": "Week 10", "task": "Final proofread and submit by Friday 4pm."}]}, {"id": "d501a2", "module": "DASC501", "title": "Assessment 2 - Plain Language Summary of an Interview", "weight": "30%", "due": "2026-11-27", "dueLabel": "Fri 27 Nov, 4pm", "brief": "A 600-word plain-language summary of a paired interview with a health data scientist, written for a non-specialist audience.", "stages": [{"by": "Week 6", "task": "Confirm your interview pairing by 4pm Friday - this is a hard cutoff."}, {"by": "Week 6-7", "task": "Prepare 5-8 interview questions in advance."}, {"by": "Week 7-8", "task": "Conduct the interview and take detailed notes."}, {"by": "Week 8", "task": "Draft the summary - explain, don't just report; imagine a curious friend as your reader."}, {"by": "Week 9", "task": "Edit for plain language (cut jargon, read aloud) and submit by Friday 4pm."}]}, {"id": "d509a1", "module": "DASC509", "title": "Assessment 1 - SQL Analysis", "weight": "50%", "due": "2026-11-13", "dueLabel": "Fri 13 Nov, 4pm", "brief": "A report analysing and summarising a clinical database using SQL, with the queries included as evidence.", "stages": [{"by": "Weeks 1-3", "task": "Build SQL fluency through the taught sessions (retrieval, filtering, joins, aggregation, normalisation)."}, {"by": "Week 4", "task": "Practice on a sample database end-to-end once the core syntax feels solid."}, {"by": "Week 5-6", "task": "Once the brief/dataset is issued, draft your core queries."}, {"by": "Week 6-7", "task": "Write the report narrative explaining what each query shows and why you chose that approach."}, {"by": "Week 7", "task": "Test every query runs cleanly, then submit by Friday 4pm."}]}, {"id": "d509a2", "module": "DASC509", "title": "Assessment 2 - Python Coding Exercise", "weight": "50%", "due": "2027-01-18", "dueLabel": "Mon 18 Jan 2027, 4pm", "brief": "Data preprocessing, debugging and basic analysis on a dataset, written up with commented code.", "stages": [{"by": "Weeks 5-10", "task": "Build Python fluency through the taught sessions (files, pandas, loops, OOP, debugging)."}, {"by": "Week 9-10", "task": "Practice cleaning/preprocessing exercises on a sample dataset before the real brief lands."}, {"by": "Week 11-12", "task": "Once the brief is issued, draft your preprocessing and analysis code."}, {"by": "Over the break", "task": "Write up your findings and comments alongside the code."}, {"by": "Mid-January", "task": "Final debug pass and submit by 18 Jan, 4pm."}]}, {"id": "d512a1", "module": "DASC512", "title": "Assessment 1 - Literature Review Presentation", "weight": "30%", "due": "2026-11-20", "dueLabel": "Around Fri, Week 8 (date TBC on Canvas)", "brief": "A maximum 10-minute recorded presentation critically evaluating an ML/AI public health paper - methodology, results, and drawbacks.", "stages": [{"by": "Week 5-6", "task": "Choose your paper early - don't leave this to Week 8."}, {"by": "Week 6", "task": "Read and annotate the paper closely."}, {"by": "Week 7", "task": "Outline your critique structure: methodology, results, drawbacks."}, {"by": "Week 7-8", "task": "Build your slides."}, {"by": "Week 8", "task": "Record the presentation, keeping to 10 minutes, and submit."}]}, {"id": "d512a2", "module": "DASC512", "title": "Assessment 2 - Portfolio Project", "weight": "70%", "due": "2027-01-02", "dueLabel": "Around 'Week 14' (estimate; confirm on Canvas)", "brief": "A 1,000-word report building an ML pipeline on a public health dataset, including at least one shallow and one deep learning model.", "stages": [{"by": "Week 8-9", "task": "Pick your dataset (Kaggle's public-health sets fit well)."}, {"by": "Week 9", "task": "Do exploratory data analysis and clean the data."}, {"by": "Week 9-10", "task": "Build your shallow model (e.g. random forest or logistic regression)."}, {"by": "Week 10-11", "task": "Build your deep model (e.g. a simple ANN or CNN depending on data type)."}, {"by": "Week 11", "task": "Evaluate and compare both models with appropriate metrics."}, {"by": "Week 11-12", "task": "Write the lay abstract, methods, results and discussion."}, {"by": "Over the break", "task": "Final polish and submit."}]}, {"id": "d503a1", "module": "DASC503", "title": "Assessment 1 - Poster + Pre-recorded Oral", "weight": "30%", "due": null, "dueLabel": "TBC - check Canvas (brief usually given Week 4)", "brief": "A poster plus a 5-minute pre-recorded oral highlighting the key findings, interpretation and limitations of your database project.", "stages": [{"by": "Weeks 1-6", "task": "Build your cohort and derive exposure/outcome variables through the weekly R labs - this is the raw material for the poster."}, {"by": "Week 4", "task": "Read the brief as soon as it's released."}, {"by": "Week 6-7", "task": "Finalise your analysis and results."}, {"by": "Week 7", "task": "Design the poster: key findings, interpretation, limitations."}, {"by": "Week 7-8", "task": "Record your 5-minute oral, focused on a single main point."}]}, {"id": "d503a2", "module": "DASC503", "title": "Assessment 2 - Written Critical Report", "weight": "70%", "due": null, "dueLabel": "TBC - check Canvas (brief usually given Week 8)", "brief": "A 1,500-word report critically appraising the approaches used in your database project, including a reflective summary of skills and lessons learnt.", "stages": [{"by": "Weeks 1-8", "task": "Keep a brief weekly note of what worked and didn't in each lab - this becomes your reflective summary later."}, {"by": "Week 8", "task": "Read the brief as soon as it's released."}, {"by": "Week 9-10", "task": "Draft your critical appraisal of the approaches used."}, {"by": "Week 10-11", "task": "Write the reflective summary section."}, {"by": "Week 11-12", "task": "Proofread, tighten to 1,500 words, and submit."}]}], "milestones": [{"by": "Weeks 1-2", "task": "Attend taught sessions: intro, academic sources, referencing. Set up EndNote."}, {"by": "Weeks 3-6", "task": "If proposing your own topic: submit the Initial Project Proposal Form (window closes around Week 6, 6 Nov)."}, {"by": "Week 9", "task": "Supervisor project suggestions are communicated - start approaching potential supervisors."}, {"by": "Weeks 10-11", "task": "Follow up with supervisors and narrow down your preferences."}, {"by": "Week 12", "task": "Finalise your ranked shortlist of up to 3 preferred projects."}, {"by": "Semester 2, Week 3 (19 Feb 2027)", "task": "Formally express interest in your ranked projects by email."}, {"by": "Semester 2, Week 8 (16 Apr 2027)", "task": "Projects are confirmed."}, {"by": "Semester 2, Weeks 9-12", "task": "Work on the Full Project Proposal Form with your supervisor."}, {"by": "Semester 2, Week 12 (14 May 2027)", "task": "Submit the full project proposal form."}, {"by": "Semester 3, Week 1 (7 Jun 2027)", "task": "Dissertation research officially begins."}], "certs": [{"name": "CompTIA Security+", "why": "The standard entry-level security cert - a genuinely good place to start alongside your MSc, no prerequisites.", "tag": "Start now"}, {"name": "CompTIA CySA+", "why": "Cybersecurity analyst / blue-team certification with a heavy data-analysis flavour - probably the closest 'official' bridge to what you're building here.", "tag": "Bridge cert"}, {"name": "ISACA CDPSE (Certified Data Privacy Solutions Engineer)", "why": "Bridges data privacy engineering and security - unusually well matched to DASC513's governance content and health data specifically.", "tag": "Bridge cert"}, {"name": "(ISC)2 SSCP", "why": "A solid stepping stone toward CISSP if you want the practitioner route before management.", "tag": "Stepping stone"}, {"name": "ISACA CISM (Certified Information Security Manager)", "why": "Management-track certification - the natural target once you're aiming at an 'Officer' level role rather than a technical one.", "tag": "Officer-track"}, {"name": "(ISC)2 CISSP", "why": "The gold-standard security credential. Needs ~5 years' experience to certify fully, but you can study the material now and sit it once you qualify.", "tag": "Long-term goal"}, {"name": "ISO/IEC 27001 Lead Implementer or Lead Auditor", "why": "Governance and information security management systems (ISMS) - directly extends DASC513's information governance content.", "tag": "Officer-track"}, {"name": "AWS or Azure Security certification", "why": "Health data increasingly lives in the cloud - a cloud security cert makes your profile immediately more employable.", "tag": "Practical"}], "standards": [{"name": "NIST Cybersecurity Framework (CSF) 2.0", "why": "The most widely used security framework globally - five functions: Govern, Identify, Protect, Detect, Respond, Recover."}, {"name": "NIST AI Risk Management Framework (AI RMF)", "why": "NIST's framework specifically for managing risk in AI systems - the natural next document after CSF for your exact intersection."}, {"name": "ISO/IEC 27001 / 27002", "why": "The international standard for information security management systems (ISMS) - what most 'Information Security Officer' job descriptions actually reference."}, {"name": "ISO/IEC 42001", "why": "The new (2023) international standard for AI management systems - genuinely rare to find someone who knows both this and 27001 well."}, {"name": "UK GDPR & Data Protection Act 2018 / HIPAA (US)", "why": "The two regulatory regimes you'll keep meeting in DASC513 - know both even if you plan to work UK-side."}, {"name": "OWASP Top 10 & OWASP Machine Learning Security Top 10", "why": "The standard reference for application security and, specifically, ML system security."}, {"name": "MITRE ATT&CK Framework", "why": "The standard framework for describing real-world attacker behaviour - used constantly in threat modelling and incident response."}, {"name": "NHS Data Security and Protection Toolkit (DSPT)", "why": "What every NHS-linked organisation must complete annually - extremely concrete and UK-health-specific."}], "books": [{"name": "Security Engineering - Ross Anderson", "why": "The field's most respected free foundational text. Available free online from the author.", "tag": "Free"}, {"name": "Interpretable Machine Learning - Christoph Molnar", "why": "Already on your DASC513 reading list - directly overlaps with SHAP/LIME content and Assessment 2.", "tag": "Already assigned"}, {"name": "Weapons of Math Destruction - Cathy O'Neil", "why": "Already on your DASC513 reading list - the standard accessible text on algorithmic bias and harm.", "tag": "Already assigned"}, {"name": "Data and Goliath - Bruce Schneier", "why": "The clearest, most readable book on the privacy/security intersection - genuinely enjoyable, not just useful.", "tag": "Readable"}, {"name": "Click Here to Kill Everybody - Bruce Schneier", "why": "Policy-level thinking on securing an increasingly AI-driven, connected world - good for 'Officer'-level strategic framing."}, {"name": "The Web Application Hacker's Handbook - Stuttard & Pinto", "why": "If you want real technical depth in application security specifically."}, {"name": "Cybersecurity and Cyberwar - Singer & Friedman", "why": "An approachable policy-level overview - useful if your target roles lean toward strategy over hands-on technical work."}], "papers": [{"name": "arXiv (cs.CR and cs.LG)", "why": "Free preprints - search 'adversarial machine learning healthcare' or 'differential privacy clinical data' for material directly relevant to your dissertation."}, {"name": "USENIX Security Symposium proceedings", "why": "One of the top security research venues, and fully free to read."}, {"name": "JAMIA (Journal of the American Medical Informatics Association)", "why": "Where health-informatics-specific privacy/security papers most often appear - very close to your programme's actual focus."}, {"name": "npj Digital Medicine", "why": "High-quality, open-access digital health research, including AI safety and governance pieces."}, {"name": "SANS Reading Room", "why": "Free, practitioner-written whitepapers - less academic, more immediately usable."}, {"name": "NCSC (UK National Cyber Security Centre) guidance", "why": "UK-specific, practical, and occasionally has health-sector-specific advisories."}, {"name": "ENISA threat landscape reports", "why": "The EU cybersecurity agency's annual reports - good for understanding the current threat environment at a glance."}, {"name": "Krebs on Security (blog)", "why": "Real-world breach reporting - useful for grounding theory in what's actually happening."}], "communities": [{"name": "TryHackMe", "why": "Hands-on, beginner-friendly security labs - a low-pressure way to build practical skill alongside your degree."}, {"name": "Kaggle", "why": "You'll use it directly for DASC512's portfolio project - also a place to keep building a public data science portfolio."}, {"name": "GitHub", "why": "Push your DASC509/DASC512 project code here with clear READMEs - this is what employers actually look at."}, {"name": "(ISC)2 and ISACA student membership", "why": "Often free or heavily discounted for students - gives access to study material and local chapter events."}, {"name": "OWASP local chapter", "why": "Free meetups, often with practitioners from health/regulated industries specifically."}], "portfolio": ["Consider a dissertation angle that sits directly at your intersection: adversarial robustness of a clinical prediction model, differential privacy for EHR data sharing, or auditing bias/security trade-offs in a health AI pipeline.", "Build one small GitHub project applying a security technique to a health dataset - e.g. an anonymisation pipeline, or a simple differential-privacy demo on a public health dataset.", "Write up your dissertation findings as a short LinkedIn article or blog post once it's done - visibility matters for hybrid DS/security roles, which are still a fairly new category.", "Keep a running one-page 'skills map' tracking which certifications, standards and tools you've covered - useful for CVs and interviews later."], "quotes": ["Small consistent effort beats big irregular pushes. Today's block counts.", "You don't have to feel ready to start - starting is what makes you ready.", "Progress on a hard week still counts as progress.", "One task at a time. You don't need to see the whole staircase, just the next step.", "The fact that this is hard doesn't mean you're doing it wrong.", "Future-you will be grateful for whatever you do in this session, however small.", "You've already done harder weeks than this one. You know how.", "Rest is part of the plan, not a failure of it.", "Nobody does all of a study plan perfectly. Doing most of it, most weeks, is what works.", "You chose this field on purpose. That's worth remembering on the harder days."]};
+</script>
+<script>
+(function(){
+  "use strict";
+
+  var TERM_START = new Date(2026,8,28); // Mon 28 Sep 2026 local
+  var WEEKDAYS = ["Mon","Tue","Wed","Thu","Fri"];
+
+  function dateForWeekDay(week, dayIdx){
+    var d = new Date(TERM_START.getTime());
+    d.setDate(d.getDate() + (week-1)*7 + dayIdx);
+    return d;
+  }
+  function isoKey(d){
+    var y=d.getFullYear(), m=("0"+(d.getMonth()+1)).slice(-2), day=("0"+d.getDate()).slice(-2);
+    return y+"-"+m+"-"+day;
+  }
+  function fmtDateLong(d){
+    return d.toLocaleDateString(undefined,{weekday:'long', day:'numeric', month:'long'});
+  }
+  function fmtDateShort(d){
+    return d.toLocaleDateString(undefined,{weekday:'short', day:'numeric', month:'short'});
+  }
+  function startOfDay(d){ var x=new Date(d.getTime()); x.setHours(0,0,0,0); return x; }
+  function addDays(d,n){ var x=new Date(d.getTime()); x.setDate(x.getDate()+n); return x; }
+  function dayOfYear(d){
+    var start = new Date(d.getFullYear(),0,0);
+    var diff = d - start;
+    return Math.floor(diff / 86400000);
+  }
+
+  function weekIndexForDate(d){
+    var diffDays = Math.floor((startOfDay(d) - startOfDay(TERM_START)) / 86400000);
+    var w = Math.floor(diffDays/7) + 1;
+    return w;
+  }
+
+  var today = startOfDay(new Date());
+  var currentWeekRaw = weekIndexForDate(today);
+  var viewWeek = Math.min(12, Math.max(1, currentWeekRaw));
+
+  // ---------------- state ----------------
+  var progressMap = {};      // dateKey -> {completed:Set, ref}
+  var submissionsMap = {};   // assignmentId -> boolean
+  var customTasksMap = {};   // dateKey -> [{id,text,done}]
+  var customGoals = [];      // [{id,text,due,done,createdAt}]
+  var notesList = [];        // [{id,text,createdAt}]
+  var monthNotesMap = {};    // dateKey -> text
+  var dbNs = null;
+  var localOnly = false;
+
+  function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,8); }
+
+  function getProgress(dateKey){
+    if(!progressMap[dateKey]) progressMap[dateKey] = new Set();
+    return progressMap[dateKey];
+  }
+  function getCustomTasks(dateKey){
+    if(!customTasksMap[dateKey]) customTasksMap[dateKey] = [];
+    return customTasksMap[dateKey];
+  }
+  function saveCustomTasks(dateKey){
+    if(!dbNs || localOnly) return;
+    dbNs.doc('customTasks/'+dateKey).set({date:dateKey, items:getCustomTasks(dateKey), updatedAt:new Date().toISOString()}).catch(function(e){console.warn('custom tasks save failed', e);});
+  }
+  function saveGoal(goal){
+    if(!dbNs || localOnly) return;
+    dbNs.doc('customGoals/'+goal.id).set(goal).catch(function(e){console.warn('goal save failed', e);});
+  }
+  function deleteGoalDb(id){
+    if(!dbNs || localOnly) return;
+    dbNs.doc('customGoals/'+id).delete().catch(function(e){console.warn('goal delete failed', e);});
+  }
+  function saveNote(note){
+    if(!dbNs || localOnly) return;
+    dbNs.doc('notes/'+note.id).set(note).catch(function(e){console.warn('note save failed', e);});
+  }
+  function deleteNoteDb(id){
+    if(!dbNs || localOnly) return;
+    dbNs.doc('notes/'+id).delete().catch(function(e){console.warn('note delete failed', e);});
+  }
+  function saveMonthNote(dateKey, text){
+    if(!dbNs || localOnly) return;
+    dbNs.doc('monthNotes/'+dateKey).set({date:dateKey, text:text, updatedAt:new Date().toISOString()}).catch(function(e){console.warn('month note save failed', e);});
+  }
+
+  var MODULE_ICONS = {DASC500:"📚", DASC501:"🧭", DASC503:"📊", DASC509:"💻", DASC512:"🤖", DASC513:"🛡️"};
+  function moduleColor(code){ return (DATA.moduleColors && DATA.moduleColors[code]) || "#5b6b6c"; }
+  function moduleName(code){ return (DATA.moduleNames && DATA.moduleNames[code]) || code; }
+  function moduleIcon(code){ return MODULE_ICONS[code] || "🔖"; }
+
+  function moduleChip(code, label){
+    return '<span class="module-chip" style="background:'+moduleColor(code)+'"><span class="ic">'+moduleIcon(code)+'</span>'+(label||code)+'</span>';
+  }
+
+  function taskCountForDate(dateObj){
+    var extra = getCustomTasks(isoKey(dateObj)).length;
+    var w = weekIndexForDate(dateObj);
+    if(w<1 || w>12) return {total:extra};
+    var dow = dateObj.getDay();
+    if(dow===0 || dow===6) return {total:extra};
+    var dayName = WEEKDAYS[dow-1];
+    var wk = DATA.weeks[w-1];
+    var dayData = wk.days[dayName];
+    var total = (dayData.tasks?dayData.tasks.length:0) + (dayData.career?1:0) + extra;
+    return {total:total};
+  }
+  function parseIsoKey(k){
+    var p = k.split('-');
+    return new Date(parseInt(p[0],10), parseInt(p[1],10)-1, parseInt(p[2],10));
+  }
+  function mascotFace(){
+    var dow = today.getDay();
+    if(dow===0 || dow===6) return '😴';
+    var counts = taskCountForDate(today);
+    var doneCount = getProgress(isoKey(today)).size;
+    if(counts.total>0 && doneCount>=counts.total) return '🦊🎉';
+    if(window.__streak>=7) return '🦊🌟';
+    if(window.__streak>=3) return '🦊✨';
+    return '🦊';
+  }
+  function mascotLabel(){
+    var dow = today.getDay();
+    if(dow===0 || dow===6) return "it's the weekend —";
+    var counts = taskCountForDate(today);
+    var doneCount = getProgress(isoKey(today)).size;
+    if(counts.total>0 && doneCount>=counts.total) return "🎉 you did it —";
+    return "psst, today's note...";
+  }
+  function smallBurst(el){
+    if(typeof confetti !== 'function') return;
+    try{
+      var rect = el.getBoundingClientRect();
+      var x = (rect.left+rect.width/2)/window.innerWidth;
+      var y = (rect.top+rect.height/2)/window.innerHeight;
+      confetti({particleCount:10, spread:38, startVelocity:16, gravity:0.9, scalar:0.55, ticks:120,
+        origin:{x:x,y:y}, colors:['#e3a3bd','#b7abe8','#c99a4a','#9bd0b6']});
+    }catch(e){}
+  }
+  function bigBurst(){
+    if(typeof confetti !== 'function') return;
+    try{
+      confetti({particleCount:70, spread:80, startVelocity:32, origin:{x:0.5,y:0.25},
+        colors:['#e3a3bd','#b7abe8','#c99a4a','#9bd0b6','#c07f9c']});
+      setTimeout(function(){ confetti({particleCount:36, spread:100, startVelocity:22, origin:{x:0.18,y:0.3}}); }, 150);
+      setTimeout(function(){ confetti({particleCount:36, spread:100, startVelocity:22, origin:{x:0.82,y:0.3}}); }, 250);
+    }catch(e){}
+  }
+
+  // ---------------- rendering: Today ----------------
+  function renderToday(){
+    var el = document.getElementById('view-today');
+    var dow = today.getDay(); // 0 Sun .. 6 Sat
+    var html = "";
+
+    html += statStripHtml();
+    html += heroHtml();
+
+    if(currentWeekRaw < 1){
+      html += '<div class="card"><div class="mascot-note"><span class="ic">🦊</span><p>Term hasn\'t started yet — Week 1 begins Monday 28 September. Here\'s a sneak peek:</p></div></div>';
+      html += dayCardHtml(1, 0, dateForWeekDay(1,0), false);
+    } else if(currentWeekRaw > 12){
+      html += '<div class="card"><h2 class="section-title" style="margin-top:0">Teaching weeks are done 🎓</h2>' +
+        '<p class="section-lead">Five of six Semester 1 modules are finished. Two assessments are still ahead in January — check the Goals tab for DASC509 A2 (18 Jan) and DASC512 A2 (~2 Jan).</p></div>';
+    } else if(dow===0 || dow===6){
+      html += '<div class="card"><div class="mascot-note"><span class="ic">😴</span><p>No scheduled self-study today — the fox is napping. If you want to get ahead, "This Week" has it all queued up for Monday.</p></div></div>';
+    } else {
+      var dayIdx = dow-1; // Mon=0
+      html += dayCardHtml(viewWeek, dayIdx, today, true);
+    }
+
+    el.innerHTML = html;
+    wireTaskCheckboxes(el);
+    wireCustomTaskControls(el);
+  }
+
+  function heroHtml(){
+    var quote = DATA.quotes[dayOfYear(today) % DATA.quotes.length];
+    var qClass = "";
+    var subLine = "Week " + Math.min(12,Math.max(1,currentWeekRaw)) + " of 12 · " + fmtDateLong(today);
+
+    // find most urgent unsubmitted assignment
+    var next = nextDeadline();
+    var deadlineHtml = "";
+    if(next){
+      var days = daysUntil(next.due);
+      var cclass = days<=1 ? "urgent" : (days<=3 ? "soon" : "");
+      var label = days<0 ? "overdue — check Canvas" : (days===0 ? "due today" : (days===1 ? "1 day left" : days+" days left"));
+      if(days<=0){ qClass="urgent"; quote = next.title.replace(/^Assessment [0-9]+ ?-? ?/,'') + " (" + moduleName(next.module) + ") is due today. You've got this — go finish it."; }
+      else if(days<=2){ qClass="warn"; quote = next.title + " is due in " + label + ". Make it the priority in your next library block."; }
+      deadlineHtml = '<div class="next-deadline"><div><div class="label">Next deadline</div>' +
+        '<div class="name">'+moduleChip(next.module)+' '+escapeHtml(next.title)+'</div></div>' +
+        '<div class="countdown '+cclass+'">'+label+'</div></div>';
+    }
+
+    var streakNote = "";
+    if(window.__streak >= 3){ streakNote = ' <span style="color:var(--muted); font-weight:400; font-size:0.85rem;">— '+window.__streak+' day streak, keep it going</span>'; }
+
+    return '<div class="hero"><div class="mascot-row">' +
+      '<div class="mascot-face">'+mascotFace()+'</div>' +
+      '<div class="speech-bubble"><span class="hand-label">'+mascotLabel()+'</span>' +
+      '<div class="date-line">'+subLine+'</div>' +
+      '<div class="quote '+qClass+'">'+escapeHtml(quote)+streakNote+'</div>' +
+      (localOnly? '<div class="sub">Progress isn\'t saving in this view — checks will reset on reload.</div>':'') +
+      '</div></div>' +
+      deadlineHtml + '</div>';
+  }
+
+  function statStripHtml(){
+    var dow = today.getDay();
+    var inTerm = currentWeekRaw>=1 && currentWeekRaw<=12;
+    var classTile = "No classes today";
+    if(inTerm && dow>=1 && dow<=5){
+      var dayName = WEEKDAYS[dow-1];
+      var todays = classesForDay(dayName);
+      var now = new Date();
+      var nowMin = now.getHours()*60+now.getMinutes();
+      var toMin = function(t){ var p=t.split(':'); return parseInt(p[0],10)*60+parseInt(p[1],10); };
+      var upcoming = todays.filter(function(c){ return toMin(c.end) > nowMin; });
+      if(upcoming.length){
+        var c0 = upcoming[0];
+        classTile = c0.module+' '+c0.start+'–'+c0.end+' · '+c0.location;
+      } else if(todays.length){
+        classTile = "Done for today";
+      }
+    }
+    var tasksTile = "—";
+    if(inTerm && dow>=1 && dow<=5){
+      var counts = taskCountForDate(today);
+      var left = counts.total - getProgress(isoKey(today)).size;
+      tasksTile = (left<=0 && counts.total>0) ? "All done 🎉" : (left+" of "+counts.total+" left");
+    }
+    var next = nextDeadline();
+    var deadlineTile = next ? (daysUntil(next.due)<=0 ? "Due today!" : daysUntil(next.due)+" days") : "None due";
+
+    return '<div class="stat-strip">' +
+      '<div class="stat-tile"><div class="stat-label">Next class</div><div class="stat-val">'+escapeHtml(classTile)+'</div></div>' +
+      '<div class="stat-tile"><div class="stat-label">Today\'s tasks</div><div class="stat-val">'+escapeHtml(tasksTile)+'</div></div>' +
+      '<div class="stat-tile"><div class="stat-label">Next deadline</div><div class="stat-val">'+escapeHtml(deadlineTile)+'</div></div>' +
+      '</div>';
+  }
+
+  function nextDeadline(){
+    var candidates = DATA.assignments.filter(function(a){ return a.due && !submissionsMap[a.id]; });
+    candidates.sort(function(a,b){ return new Date(a.due) - new Date(b.due); });
+    return candidates[0] || null;
+  }
+  function daysUntil(iso){
+    var due = startOfDay(new Date(iso+"T00:00:00"));
+    return Math.round((due - today)/86400000);
+  }
+
+  function classesForDay(dayAbbrev){
+    return DATA.timetable.filter(function(t){ return t.day===dayAbbrev; });
+  }
+
+  function dayCardHtml(week, dayIdx, dateObj, isToday, compact){
+    var wk = DATA.weeks[week-1];
+    var dayName = WEEKDAYS[dayIdx];
+    var dayData = wk.days[dayName];
+    var dateKey = isoKey(dateObj);
+    var completed = getProgress(dateKey);
+    var counts = taskCountForDate(dateObj);
+    var allDone = counts.total>0 && completed.size>=counts.total;
+    var collapsed = !!compact && !isToday;
+
+    var html = '<div class="day-card'+(isToday?' is-today':'')+(allDone?' all-done':'')+(collapsed?' collapsed':'')+(compact?' in-grid':'')+'" data-datekey="'+dateKey+'">';
+    html += '<div class="day-head" data-toggle-day><div><span class="day-name">'+dayFull(dayName)+'</span> <span class="day-date">'+fmtDateShort(dateObj)+'</span></div>';
+    if(isToday) html += '<span class="today-badge">Today</span>';
+    else if(compact) html += '<span class="task-count-badge">'+completed.size+'/'+counts.total+'</span>';
+    html += '</div>';
+
+    var classes = classesForDay(dayName);
+    if(classes.length){
+      html += '<div class="class-strip">';
+      classes.forEach(function(c){
+        html += '<span class="class-pill">'+moduleChip(c.module, c.label)+' <b>'+c.start+'–'+c.end+'</b> · '+escapeHtml(c.location)+'</span>';
+      });
+      html += '</div>';
+    }
+
+    if(dayData.slots && dayData.slots.length){
+      html += '<div class="class-strip"><span class="class-pill">Library: '+dayData.slots.join(', ')+'</span></div>';
+    }
+
+    html += '<ul class="task-list">';
+    (dayData.tasks||[]).forEach(function(t, i){
+      var key = "w"+week+"-"+dayName+"-"+i;
+      var isDone = completed.has(key);
+      html += '<li class="task-item'+(isDone?' done':'')+'" data-key="'+key+'">' +
+        '<input type="checkbox" '+(isDone?'checked':'')+' />' +
+        '<span class="txt">'+escapeHtml(t)+'</span></li>';
+    });
+    if(dayData.career){
+      var ckey = "w"+week+"-"+dayName+"-career";
+      var cDone = completed.has(ckey);
+      html += '<li class="task-item career'+(cDone?' done':'')+'" data-key="'+ckey+'">' +
+        '<input type="checkbox" '+(cDone?'checked':'')+' />' +
+        '<span class="txt"><span class="tag">Career skill</span>'+escapeHtml(dayData.career)+'</span></li>';
+    }
+    getCustomTasks(dateKey).forEach(function(ct){
+      var key = "custom-"+ct.id;
+      var isDone = completed.has(key);
+      html += '<li class="task-item custom'+(isDone?' done':'')+'" data-key="'+key+'">' +
+        '<input type="checkbox" '+(isDone?'checked':'')+' />' +
+        '<span class="txt">'+escapeHtml(ct.text)+'</span>' +
+        '<button class="del-btn" data-del-task="'+ct.id+'" aria-label="Delete task">&times;</button></li>';
+    });
+    html += '</ul>';
+    html += '<form class="add-row" data-add-task>' +
+      '<input type="text" placeholder="+ Add your own task…" maxlength="140" />' +
+      '<button type="submit">Add</button></form>';
+    if(allDone){ html += '<div class="celebrate-banner">🎉 All done — nicely played.</div>'; }
+    html += '</div>';
+    return html;
+  }
+
+  function dayFull(abbr){
+    return {Mon:"Monday",Tue:"Tuesday",Wed:"Wednesday",Thu:"Thursday",Fri:"Friday"}[abbr] || abbr;
+  }
+
+  function wireTaskCheckboxes(container){
+    container.querySelectorAll('.task-item').forEach(function(item){
+      var box = item.querySelector('input[type=checkbox]');
+      box.addEventListener('change', function(){
+        var card = item.closest('[data-datekey]');
+        var dateKey = card.getAttribute('data-datekey');
+        var key = item.getAttribute('data-key');
+        var set = getProgress(dateKey);
+        var counts = taskCountForDate(parseIsoKey(dateKey));
+        var wasFull = counts.total>0 && set.size>=counts.total;
+
+        if(box.checked){ set.add(key); item.classList.add('done'); }
+        else { set.delete(key); item.classList.remove('done'); }
+
+        var nowFull = counts.total>0 && set.size>=counts.total;
+        persistProgress(dateKey);
+        recomputeStreak();
+        updateStreakChip();
+
+        var badge = card.querySelector('.task-count-badge');
+        if(badge) badge.textContent = set.size+'/'+counts.total;
+
+        if(box.checked) smallBurst(box);
+
+        if(!wasFull && nowFull){
+          card.classList.add('all-done');
+          if(!card.querySelector('.celebrate-banner')){
+            var banner = document.createElement('div');
+            banner.className = 'celebrate-banner';
+            banner.textContent = '🎉 All done — nicely played.';
+            var list = card.querySelector('.task-list');
+            if(list) list.insertAdjacentElement('afterend', banner);
+          }
+          bigBurst();
+        } else if(wasFull && !nowFull){
+          card.classList.remove('all-done');
+          var existing = card.querySelector('.celebrate-banner');
+          if(existing) existing.remove();
+        }
+
+        if(document.getElementById('view-today') && !document.getElementById('view-today').hidden){
+          // refresh hero deadline/quote/mascot line without a full re-render jump
+          var heroEl = document.querySelector('.hero');
+          if(heroEl) heroEl.outerHTML = heroHtml();
+        }
+      });
+    });
+  }
+
+  function persistProgress(dateKey){
+    if(!dbNs || localOnly) return;
+    var set = getProgress(dateKey);
+    var arr = Array.from(set);
+    dbNs.doc('progress/'+dateKey).set({date:dateKey, completed:arr, updatedAt:new Date().toISOString()}).catch(function(e){
+      console.warn('progress save failed', e);
+    });
+  }
+
+  // ---------------- rendering: This Week ----------------
+  function renderWeek(){
+    var el = document.getElementById('view-week');
+    var wk = DATA.weeks[viewWeek-1];
+    var html = '<div class="week-switch">' +
+      '<button id="wkPrev" '+(viewWeek<=1?'disabled':'')+'>← Prev</button>' +
+      '<div class="label">WEEK '+viewWeek+' OF 12<br>'+wk.range+'</div>' +
+      '<button id="wkNext" '+(viewWeek>=12?'disabled':'')+'>Next →</button>' +
+      '</div>';
+    html += '<p class="week-theme"><b style="color:var(--ink)">This week:</b> '+escapeHtml(wk.theme)+'</p>';
+    html += '<div class="card" style="background:var(--surface-2); box-shadow:none;"><span class="eyebrow">Encouragement</span><p style="margin:6px 0 0; font-family:var(--serif); font-size:1.02rem;">'+escapeHtml(wk.encouragement)+'</p></div>';
+
+    html += '<div class="week-grid">';
+    WEEKDAYS.forEach(function(day, idx){
+      var dateObj = dateForWeekDay(viewWeek, idx);
+      var isToday = isoKey(dateObj) === isoKey(today);
+      html += dayCardHtml(viewWeek, idx, dateObj, isToday, true);
+    });
+    html += '</div>';
+
+    el.innerHTML = html;
+    wireTaskCheckboxes(el);
+    wireCustomTaskControls(el);
+    wireDayToggles(el);
+    document.getElementById('wkPrev').addEventListener('click', function(){ if(viewWeek>1){ viewWeek--; renderWeek(); }});
+    document.getElementById('wkNext').addEventListener('click', function(){ if(viewWeek<12){ viewWeek++; renderWeek(); }});
+  }
+
+  function wireDayToggles(container){
+    container.querySelectorAll('.day-card.in-grid [data-toggle-day]').forEach(function(head){
+      head.addEventListener('click', function(){
+        var card = head.closest('.day-card');
+        if(card.classList.contains('is-today')) return; // today stays expanded
+        card.classList.toggle('collapsed');
+      });
+    });
+  }
+
+  function wireCustomTaskControls(container){
+    container.querySelectorAll('[data-add-task]').forEach(function(form){
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        var input = form.querySelector('input[type=text]');
+        var text = input.value.trim();
+        if(!text) return;
+        var card = form.closest('[data-datekey]');
+        var dateKey = card.getAttribute('data-datekey');
+        var task = {id:uid(), text:text};
+        getCustomTasks(dateKey).push(task);
+        saveCustomTasks(dateKey);
+        input.value = '';
+        // re-render just this section for simplicity
+        rerenderVisible();
+      });
+    });
+    container.querySelectorAll('[data-del-task]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var card = btn.closest('[data-datekey]');
+        var dateKey = card.getAttribute('data-datekey');
+        var id = btn.getAttribute('data-del-task');
+        var list = getCustomTasks(dateKey);
+        var idx = list.findIndex(function(t){ return t.id===id; });
+        if(idx>-1) list.splice(idx,1);
+        getProgress(dateKey).delete('custom-'+id);
+        saveCustomTasks(dateKey);
+        persistProgress(dateKey);
+        rerenderVisible();
+      });
+    });
+  }
+
+  function rerenderVisible(){
+    var activeBtn = document.querySelector('#tabs button.active');
+    var key = activeBtn ? activeBtn.getAttribute('data-tab') : 'today';
+    if(tabs[key]) tabs[key]();
+  }
+
+  // ---------------- rendering: This Month ----------------
+  var monthCursor = new Date(today.getFullYear(), today.getMonth(), 1);
+  var selectedMonthKey = isoKey(today);
+  var MONTH_NAMES = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+  function classesOnDate(dateObj){
+    var w = weekIndexForDate(dateObj);
+    var dow = dateObj.getDay();
+    if(w<1 || w>12 || dow===0 || dow===6) return [];
+    return classesForDay(WEEKDAYS[dow-1]);
+  }
+  function assignmentsOnDate(dateKey){
+    return DATA.assignments.filter(function(a){ return a.due === dateKey; });
+  }
+
+  function renderMonth(){
+    var el = document.getElementById('view-month');
+    var year = monthCursor.getFullYear(), month = monthCursor.getMonth();
+    var firstOfMonth = new Date(year, month, 1);
+    var startOffset = (firstOfMonth.getDay()+6)%7; // Mon=0
+    var daysInMonth = new Date(year, month+1, 0).getDate();
+    var totalCells = Math.ceil((startOffset+daysInMonth)/7)*7;
+
+    var html = '<div class="week-switch">' +
+      '<button id="moPrev">&larr; Prev</button>' +
+      '<div class="label">'+MONTH_NAMES[month].toUpperCase()+' '+year+'</div>' +
+      '<button id="moNext">Next &rarr;</button>' +
+      '</div>';
+
+    html += '<div class="month-grid">';
+    ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"].forEach(function(d){ html += '<div class="month-dow">'+d+'</div>'; });
+
+    for(var i=0;i<totalCells;i++){
+      var dayNum = i - startOffset + 1;
+      if(dayNum < 1 || dayNum > daysInMonth){
+        html += '<div class="month-cell other-month"></div>';
+        continue;
+      }
+      var cellDate = new Date(year, month, dayNum);
+      var cellKey = isoKey(cellDate);
+      var isToday = cellKey === isoKey(today);
+      var isSelected = cellKey === selectedMonthKey;
+      var classesToday = classesOnDate(cellDate);
+      var deadlinesToday = assignmentsOnDate(cellKey);
+      var hasNote = !!(monthNotesMap[cellKey] && monthNotesMap[cellKey].trim());
+
+      var dots = '';
+      var seenColors = {};
+      classesToday.forEach(function(c){
+        var col = moduleColor(c.module);
+        if(!seenColors[col]){ dots += '<span class="mo-dot" style="background:'+col+'"></span>'; seenColors[col]=true; }
+      });
+      if(deadlinesToday.length) dots += '<span class="mo-dot mo-dot--due"></span>';
+      if(hasNote) dots += '<span class="mo-dot mo-dot--note"></span>';
+
+      html += '<div class="month-cell'+(isToday?' is-today':'')+(isSelected?' selected':'')+'" data-cell-date="'+cellKey+'">' +
+        '<span class="mo-num">'+dayNum+'</span>' +
+        '<span class="mo-dots">'+dots+'</span>' +
+        '</div>';
+    }
+    html += '</div>';
+
+    html += '<div class="month-legend">' +
+      '<span><i class="mo-dot" style="background:var(--accent)"></i> Class</span>' +
+      '<span><i class="mo-dot mo-dot--due"></i> Deadline</span>' +
+      '<span><i class="mo-dot mo-dot--note"></i> Your note</span>' +
+      '</div>';
+
+    html += monthDayDetailHtml(selectedMonthKey);
+
+    el.innerHTML = html;
+    wireMonthControls(el);
+  }
+
+  function monthDayDetailHtml(dateKey){
+    var dateObj = parseIsoKey(dateKey);
+    var classesToday = classesOnDate(dateObj);
+    var deadlinesToday = assignmentsOnDate(dateKey);
+    var note = monthNotesMap[dateKey] || '';
+
+    var html = '<div class="card month-detail">';
+    html += '<div class="day-name" style="font-size:1.1rem;">'+fmtDateLong(dateObj)+'</div>';
+
+    if(classesToday.length){
+      html += '<div class="class-strip" style="margin-top:10px;">';
+      classesToday.forEach(function(c){
+        html += '<span class="class-pill">'+moduleChip(c.module, c.label)+' <b>'+c.start+'–'+c.end+'</b> · '+escapeHtml(c.location)+'</span>';
+      });
+      html += '</div>';
+    } else {
+      html += '<p class="empty-note">No timetabled classes.</p>';
+    }
+
+    if(deadlinesToday.length){
+      deadlinesToday.forEach(function(a){
+        html += '<div class="class-strip"><span class="class-pill" style="border-color:var(--danger); color:var(--ink);">⏰ '+moduleChip(a.module)+' '+escapeHtml(a.title)+' due today</span></div>';
+      });
+    }
+
+    html += '<label class="eyebrow" style="display:block; margin-top:14px;">Your note for this day</label>';
+    html += '<textarea class="month-note-input" rows="3" placeholder="Add a note, reminder or plan for this day…">'+escapeHtml(note)+'</textarea>';
+    html += '<div class="add-row" style="margin-top:8px;">' +
+      '<button type="button" data-save-note>Save note</button>' +
+      '<button type="button" data-clear-note style="background:var(--surface); color:var(--ink);">Clear</button>' +
+      '</div>';
+    html += '</div>';
+    return html;
+  }
+
+  function wireMonthControls(el){
+    document.getElementById('moPrev').addEventListener('click', function(){
+      monthCursor = new Date(monthCursor.getFullYear(), monthCursor.getMonth()-1, 1);
+      renderMonth();
+    });
+    document.getElementById('moNext').addEventListener('click', function(){
+      monthCursor = new Date(monthCursor.getFullYear(), monthCursor.getMonth()+1, 1);
+      renderMonth();
+    });
+    el.querySelectorAll('.month-cell[data-cell-date]').forEach(function(cell){
+      cell.addEventListener('click', function(){
+        selectedMonthKey = cell.getAttribute('data-cell-date');
+        renderMonth();
+      });
+    });
+    var saveBtn = el.querySelector('[data-save-note]');
+    var clearBtn = el.querySelector('[data-clear-note]');
+    var textarea = el.querySelector('.month-note-input');
+    if(saveBtn){
+      saveBtn.addEventListener('click', function(){
+        var text = textarea.value.trim();
+        monthNotesMap[selectedMonthKey] = text;
+        saveMonthNote(selectedMonthKey, text);
+        renderMonth();
+      });
+    }
+    if(clearBtn){
+      clearBtn.addEventListener('click', function(){
+        monthNotesMap[selectedMonthKey] = '';
+        saveMonthNote(selectedMonthKey, '');
+        renderMonth();
+      });
+    }
+  }
+
+  // ---------------- rendering: Assignments ----------------
+  function renderAssign(){
+    var el = document.getElementById('view-assign');
+    var html = '<h2 class="section-title" style="margin-top:0">Assessments</h2>';
+    html += '<p class="section-lead">Sorted by due date. Each one breaks down into stages so it never has to start from a blank page.</p>';
+
+    var withDate = DATA.assignments.filter(function(a){return a.due;}).sort(function(a,b){return new Date(a.due)-new Date(b.due);});
+    var noDate = DATA.assignments.filter(function(a){return !a.due;});
+
+    withDate.concat(noDate).forEach(function(a){
+      html += assignCardHtml(a);
+    });
+
+    html += '<h2 class="section-title">Dissertation groundwork</h2>';
+    html += '<p class="section-lead">DASC500 isn\'t separately assessed this semester, but these milestones matter for the whole degree.</p>';
+    html += '<div class="assign-card"><ul class="milestone-list">';
+    DATA.milestones.forEach(function(m){
+      html += '<li><span class="by">'+escapeHtml(m.by)+'</span><span>'+escapeHtml(m.task)+'</span></li>';
+    });
+    html += '</ul></div>';
+
+    html += '<h2 class="section-title">Your own goals</h2>';
+    html += '<p class="section-lead">Add anything not covered above — a personal target, a revision goal, a reminder to chase up feedback.</p>';
+    html += '<div class="card"><form class="add-row" data-add-goal>' +
+      '<input type="text" placeholder="+ Add a goal…" maxlength="140" />' +
+      '<input type="date" class="goal-date-input" />' +
+      '<button type="submit">Add</button></form></div>';
+
+    if(customGoals.length){
+      var sorted = customGoals.slice().sort(function(a,b){
+        if(a.done!==b.done) return a.done?1:-1;
+        return (a.due||'9999').localeCompare(b.due||'9999');
+      });
+      sorted.forEach(function(g){ html += goalCardHtml(g); });
+    }
+
+    el.innerHTML = html;
+
+    el.querySelectorAll('.submit-toggle input').forEach(function(box){
+      box.addEventListener('change', function(){
+        var id = box.getAttribute('data-id');
+        submissionsMap[id] = box.checked;
+        var cardEl = box.closest('.assign-card');
+        cardEl.classList.toggle('submitted', box.checked);
+        var existingStamp = cardEl.querySelector('.stamp');
+        if(box.checked && !existingStamp){
+          var stampEl = document.createElement('div');
+          stampEl.className = 'stamp';
+          stampEl.textContent = 'submitted ✓';
+          cardEl.insertBefore(stampEl, cardEl.firstChild);
+        } else if(!box.checked && existingStamp){
+          existingStamp.remove();
+        }
+        if(dbNs && !localOnly){
+          dbNs.doc('submissions/'+id).set({submitted:box.checked, at:new Date().toISOString()}).catch(function(e){console.warn(e);});
+        }
+      });
+    });
+
+    var goalForm = el.querySelector('[data-add-goal]');
+    if(goalForm){
+      goalForm.addEventListener('submit', function(e){
+        e.preventDefault();
+        var input = goalForm.querySelector('input[type=text]');
+        var dateInput = goalForm.querySelector('input[type=date]');
+        var text = input.value.trim();
+        if(!text) return;
+        var goal = {id:uid(), text:text, due:dateInput.value||null, done:false, createdAt:new Date().toISOString()};
+        customGoals.push(goal);
+        saveGoal(goal);
+        renderAssign();
+      });
+    }
+    el.querySelectorAll('[data-goal-done]').forEach(function(box){
+      box.addEventListener('change', function(){
+        var id = box.getAttribute('data-goal-done');
+        var goal = customGoals.find(function(g){ return g.id===id; });
+        if(!goal) return;
+        goal.done = box.checked;
+        saveGoal(goal);
+        box.closest('.assign-card').classList.toggle('submitted', box.checked);
+      });
+    });
+    el.querySelectorAll('[data-goal-del]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var id = btn.getAttribute('data-goal-del');
+        var idx = customGoals.findIndex(function(g){ return g.id===id; });
+        if(idx>-1) customGoals.splice(idx,1);
+        deleteGoalDb(id);
+        renderAssign();
+      });
+    });
+  }
+
+  function goalCardHtml(g){
+    var dueLabel = g.due ? ('Due ' + parseIsoKey(g.due).toLocaleDateString(undefined,{day:'numeric',month:'short'})) : 'No date set';
+    return '<div class="assign-card'+(g.done?' submitted':'')+'">' +
+      (g.done ? '<div class="stamp">done ✓</div>' : '') +
+      '<div class="assign-top"><div><span class="module-chip" style="background:var(--surface-2);">✨ Personal goal</span>' +
+      '<div class="assign-title">'+escapeHtml(g.text)+'</div>' +
+      '<div class="assign-meta">'+escapeHtml(dueLabel)+'</div></div>' +
+      '<button class="del-btn del-btn--inline" data-goal-del="'+g.id+'" aria-label="Delete goal">&times;</button></div>' +
+      '<label class="submit-toggle"><input type="checkbox" data-goal-done="'+g.id+'" '+(g.done?'checked':'')+' /> Mark as done</label>' +
+      '</div>';
+  }
+
+  function assignCardHtml(a){
+    var submitted = !!submissionsMap[a.id];
+    var daysLeft = a.due ? daysUntil(a.due) : null;
+    var countdown = "";
+    if(a.due && !submitted){
+      var cclass = daysLeft<=1 ? "urgent" : (daysLeft<=5?"soon":"");
+      var lbl = daysLeft<0 ? "overdue" : (daysLeft===0?"due today":(daysLeft===1?"1 day left":daysLeft+" days left"));
+      countdown = '<span class="countdown '+cclass+'">'+lbl+'</span>';
+    }
+    var html = '<div class="assign-card'+(submitted?' submitted':'')+'">';
+    if(submitted){ html += '<div class="stamp">submitted ✓</div>'; }
+    html += '<div class="assign-top">' +
+      '<div>'+moduleChip(a.module)+'<div class="assign-title">'+escapeHtml(a.title)+'</div>' +
+      '<div class="assign-meta">'+escapeHtml(a.weight)+' of module · '+escapeHtml(a.dueLabel)+'</div></div>' +
+      countdown + '</div>';
+    html += '<div class="assign-brief">'+escapeHtml(a.brief)+'</div>';
+    html += '<ul class="stage-list">';
+    a.stages.forEach(function(s){
+      html += '<li><span class="by">'+escapeHtml(s.by)+'</span><span>'+escapeHtml(s.task)+'</span></li>';
+    });
+    html += '</ul>';
+    html += '<label class="submit-toggle"><input type="checkbox" data-id="'+a.id+'" '+(submitted?'checked':'')+' /> Mark as submitted</label>';
+    html += '</div>';
+    return html;
+  }
+
+  // ---------------- rendering: Career & Research ----------------
+  function renderCareer(){
+    var el = document.getElementById('view-career');
+    var html = '<h2 class="section-title" style="margin-top:0">Your notes</h2>';
+    html += '<p class="section-lead">Jot anything down — a reminder, a stray idea, something to look up later.</p>';
+    html += '<div class="card"><form class="add-row" data-add-note>' +
+      '<input type="text" placeholder="+ Write a note…" maxlength="280" />' +
+      '<button type="submit">Add</button></form></div>';
+
+    if(notesList.length){
+      var sorted = notesList.slice().sort(function(a,b){ return (b.createdAt||'').localeCompare(a.createdAt||''); });
+      sorted.forEach(function(n){
+        var when = n.createdAt ? new Date(n.createdAt).toLocaleDateString(undefined,{day:'numeric',month:'short'}) : '';
+        html += '<div class="res-item" style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:10px;">' +
+          '<div><div class="why" style="color:var(--ink); font-size:0.9rem;">'+escapeHtml(n.text)+'</div>' +
+          (when?'<span class="tag" style="margin-top:6px;">'+escapeHtml(when)+'</span>':'') + '</div>' +
+          '<button class="del-btn del-btn--inline" data-note-del="'+n.id+'" aria-label="Delete note">&times;</button>' +
+          '</div>';
+      });
+    }
+
+    html += '<div class="res-note" style="margin-top:24px;">This research library is curated from what I know as of my training cutoff, not a live feed — an artifact page can\'t fetch outside sites on its own. When you want the very newest paper, guidance or breach report on a topic, just ask me directly in chat and I\'ll search and can add it here.</div>';
+
+    html += secBlock('Certifications', DATA.certs, true);
+    html += secBlock('Standards & frameworks worth knowing', DATA.standards, false);
+    html += secBlock('Books', DATA.books, true);
+    html += secBlock('Papers, journals & ongoing reading', DATA.papers, false);
+    html += secBlock('Communities & practice platforms', DATA.communities, false);
+
+    html += '<h2 class="section-title">Portfolio ideas tying this MSc to your goal</h2>';
+    html += '<ul class="portfolio-list">';
+    DATA.portfolio.forEach(function(p){ html += '<li>'+escapeHtml(p)+'</li>'; });
+    html += '</ul>';
+
+    el.innerHTML = html;
+
+    var noteForm = el.querySelector('[data-add-note]');
+    if(noteForm){
+      noteForm.addEventListener('submit', function(e){
+        e.preventDefault();
+        var input = noteForm.querySelector('input[type=text]');
+        var text = input.value.trim();
+        if(!text) return;
+        var note = {id:uid(), text:text, createdAt:new Date().toISOString()};
+        notesList.push(note);
+        saveNote(note);
+        renderCareer();
+      });
+    }
+    el.querySelectorAll('[data-note-del]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var id = btn.getAttribute('data-note-del');
+        var idx = notesList.findIndex(function(n){ return n.id===id; });
+        if(idx>-1) notesList.splice(idx,1);
+        deleteNoteDb(id);
+        renderCareer();
+      });
+    });
+  }
+
+  function secBlock(title, items, showTag){
+    var html = '<h2 class="section-title">'+title+'</h2><div class="res-grid">';
+    items.forEach(function(it){
+      html += '<div class="res-item"><div class="name">'+escapeHtml(it.name)+'</div><div class="why">'+escapeHtml(it.why)+'</div>' +
+        (showTag && it.tag ? '<span class="tag">'+escapeHtml(it.tag)+'</span>' : '') + '</div>';
+    });
+    html += '</div>';
+    return html;
+  }
+
+  // ---------------- streak ----------------
+  window.__streak = 0;
+  function recomputeStreak(){
+    var streak = 0;
+    var cursor = new Date(today.getTime());
+    var guard = 0;
+    while(guard < 120){
+      guard++;
+      var dow = cursor.getDay();
+      if(dow===0 || dow===6){ cursor = addDays(cursor,-1); continue; }
+      var key = isoKey(cursor);
+      var isTodayCursor = (key === isoKey(today));
+      var set = progressMap[key];
+      var hasWork = set && set.size>0;
+      if(hasWork){ streak++; cursor = addDays(cursor,-1); continue; }
+      if(isTodayCursor){ cursor = addDays(cursor,-1); continue; } // don't break streak just because today hasn't started
+      break;
+    }
+    window.__streak = streak;
+  }
+  function updateStreakChip(){
+    document.getElementById('streakVal').textContent = window.__streak;
+  }
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
+  // ---------------- tabs ----------------
+  var tabs = {today:renderToday, week:renderWeek, month:renderMonth, assign:renderAssign, career:renderCareer};
+  var TAB_ORDER = ['today','week','month','assign','career'];
+  var TAB_PAGE_LABEL = {today:'Today', week:'This Week', month:'This Month', assign:'Goals', career:'Notes'};
+
+  function goToTab(key){
+    document.querySelectorAll('#tabs button').forEach(function(b){
+      b.classList.toggle('active', b.getAttribute('data-tab') === key);
+    });
+    Object.keys(tabs).forEach(function(k){
+      document.getElementById('view-'+k).hidden = (k !== key);
+    });
+    tabs[key]();
+    var activeEl = document.getElementById('view-'+key);
+    activeEl.classList.remove('page-enter');
+    void activeEl.offsetWidth; // reflow to restart animation
+    activeEl.classList.add('page-enter');
+    updatePageNav(key);
+  }
+
+  function updatePageNav(key){
+    var idx = TAB_ORDER.indexOf(key);
+    document.getElementById('pageLabel').textContent = 'Page ' + (idx+1) + ' of ' + TAB_ORDER.length + ' · ' + TAB_PAGE_LABEL[key];
+    document.getElementById('pagePrev').disabled = (idx <= 0);
+    document.getElementById('pageNext').disabled = (idx >= TAB_ORDER.length-1);
+  }
+
+  document.getElementById('tabs').addEventListener('click', function(e){
+    var btn = e.target.closest('button[data-tab]');
+    if(!btn) return;
+    goToTab(btn.getAttribute('data-tab'));
+  });
+
+  document.getElementById('pagePrev').addEventListener('click', function(){
+    var active = document.querySelector('#tabs button.active');
+    var idx = TAB_ORDER.indexOf(active.getAttribute('data-tab'));
+    if(idx > 0) goToTab(TAB_ORDER[idx-1]);
+  });
+  document.getElementById('pageNext').addEventListener('click', function(){
+    var active = document.querySelector('#tabs button.active');
+    var idx = TAB_ORDER.indexOf(active.getAttribute('data-tab'));
+    if(idx < TAB_ORDER.length-1) goToTab(TAB_ORDER[idx+1]);
+  });
+
+  // ---------------- boot ----------------
+  function renderAll(){
+    renderToday();
+    renderWeek();
+    renderMonth();
+    renderAssign();
+    renderCareer();
+    updateStreakChip();
+    updatePageNav('today');
+  }
+
+  renderAll();
+
+  // periodic refresh of the "today" countdown/hero without reload
+  setInterval(function(){
+    var t = new Date();
+    var newToday = startOfDay(t);
+    if(newToday.getTime() !== today.getTime()){
+      today = newToday;
+      currentWeekRaw = weekIndexForDate(today);
+      viewWeek = Math.min(12, Math.max(1, currentWeekRaw));
+    }
+    if(!document.getElementById('view-today').hidden) renderToday();
+    if(!document.getElementById('view-assign').hidden) renderAssign();
+  }, 60000);
+
+  // hydrate from db
+  (async function(){
+    try{
+      if(!(window.claude && window.claude.use)){ localOnly = true; return; }
+      dbNs = await window.claude.use('db');
+      if(!dbNs){ localOnly = true; renderToday(); return; }
+
+      var progSnap = await dbNs.collection('progress').limit(400).get();
+      progSnap.docs.forEach(function(doc){
+        var data = doc.data();
+        if(data && Array.isArray(data.completed)){
+          progressMap[doc.id] = new Set(data.completed);
+        }
+      });
+
+      var subSnap = await dbNs.collection('submissions').limit(200).get();
+      subSnap.docs.forEach(function(doc){
+        var data = doc.data();
+        submissionsMap[doc.id] = !!(data && data.submitted);
+      });
+
+      var ctSnap = await dbNs.collection('customTasks').limit(400).get();
+      ctSnap.docs.forEach(function(doc){
+        var data = doc.data();
+        if(data && Array.isArray(data.items)) customTasksMap[doc.id] = data.items;
+      });
+
+      var goalSnap = await dbNs.collection('customGoals').limit(200).get();
+      customGoals = goalSnap.docs.map(function(doc){ return doc.data(); });
+
+      var noteSnap = await dbNs.collection('notes').limit(300).get();
+      notesList = noteSnap.docs.map(function(doc){ return doc.data(); });
+
+      var monthNoteSnap = await dbNs.collection('monthNotes').limit(400).get();
+      monthNoteSnap.docs.forEach(function(doc){
+        var data = doc.data();
+        if(data) monthNotesMap[doc.id] = data.text || '';
+      });
+
+      recomputeStreak();
+      renderAll();
+    }catch(e){
+      console.warn('db hydrate failed', e);
+      localOnly = true;
+      renderToday();
+    }
+  })();
+
+})();
+</script>
+
+</body></html>

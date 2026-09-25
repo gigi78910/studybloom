@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Study Bloom"
+description = "A warm, editorial study planner inspired by a botanical personal planner. Students can organise weekly study blocks, tasks, goals, focus sessions, and notes with local persistence and thoughtful progress feedback."
+version = "1.0.0"
+id = "artifacts/study-bloom"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 20111
+
+[services.development]
+run = "pnpm --filter @workspace/study-bloom run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/study-bloom", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/study-bloom/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "20111"
+BASE_PATH = "/"
