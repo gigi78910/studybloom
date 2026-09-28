@@ -188,14 +188,21 @@ export default function DeadlinesPage({
       <div className="module-filter" style={{ marginTop: 8 }}>
         <Filter size={14} />
         <span>Type</span>
-        <button className={typeFilter === "All" ? "active" : ""} onClick={() => setTypeFilter("All")}>
-          All
-        </button>
-        {types.map((t) => (
-          <button key={t} className={typeFilter === t ? "active" : ""} onClick={() => setTypeFilter(t)}>
-            {t}
-          </button>
-        ))}
+        <select
+          className="status-select"
+          style={{ width: "auto", minWidth: 180 }}
+          value={typeFilter}
+          onChange={(e) => setTypeFilter(e.target.value)}
+          aria-label="Filter by assessment type"
+          data-testid="select-type-filter"
+        >
+          <option value="All">All types</option>
+          {types.map((t) => (
+            <option key={t} value={t}>
+              {t.length > 70 ? `${t.slice(0, 70)}…` : t}
+            </option>
+          ))}
+        </select>
       </div>
       <div className="toolbar" style={{ marginTop: 10 }}>
         <span className="mini-label">{sorted.length} assessment{sorted.length === 1 ? "" : "s"}</span>
