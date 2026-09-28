@@ -1,26 +1,31 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, Route, Router, Switch, useLocation } from "wouter";
 import {
-  BookOpen, Bookmark, BrainCircuit, Briefcase, CalendarDays, Check, CheckCircle2, ChevronLeft, ChevronRight, Clock3, Copy, ExternalLink, Flower2,
-  Filter, Gamepad2, Grid2X2, LayoutDashboard, Link2, ListTodo, Minus, NotebookPen, Pause, Pencil, Play, Plus,
+  AlertTriangle, BookOpen, Bookmark, BrainCircuit, Briefcase, CalendarDays, Check, CheckCircle2, ChevronLeft, ChevronRight, Clock3, Copy, ExternalLink, Flower2,
+  Filter, Gamepad2, Grid2X2, LayoutDashboard, Library, Link2, ListTodo, Minus, NotebookPen, Pause, Pencil, Play, Plus,
   RefreshCw, Rows3, RotateCcw, Search, Sparkles, Target, Trash2, X
 } from "lucide-react";
 import { MODULES, buildClassTasks, buildStudyTasks, buildDeadlineTasks, buildStageTasks } from "./data/studyData";
 import { PARAPHRASE_BANK, PYTHON_BANK, type Difficulty, type ParaphraseQuestion, type PythonQuestion } from "./data/gameQuestions";
 import { RESEARCH_SEED, type ResearchItem } from "./data/researchSeed";
+import DeadlinesPage from "./pages/DeadlinesPage";
+import AssessmentDetailPage from "./pages/AssessmentDetailPage";
+import ReadingListPage from "./pages/ReadingListPage";
+import type { AssessmentProgressMap } from "./lib/assessmentProgress";
+import { GRADED_ASSESSMENTS } from "./data/assessments";
 
-type Task = { id: string; title: string; module: string; date: string; time?: string; duration?: number; done: boolean; color: string; kind?: "task" | "deadline" | "class" | "personal" };
-type Goal = { id: string; title: string; detail: string; current: number; target: number; color: string };
-type Note = { id: string; title: string; body: string; done: boolean; updated: string; color: string };
-type Session = { id: string; label: string; minutes: number; date: string };
-type JournalEntry = { id: string; title: string; date: string; body: string; tags: string[]; mood?: "good" | "neutral" | "tough" };
-type JobStatus = "Not Started" | "Considering" | "Applied" | "Ongoing" | "Interview" | "Assessment" | "Not Successful" | "Offer" | "Got the Job" | "Withdrawn" | "Closed";
-type Job = { id: string; company: string; title: string; field: "Cybersecurity" | "Data Science" | "Both" | "Other"; location: string; salary?: string; deadline?: string; link?: string; status: JobStatus; dateApplied?: string; notes?: string };
-type SkillStats = { paraphraseCompleted: string[]; pythonCompleted: string[]; paraphraseGot: number; paraphraseTotal: number; pythonGot: number; pythonTotal: number; lastPlayed?: string; streak: number };
-type CanvasLink = { id: string; module: string; url: string };
+export type Task = { id: string; title: string; module: string; date: string; time?: string; duration?: number; done: boolean; color: string; kind?: "task" | "deadline" | "class" | "personal" };
+export type Goal = { id: string; title: string; detail: string; current: number; target: number; color: string };
+export type Note = { id: string; title: string; body: string; done: boolean; updated: string; color: string };
+export type Session = { id: string; label: string; minutes: number; date: string };
+export type JournalEntry = { id: string; title: string; date: string; body: string; tags: string[]; mood?: "good" | "neutral" | "tough" };
+export type JobStatus = "Not Started" | "Considering" | "Applied" | "Ongoing" | "Interview" | "Assessment" | "Not Successful" | "Offer" | "Got the Job" | "Withdrawn" | "Closed";
+export type Job = { id: string; company: string; title: string; field: "Cybersecurity" | "Data Science" | "Both" | "Other"; location: string; salary?: string; deadline?: string; link?: string; status: JobStatus; dateApplied?: string; notes?: string };
+export type SkillStats = { paraphraseCompleted: string[]; pythonCompleted: string[]; paraphraseGot: number; paraphraseTotal: number; pythonGot: number; pythonTotal: number; lastPlayed?: string; streak: number };
+export type CanvasLink = { id: string; module: string; url: string };
 type CanvasAssignment = { courseName: string; title: string; dueAt: string | null; url: string | null };
-type DiscoveredResearch = { id: string; source: "arXiv" | "PubMed"; title: string; authors: string; url: string; publishedAt: string; discoveredAt: string };
-type DiscoveredJob = { id: string; title: string; company: string; url: string; geo: string; tag: string; postedAt: string; discoveredAt: string };
+export type DiscoveredResearch = { id: string; source: "arXiv" | "PubMed"; title: string; authors: string; url: string; publishedAt: string; discoveredAt: string };
+export type DiscoveredJob = { id: string; title: string; company: string; url: string; geo: string; tag: string; postedAt: string; discoveredAt: string };
 
 const JOB_STATUSES: JobStatus[] = ["Not Started", "Considering", "Applied", "Ongoing", "Interview", "Assessment", "Offer", "Got the Job", "Not Successful", "Withdrawn", "Closed"];
 const jobStatusTone = (status: JobStatus): string => {
@@ -31,17 +36,17 @@ const jobStatusTone = (status: JobStatus): string => {
   return "coral";
 };
 
-const modules = MODULES;
+export const modules = MODULES;
 const moduleFilters = [...modules, "Self-study", "Career development", "Personal / rest"];
-const colors = ["coral", "lilac", "sage", "apricot"];
+export const colors = ["coral", "lilac", "sage", "apricot"];
 const colorForModule = (module: string) => colors[Math.max(0, moduleFilters.indexOf(module)) % colors.length];
-const uid = () => Math.random().toString(36).slice(2, 9);
-const dateKey = (date: Date) => { const d = new Date(date); d.setHours(12, 0, 0, 0); return d.toISOString().slice(0, 10); };
+export const uid = () => Math.random().toString(36).slice(2, 9);
+export const dateKey = (date: Date) => { const d = new Date(date); d.setHours(12, 0, 0, 0); return d.toISOString().slice(0, 10); };
 const addDays = (date: Date, amount: number) => { const d = new Date(date); d.setDate(d.getDate() + amount); return d; };
 const startOfWeek = (date: Date) => { const d = new Date(date); const day = d.getDay(); const diff = day === 0 ? -6 : 1 - day; d.setDate(d.getDate() + diff); d.setHours(12, 0, 0, 0); return d; };
 const monthLabel = (date: Date) => new Intl.DateTimeFormat("en-GB", { month: "long", year: "numeric" }).format(date);
-const prettyDate = (key: string, options?: Intl.DateTimeFormatOptions) => new Intl.DateTimeFormat("en-GB", options || { day: "numeric", month: "short" }).format(new Date(`${key}T12:00:00`));
-const todayKey = dateKey(new Date());
+export const prettyDate = (key: string, options?: Intl.DateTimeFormatOptions) => new Intl.DateTimeFormat("en-GB", options || { day: "numeric", month: "short" }).format(new Date(`${key}T12:00:00`));
+export const todayKey = dateKey(new Date());
 
 function seedTasks(): Task[] {
   return [
@@ -94,7 +99,7 @@ function useSyncTrouble(): boolean {
  * localStorage immediately so the page never waits on the network to feel responsive. Only ever
  * mounted after LoginGate confirms the passcode session is valid — every fetch here assumes that.
  */
-function useStored<T>(key: string, initial: T): [T, React.Dispatch<React.SetStateAction<T>>] {
+export function useStored<T>(key: string, initial: T): [T, React.Dispatch<React.SetStateAction<T>>] {
   const [value, setValue] = useState<T>(() => {
     try { const saved = localStorage.getItem(key); return saved ? JSON.parse(saved) as T : initial; } catch { return initial; }
   });
@@ -144,6 +149,8 @@ function SyncBanner() {
 
 const nav = [
   { href: "/", label: "Today", icon: LayoutDashboard },
+  { href: "/deadlines", label: "Deadlines", icon: AlertTriangle },
+  { href: "/reading", label: "Reading List", icon: Library },
   { href: "/week", label: "Week", icon: CalendarDays },
   { href: "/month", label: "Month", icon: CalendarDays },
   { href: "/goals", label: "Goals", icon: Target },
@@ -195,7 +202,7 @@ function TaskRow({ task, onToggle, onEdit, onDelete }: { task: Task; onToggle: (
   </div>;
 }
 
-function Modal({ title, onClose, children }: { title: string; onClose: () => void; children: React.ReactNode }) {
+export function Modal({ title, onClose, children }: { title: string; onClose: () => void; children: React.ReactNode }) {
   return <div className="modal-backdrop" role="presentation" onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }}>
     <div className="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
       <div className="modal-header"><h2 className="modal-title" id="modal-title">{title}</h2><button className="icon-button" onClick={onClose} aria-label="Close dialog" data-testid="button-close-modal"><X size={17} /></button></div>
@@ -286,19 +293,28 @@ function ScheduleTimeline({ days, tasks, onEdit, onToggle, onDelete, onAdd }: {
   </div>;
 }
 
-function Dashboard({ tasks, setTasks, canvasLinks, setCanvasLinks }: { tasks: Task[]; setTasks: React.Dispatch<React.SetStateAction<Task[]>>; canvasLinks: CanvasLink[]; setCanvasLinks: React.Dispatch<React.SetStateAction<CanvasLink[]>> }) {
+function Dashboard({ tasks, setTasks, canvasLinks, setCanvasLinks, assessmentProgress }: { tasks: Task[]; setTasks: React.Dispatch<React.SetStateAction<Task[]>>; canvasLinks: CanvasLink[]; setCanvasLinks: React.Dispatch<React.SetStateAction<CanvasLink[]>>; assessmentProgress: AssessmentProgressMap }) {
   const [modal, setModal] = useState<Task | "new" | null>(null);
   const todayTasks = tasks.filter(t => t.date === todayKey).sort((a,b) => (a.time || "").localeCompare(b.time || ""));
   const upcoming = tasks.filter(t => t.date >= todayKey && !t.done).sort((a,b) => a.date.localeCompare(b.date) || (a.time || "").localeCompare(b.time || "")).slice(0, 3);
   const complete = tasks.filter(t => t.done).length;
   const toggle = (id: string) => setTasks(all => all.map(t => t.id === id ? { ...t, done: !t.done } : t));
   const remove = (id: string) => setTasks(all => all.filter(t => t.id !== id));
+
+  const graded = GRADED_ASSESSMENTS.filter(a => assessmentProgress[a.id]?.status !== "Submitted");
+  const withDate = graded.filter(a => a.deadlineISO).sort((a, b) => (a.deadlineISO as string).localeCompare(b.deadlineISO as string));
+  const nextDeadline = withDate[0];
+  const nextDeadlineDays = nextDeadline?.deadlineISO ? Math.ceil((new Date(`${nextDeadline.deadlineISO}T12:00:00`).getTime() - Date.now()) / 86400000) : null;
+  const upcomingAssessments = withDate.slice(0, 5);
+  const submittedCount = GRADED_ASSESSMENTS.filter(a => assessmentProgress[a.id]?.status === "Submitted").length;
+  const semesterProgress = GRADED_ASSESSMENTS.length ? Math.round((submittedCount / GRADED_ASSESSMENTS.length) * 100) : 0;
+
   return <div className="page-enter">
     <section className="card dashboard-hero accent-coral"><div><div className="eyebrow">Good morning · {prettyDate(todayKey, { weekday:"long", day:"numeric", month:"long" })}</div><h1>Make room for<br /><em>good work.</em></h1><p className="hero-note">A clear little corner for the reading, thinking, and making that matters this week.</p></div><Botanical /></section>
     <section className="grid grid-3">
       <div className="card stats-card"><div className="mini-label">Today’s rhythm</div><div className="stats-number">{todayTasks.filter(t => t.done).length}/{todayTasks.length}</div><div className="stats-caption">blocks complete</div><div className="progress-bar"><span style={{ width: `${todayTasks.length ? todayTasks.filter(t => t.done).length / todayTasks.length * 100 : 0}%` }} /></div></div>
       <div className="card stats-card accent-lilac"><div className="mini-label">This week</div><div className="stats-number">{complete}</div><div className="stats-caption">small wins recorded</div></div>
-      <div className="card stats-card accent-sage"><div className="mini-label">Next deadline</div><div className="stats-number">{upcoming[0] ? Math.max(0, Math.ceil((new Date(`${upcoming[0].date}T12:00:00`).getTime() - Date.now()) / 86400000)) : "—"}</div><div className="stats-caption">{upcoming[0]?.title || "Nothing urgent on the desk"}</div></div>
+      <div className="card stats-card accent-sage"><div className="mini-label">Next deadline</div><div className="stats-number">{nextDeadlineDays !== null ? Math.max(0, nextDeadlineDays) : "—"}</div><div className="stats-caption">{nextDeadline ? `${nextDeadline.moduleCode} · ${nextDeadline.title}` : "Nothing dated yet"}</div></div>
     </section>
     <div className="section-heading"><h2>On the desk today</h2><button className="outline-button" onClick={() => setModal("new")} data-testid="button-add-dashboard-task"><Plus size={14} /> Add block</button></div>
     <section className="grid grid-2">
@@ -306,6 +322,30 @@ function Dashboard({ tasks, setTasks, canvasLinks, setCanvasLinks }: { tasks: Ta
       <div className="grid">
         <div className="card accent-apricot"><div className="mini-label">Coming into view</div><div className="list" style={{ marginTop: 10 }}>{upcoming.map(t => <div key={t.id} className="task-row"><div className="task-copy"><div className="task-title">{t.title}</div><div className="task-meta">{prettyDate(t.date)} · {t.module}</div></div></div>)}</div></div>
         <CanvasCard links={canvasLinks} setLinks={setCanvasLinks} />
+      </div>
+    </section>
+    <div className="section-heading"><h2>Semester 1 assessments</h2><Link href="/deadlines" className="outline-button" data-testid="link-dashboard-deadlines"><AlertTriangle size={14} /> View all deadlines</Link></div>
+    <section className="grid grid-2">
+      <div className="card">
+        <div className="mini-label">Upcoming assessments</div>
+        {upcomingAssessments.length ? <div className="list" style={{ marginTop: 10 }}>{upcomingAssessments.map(a => {
+          const days = a.deadlineISO ? Math.ceil((new Date(`${a.deadlineISO}T12:00:00`).getTime() - Date.now()) / 86400000) : null;
+          return <Link key={a.id} href={`/deadlines/${a.id}`} className="task-row" data-testid={`link-dashboard-assessment-${a.id}`}>
+            <div className="task-copy"><div className="task-title">{a.moduleCode} · {a.title}</div><div className="task-meta">{a.deadlineISO ? prettyDate(a.deadlineISO) : "Date to confirm"} · {days !== null ? (days < 0 ? "Overdue" : `${days} day${days === 1 ? "" : "s"} left`) : ""}</div></div>
+          </Link>;
+        })}</div> : <div className="empty-state"><CheckCircle2 size={24} /><p>Nothing dated is outstanding.</p></div>}
+      </div>
+      <div className="grid">
+        <div className="card accent-lilac">
+          <div className="mini-label">Overall Semester 1 progress</div>
+          <div className="stats-number">{semesterProgress}%</div>
+          <div className="stats-caption">{submittedCount} of {GRADED_ASSESSMENTS.length} graded assessments marked Submitted</div>
+          <div className="progress-bar"><span style={{ width: `${semesterProgress}%` }} /></div>
+        </div>
+        <div className="card accent-sage">
+          <div className="mini-label">Reading</div>
+          <p className="page-description" style={{ fontSize: 13, margin: "6px 0 0" }}>{nextDeadline ? `No reading list has been added yet for ${nextDeadline.moduleCode} · ${nextDeadline.title}.` : "No reading list has been added yet."} <Link href="/reading" style={{ textDecoration: "underline" }}>Open the Reading List</Link></p>
+        </div>
       </div>
     </section>
     {modal && <Modal title={modal === "new" ? "Add a study block" : "Edit study block"} onClose={() => setModal(null)}><TaskForm initial={modal === "new" ? undefined : modal} defaultDate={todayKey} onClose={() => setModal(null)} onSave={task => { setTasks(all => all.some(t => t.id === task.id) ? all.map(t => t.id === task.id ? task : t) : [...all, task]); setModal(null); }} /></Modal>}
@@ -637,8 +677,15 @@ function CanvasCard({ links, setLinks }: { links: CanvasLink[]; setLinks: React.
   </div>;
 }
 
-function RouterView({ tasks, setTasks, goals, setGoals, notes, setNotes, sessions, setSessions, journal, setJournal, jobs, setJobs, research, setResearch, skillStats, setSkillStats, canvasLinks, setCanvasLinks, discoveredResearch, setDiscoveredResearch, discoveredJobs, setDiscoveredJobs }: { tasks: Task[]; setTasks: React.Dispatch<React.SetStateAction<Task[]>>; goals: Goal[]; setGoals: React.Dispatch<React.SetStateAction<Goal[]>>; notes: Note[]; setNotes: React.Dispatch<React.SetStateAction<Note[]>>; sessions: Session[]; setSessions: React.Dispatch<React.SetStateAction<Session[]>>; journal: JournalEntry[]; setJournal: React.Dispatch<React.SetStateAction<JournalEntry[]>>; jobs: Job[]; setJobs: React.Dispatch<React.SetStateAction<Job[]>>; research: ResearchItem[]; setResearch: React.Dispatch<React.SetStateAction<ResearchItem[]>>; skillStats: SkillStats; setSkillStats: React.Dispatch<React.SetStateAction<SkillStats>>; canvasLinks: CanvasLink[]; setCanvasLinks: React.Dispatch<React.SetStateAction<CanvasLink[]>>; discoveredResearch: DiscoveredResearch[]; setDiscoveredResearch: React.Dispatch<React.SetStateAction<DiscoveredResearch[]>>; discoveredJobs: DiscoveredJob[]; setDiscoveredJobs: React.Dispatch<React.SetStateAction<DiscoveredJob[]>> }) {
-  return <Switch><Route path="/"><Dashboard tasks={tasks} setTasks={setTasks} canvasLinks={canvasLinks} setCanvasLinks={setCanvasLinks} /></Route><Route path="/week"><WeekPage tasks={tasks} setTasks={setTasks} /></Route><Route path="/month"><MonthPage tasks={tasks} setTasks={setTasks} /></Route><Route path="/goals"><GoalsPage goals={goals} setGoals={setGoals} /></Route><Route path="/notes"><NotesPage notes={notes} setNotes={setNotes} /></Route><Route path="/journal"><JournalPage entries={journal} setEntries={setJournal} /></Route><Route path="/games"><SkillGamesPage stats={skillStats} setStats={setSkillStats} /></Route><Route path="/research"><ResearchPage items={research} setItems={setResearch} discovered={discoveredResearch} setDiscovered={setDiscoveredResearch} /></Route><Route path="/jobs"><JobsPage jobs={jobs} setJobs={setJobs} discovered={discoveredJobs} setDiscovered={setDiscoveredJobs} /></Route><Route path="/focus"><FocusPage sessions={sessions} setSessions={setSessions} /></Route><Route><Dashboard tasks={tasks} setTasks={setTasks} canvasLinks={canvasLinks} setCanvasLinks={setCanvasLinks} /></Route></Switch>;
+function RouterView({ tasks, setTasks, goals, setGoals, notes, setNotes, sessions, setSessions, journal, setJournal, jobs, setJobs, research, setResearch, skillStats, setSkillStats, canvasLinks, setCanvasLinks, discoveredResearch, setDiscoveredResearch, discoveredJobs, setDiscoveredJobs, assessmentProgress, setAssessmentProgress, readingStatus, setReadingStatus }: { tasks: Task[]; setTasks: React.Dispatch<React.SetStateAction<Task[]>>; goals: Goal[]; setGoals: React.Dispatch<React.SetStateAction<Goal[]>>; notes: Note[]; setNotes: React.Dispatch<React.SetStateAction<Note[]>>; sessions: Session[]; setSessions: React.Dispatch<React.SetStateAction<Session[]>>; journal: JournalEntry[]; setJournal: React.Dispatch<React.SetStateAction<JournalEntry[]>>; jobs: Job[]; setJobs: React.Dispatch<React.SetStateAction<Job[]>>; research: ResearchItem[]; setResearch: React.Dispatch<React.SetStateAction<ResearchItem[]>>; skillStats: SkillStats; setSkillStats: React.Dispatch<React.SetStateAction<SkillStats>>; canvasLinks: CanvasLink[]; setCanvasLinks: React.Dispatch<React.SetStateAction<CanvasLink[]>>; discoveredResearch: DiscoveredResearch[]; setDiscoveredResearch: React.Dispatch<React.SetStateAction<DiscoveredResearch[]>>; discoveredJobs: DiscoveredJob[]; setDiscoveredJobs: React.Dispatch<React.SetStateAction<DiscoveredJob[]>>; assessmentProgress: AssessmentProgressMap; setAssessmentProgress: React.Dispatch<React.SetStateAction<AssessmentProgressMap>>; readingStatus: Record<string, string>; setReadingStatus: React.Dispatch<React.SetStateAction<Record<string, string>>> }) {
+  return <Switch>
+    <Route path="/"><Dashboard tasks={tasks} setTasks={setTasks} canvasLinks={canvasLinks} setCanvasLinks={setCanvasLinks} assessmentProgress={assessmentProgress} /></Route>
+    <Route path="/deadlines"><DeadlinesPage assessmentProgress={assessmentProgress} setAssessmentProgress={setAssessmentProgress} /></Route>
+    <Route path="/deadlines/:id">{(params: { id: string }) => <AssessmentDetailPage id={params.id} assessmentProgress={assessmentProgress} setAssessmentProgress={setAssessmentProgress} />}</Route>
+    <Route path="/reading"><ReadingListPage readingStatus={readingStatus} setReadingStatus={setReadingStatus} /></Route>
+    <Route path="/week"><WeekPage tasks={tasks} setTasks={setTasks} /></Route><Route path="/month"><MonthPage tasks={tasks} setTasks={setTasks} /></Route><Route path="/goals"><GoalsPage goals={goals} setGoals={setGoals} /></Route><Route path="/notes"><NotesPage notes={notes} setNotes={setNotes} /></Route><Route path="/journal"><JournalPage entries={journal} setEntries={setJournal} /></Route><Route path="/games"><SkillGamesPage stats={skillStats} setStats={setSkillStats} /></Route><Route path="/research"><ResearchPage items={research} setItems={setResearch} discovered={discoveredResearch} setDiscovered={setDiscoveredResearch} /></Route><Route path="/jobs"><JobsPage jobs={jobs} setJobs={setJobs} discovered={discoveredJobs} setDiscovered={setDiscoveredJobs} /></Route><Route path="/focus"><FocusPage sessions={sessions} setSessions={setSessions} /></Route>
+    <Route><Dashboard tasks={tasks} setTasks={setTasks} canvasLinks={canvasLinks} setCanvasLinks={setCanvasLinks} assessmentProgress={assessmentProgress} /></Route>
+  </Switch>;
 }
 
 type GateStatus = "checking" | "needs-setup" | "needs-login" | "ready";
@@ -710,7 +757,9 @@ function AuthedApp() {
   const [canvasLinks, setCanvasLinks] = useStored<CanvasLink[]>("study-bloom-canvas-links", []);
   const [discoveredResearch, setDiscoveredResearch] = useStored<DiscoveredResearch[]>("study-bloom-research-discovered", []);
   const [discoveredJobs, setDiscoveredJobs] = useStored<DiscoveredJob[]>("study-bloom-jobs-discovered", []);
-  return <Shell><RouterView tasks={tasks} setTasks={setTasks} goals={goals} setGoals={setGoals} notes={notes} setNotes={setNotes} sessions={sessions} setSessions={setSessions} journal={journal} setJournal={setJournal} jobs={jobs} setJobs={setJobs} research={research} setResearch={setResearch} skillStats={skillStats} setSkillStats={setSkillStats} canvasLinks={canvasLinks} setCanvasLinks={setCanvasLinks} discoveredResearch={discoveredResearch} setDiscoveredResearch={setDiscoveredResearch} discoveredJobs={discoveredJobs} setDiscoveredJobs={setDiscoveredJobs} /></Shell>;
+  const [assessmentProgress, setAssessmentProgress] = useStored<AssessmentProgressMap>("study-bloom-assessment-progress", {});
+  const [readingStatus, setReadingStatus] = useStored<Record<string, string>>("study-bloom-reading-status", {});
+  return <Shell><RouterView tasks={tasks} setTasks={setTasks} goals={goals} setGoals={setGoals} notes={notes} setNotes={setNotes} sessions={sessions} setSessions={setSessions} journal={journal} setJournal={setJournal} jobs={jobs} setJobs={setJobs} research={research} setResearch={setResearch} skillStats={skillStats} setSkillStats={setSkillStats} canvasLinks={canvasLinks} setCanvasLinks={setCanvasLinks} discoveredResearch={discoveredResearch} setDiscoveredResearch={setDiscoveredResearch} discoveredJobs={discoveredJobs} setDiscoveredJobs={setDiscoveredJobs} assessmentProgress={assessmentProgress} setAssessmentProgress={setAssessmentProgress} readingStatus={readingStatus} setReadingStatus={setReadingStatus} /></Shell>;
 }
 
 function App() {

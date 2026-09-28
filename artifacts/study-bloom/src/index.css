@@ -396,6 +396,18 @@ button { cursor: pointer; }
 /* Tags */
 .tag-row { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
 .tag-chip { display:inline-block; padding:4px 9px; border:1px solid var(--line); border-radius:999px; background:rgba(251,248,241,.7); color:var(--muted-ink); font:10px var(--app-font-mono); letter-spacing:.03em; }
+.tag-chip.tone-coral { border-color:#8d625a; background:#f0c5b9; color:var(--ink); }
+.tag-chip.tone-apricot { border-color:#a9865b; background:#f4d6ad; color:var(--ink); }
+.tag-chip.tone-lilac { border-color:#9888a2; background:#ded4e4; color:var(--ink); }
+.tag-chip.tone-sage { border-color:#82947c; background:#d8e0d2; color:var(--ink); }
+.tag-chip.tone-muted { border-color:var(--line); background:rgba(40,34,27,.06); color:var(--muted-ink); }
+
+/* Assessment rubric tables */
+.rubric-scroll { overflow-x:auto; margin-top:6px; }
+.rubric-table { width:100%; border-collapse:collapse; min-width:760px; font-size:12.5px; }
+.rubric-table th, .rubric-table td { border:1px solid var(--line); padding:9px 10px; vertical-align:top; text-align:left; line-height:1.45; }
+.rubric-table th { background:rgba(40,34,27,.06); font:10px var(--app-font-mono); text-transform:uppercase; letter-spacing:.05em; white-space:nowrap; }
+.rubric-table td:first-child { min-width:150px; background:rgba(251,248,241,.55); }
 
 /* Skill games */
 .game-card { margin-top:22px; padding:24px; }
