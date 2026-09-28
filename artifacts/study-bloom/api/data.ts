@@ -17,6 +17,8 @@ const ALLOWED_KEYS = new Set([
   "study-bloom-weekly-capacity",
   "study-bloom-research-discovered",
   "study-bloom-jobs-discovered",
+  "study-bloom-assessment-progress",
+  "study-bloom-reading-status",
 ]);
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
