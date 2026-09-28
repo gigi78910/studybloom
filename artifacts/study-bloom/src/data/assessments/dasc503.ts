@@ -40,8 +40,8 @@ export const dasc503: ModuleInfo = {
       timeLimit: "Oral presentation: up to 5 minutes (pre-recorded)",
       submissionMethod:
         "Upload poster to Canvas in .pptx or .pdf format. Oral presentation is pre-recorded (narration recorded in PowerPoint, per linked Microsoft support instructions).",
-      deadlineISO: "2026-01-05",
-      deadlineDisplay: "Monday, 5th January 2026, 4 pm",
+      deadlineISO: "2027-01-05",
+      deadlineDisplay: "Monday, 5th January 2027, 4 pm",
       setDate: "Week 4, Semester 1",
       learningOutcomes: [],
       description:
@@ -664,8 +664,8 @@ export const dasc503: ModuleInfo = {
       timeLimit: undefined,
       submissionMethod:
         "Analysis performed in R using R Markdown; final report knitted and submitted in PDF format.",
-      deadlineISO: "2026-01-09",
-      deadlineDisplay: "Friday, 9th January 2026, 4 pm",
+      deadlineISO: "2027-01-09",
+      deadlineDisplay: "Friday, 9th January 2027, 4 pm",
       setDate: "Week 4, Semester 1",
       learningOutcomes: [],
       description:
