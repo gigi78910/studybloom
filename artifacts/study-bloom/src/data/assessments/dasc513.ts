@@ -7,21 +7,21 @@ export const dasc513: ModuleInfo = {
     {
       id: "dasc513-a1",
       moduleCode: "DASC513",
-      title: "Assessment 1 (title not yet added)",
-      type: "Assessment type not yet added — inferred from the rubric to involve designing, delivering/facilitating and peer-reviewing a Patient and Public Involvement and Engagement (PPIE) workshop in the context of a research grant/clinical trial",
-      weighting: "Weighting not yet added",
-      wordCount: "Word count not yet added",
-      submissionMethod: "Submission method not yet added",
+      title: "Assessment 1 — PPIE Intervention Design (Group)",
+      type: "Group coursework: design and present a Patient and Public Involvement and Engagement (PPIE) intervention for a hypothetical tech health intervention. Written submission + presentation.",
+      weighting: "Weighting not yet added — the module's assessment-overview slide doesn't state it; check the full assessment guide on Canvas.",
+      wordCount: "Word count not yet added — not stated on the module's assessment-overview slide.",
+      submissionMethod: "Written submission + presentation (group work)",
       deadlineISO: null,
       deadlineDisplay:
-        "Deadline not yet added — only the marking rubric has been supplied for this module so far",
+        "Presentations: 21st November (year not stated on the assessment-overview slide — the module's Canvas page says the full assessment guide has the details; confirm the exact date there). The written submission's own deadline isn't given on the overview slide either.",
       description:
-        "No guide document exists for this assessment in the uploaded materials — only the marking rubric (2eaed0a7-Assignment_1_Rubric.xlsx, sheet \"Rubric\") has been supplied. Based only on what the rubric criteria themselves assess, this assignment appears to involve: understanding a specific research grant/trial's context, design and objectives; designing a Patient and Public Involvement and Engagement (PPIE) activity tailored to that grant/trial; critically analysing the workshop design (strengths, limitations, ethical considerations); delivering/facilitating the PPIE activity as a workshop; and peer-reviewing another student's PPIE workshop. This description is an inference from the rubric's wording, not a verbatim task description — no official assignment brief has been supplied.",
+        "Confirmed from the module's Canvas assessment-overview slide: in groups, you're given a hypothetical tech health intervention, and the goal is to design and present a PPIE (Patient and Public Involvement and Engagement) intervention for it, submitted as both a written piece and a presentation (presentations on 21st November). The overview slide points to a fuller assessment guide on Canvas for the complete brief, which hasn't been uploaded here yet — the task steps and rubric below are still built only from the marking rubric (2eaed0a7-Assignment_1_Rubric.xlsx) until that guide is added.",
       taskSteps: [
         {
-          title: "Full brief not yet supplied",
+          title: "Full assessment guide not yet supplied",
           detail:
-            "Only the marking rubric for this assessment has been provided so far — no assignment guide, cover sheet, or task brief exists in the uploaded materials. A step-by-step task breakdown cannot be produced honestly until the official guide is supplied. Refer to the rubric criteria below for the best available indication of what is being assessed (understanding of the grant/trial, design of the PPIE activity, critical analysis of that design, delivery/facilitation of the activity, and peer review), and check with the module lecturer or Canvas for the actual brief.",
+            "The module's Canvas page confirms this is a group task — design and present a PPIE intervention for a hypothetical tech health intervention, with presentations on 21st November — but the detailed assessment guide referenced on Canvas hasn't been uploaded here yet, so a full step-by-step breakdown isn't possible without it. Refer to the rubric criteria below for the best available indication of what's assessed (understanding of the grant/trial context, design of the PPIE activity, critical analysis of that design, delivery/facilitation, and peer review), and check the Canvas assessment guide for the actual brief and exact deadlines.",
         },
       ],
       rubric: {
@@ -112,27 +112,28 @@ export const dasc513: ModuleInfo = {
         ],
       },
       gaps: [
-        "Assessment brief/guide not yet supplied — only the marking rubric is available. Title, deadline and word count are placeholders until the official guide is provided.",
+        "Presentations are confirmed for 21st November, but the year and the written-submission deadline aren't on the overview slide — check the full assessment guide on Canvas for exact dates.",
+        "Weighting and word count are still not confirmed — not stated on the overview slide.",
       ],
     },
     {
       id: "dasc513-a2",
       moduleCode: "DASC513",
-      title: "Assessment 2 (title not yet added)",
-      type: "Assessment type not yet added — inferred from the rubric to be a written report proposing data-engineering and model-design changes in response to stakeholder-identified issues from the Assignment 1 grant/trial",
-      weighting: "Weighting not yet added",
-      wordCount: "Word count not yet added",
-      submissionMethod: "Submission method not yet added",
+      title: "Assessment 2 — Patient Feedback Response Report (Individual)",
+      type: "Individual coursework: you receive hypothetical patient feedback describing changes needed to the tech solution from Assessment 1, and write a report on what changes you made and why.",
+      weighting: "Weighting not yet added — the module's assessment-overview slide doesn't state it; check the full assessment guide on Canvas.",
+      wordCount: "Word count not yet added — not stated on the module's assessment-overview slide.",
+      submissionMethod: "Written report (individual)",
       deadlineISO: null,
       deadlineDisplay:
-        "Deadline not yet added — only the marking rubric has been supplied for this module so far",
+        "Deadline not stated on the module's assessment-overview slide — the full assessment guide on Canvas should have it; not yet uploaded here.",
       description:
-        "No guide document exists for this assessment in the uploaded materials — only the marking rubric (2db2542d-Assignment_2_Rubric.xlsx, sheet \"Rubric\") has been supplied. Based only on what the rubric criteria themselves assess, this assignment appears to be a written report that: identifies and introduces stakeholder-raised issues (from the grant/trial referenced in Assessment 1); proposes data-engineering changes (with schematics/data-flow diagrams addressing fragmentation, integration and quality); proposes model-design changes (covering interpretability, explainability, validation, and bias detection/mitigation); and includes a critical discussion of trade-offs, limitations, ethical implications and real-world feasibility. This description is an inference from the rubric's wording, not a verbatim task description — no official assignment brief has been supplied.",
+        "Confirmed from the module's Canvas assessment-overview slide: working on your own this time, you're given hypothetical patient feedback identifying changes that need to be made to the tech solution you worked on in Assessment 1, and you write a report explaining what changes you made in response and why. The overview slide points to a fuller assessment guide on Canvas for the complete brief, which hasn't been uploaded here yet — the task steps and rubric below are still built only from the marking rubric (2db2542d-Assignment_2_Rubric.xlsx) until that guide is added.",
       taskSteps: [
         {
-          title: "Full brief not yet supplied",
+          title: "Full assessment guide not yet supplied",
           detail:
-            "Only the marking rubric for this assessment has been provided so far — no assignment guide, cover sheet, or task brief exists in the uploaded materials. A step-by-step task breakdown cannot be produced honestly until the official guide is supplied. Refer to the rubric criteria below for the best available indication of what is being assessed (identification of stakeholder issues, data engineering changes, model design changes, and discussion of trade-offs/feasibility/ethics), and check with the module lecturer or Canvas for the actual brief.",
+            "The module's Canvas page confirms this is an individual task — respond to hypothetical patient feedback about the tech solution from Assessment 1, and write a report on the changes made and why — but the detailed assessment guide referenced on Canvas hasn't been uploaded here yet, so a full step-by-step breakdown isn't possible without it. Refer to the rubric criteria below for the best available indication of what's assessed (identification of stakeholder issues, data engineering changes, model design changes, and discussion of trade-offs/feasibility/ethics), and check the Canvas assessment guide for the actual brief and exact deadline.",
         },
       ],
       rubric: {
@@ -223,7 +224,8 @@ export const dasc513: ModuleInfo = {
         ],
       },
       gaps: [
-        "Assessment brief/guide not yet supplied — only the marking rubric is available. Title, deadline and word count are placeholders until the official guide is provided.",
+        "No deadline is stated on the overview slide for this one — check the full assessment guide on Canvas.",
+        "Weighting and word count are still not confirmed — not stated on the overview slide.",
       ],
     },
   ],
