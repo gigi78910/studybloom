@@ -1,12 +1,13 @@
 import { useMemo, useState } from "react";
 import { Link } from "wouter";
-import { AlertTriangle, CalendarDays, CheckCircle2, Filter, Grid2X2, ListTodo, Rows3, Search } from "lucide-react";
+import { AlertTriangle, CalendarDays, CheckCircle2, Filter, Grid2X2, ListTodo, Pencil, Rows3, Search, X } from "lucide-react";
 import { prettyDate, todayKey } from "../App";
 import { ALL_ASSESSMENTS, SEMESTER1_MODULES, type Assessment } from "../data/assessments";
 import {
   ASSESSMENT_PRIORITIES,
   ASSESSMENT_STATUSES,
   type AssessmentPriority,
+  type AssessmentProgress,
   type AssessmentProgressMap,
   type AssessmentStatus,
   daysRemaining,
@@ -31,6 +32,51 @@ function UrgencyBadge({ days }: { days: number | null }) {
   );
 }
 
+function DeadlineEditor({
+  progress,
+  onSave,
+  onClear,
+  onCancel,
+}: {
+  progress: AssessmentProgress;
+  onSave: (iso: string, note?: string) => void;
+  onClear: () => void;
+  onCancel: () => void;
+}) {
+  const [date, setDate] = useState(progress.deadlineOverrideISO || "");
+  const [note, setNote] = useState(progress.deadlineOverrideNote || "");
+  return (
+    <div className="card" style={{ marginTop: 8, padding: 12, background: "rgba(251,248,241,.9)" }}>
+      <div className="form-row">
+        <div className="field">
+          <label>Your date</label>
+          <input type="date" value={date} onChange={(e) => setDate(e.target.value)} aria-label="Amended deadline date" />
+        </div>
+        <div className="field">
+          <label>Note (optional)</label>
+          <input value={note} onChange={(e) => setNote(e.target.value)} placeholder="e.g. Confirmed on Canvas" />
+        </div>
+      </div>
+      <div className="modal-footer" style={{ justifyContent: "flex-start", gap: 8 }}>
+        <button className="primary-button" disabled={!date} onClick={() => onSave(date, note.trim() || undefined)}>
+          Save
+        </button>
+        {progress.deadlineOverrideISO && (
+          <button className="outline-button" onClick={onClear}>
+            <X size={13} /> Clear, use official date
+          </button>
+        )}
+        <button className="tiny-button" onClick={onCancel}>
+          Cancel
+        </button>
+      </div>
+      <p className="page-description" style={{ fontSize: 11, margin: "6px 0 0" }}>
+        This only changes what you see here — it doesn't edit the official source data, which stays available on the assessment's own page.
+      </p>
+    </div>
+  );
+}
+
 export default function DeadlinesPage({
   assessmentProgress,
   setAssessmentProgress,
@@ -49,15 +95,23 @@ export default function DeadlinesPage({
   const gradedAssessments = useMemo(() => ALL_ASSESSMENTS.filter((a) => !a.notGraded), []);
   const types = useMemo(() => Array.from(new Set(gradedAssessments.map((a) => a.type))), [gradedAssessments]);
 
+  const [editingDeadline, setEditingDeadline] = useState<string | null>(null);
+
   const withMeta = useMemo(
     () =>
       gradedAssessments.map((a) => {
         const progress = getProgress(assessmentProgress, a.id);
-        const days = daysRemaining(a);
+        const days = daysRemaining(a, progress);
         return { assessment: a, progress, days, percent: progressPercent(a, progress) };
       }),
     [gradedAssessments, assessmentProgress]
   );
+
+  const setOverride = (id: string, iso: string | null, note?: string) =>
+    setAssessmentProgress((all) => ({
+      ...all,
+      [id]: { ...getProgress(all, id), deadlineOverrideISO: iso, deadlineOverrideNote: note },
+    }));
 
   const filtered = withMeta.filter(({ assessment, progress, days }) => {
     if (moduleFilter !== "All" && assessment.moduleCode !== moduleFilter) return false;
@@ -75,9 +129,11 @@ export default function DeadlinesPage({
 
   const sorted = [...filtered].sort((a, b) => {
     if (sortKey === "date") {
-      if (a.assessment.deadlineISO && b.assessment.deadlineISO) return a.assessment.deadlineISO.localeCompare(b.assessment.deadlineISO);
-      if (a.assessment.deadlineISO) return -1;
-      if (b.assessment.deadlineISO) return 1;
+      const aIso = a.progress.deadlineOverrideISO || a.assessment.deadlineISO;
+      const bIso = b.progress.deadlineOverrideISO || b.assessment.deadlineISO;
+      if (aIso && bIso) return aIso.localeCompare(bIso);
+      if (aIso) return -1;
+      if (bIso) return 1;
       return 0;
     }
     if (sortKey === "module") return a.assessment.moduleCode.localeCompare(b.assessment.moduleCode);
@@ -230,9 +286,38 @@ export default function DeadlinesPage({
                       <h3 style={{ margin: "4px 0" }}>{assessment.title}</h3>
                     </Link>
                     <div className="task-meta">
-                      {assessment.deadlineDisplay}
+                      {progress.deadlineOverrideISO ? (
+                        <>
+                          <strong>Your date: {prettyDate(progress.deadlineOverrideISO, { day: "numeric", month: "short", year: "numeric" })}</strong>
+                          {progress.deadlineOverrideNote ? ` (${progress.deadlineOverrideNote})` : ""} · official: {assessment.deadlineDisplay}
+                        </>
+                      ) : (
+                        assessment.deadlineDisplay
+                      )}
                       {assessment.weighting ? ` · ${assessment.weighting}` : ""}
                     </div>
+                    <button
+                      className="tiny-button"
+                      style={{ marginTop: 4, padding: 0 }}
+                      onClick={() => setEditingDeadline(editingDeadline === assessment.id ? null : assessment.id)}
+                      data-testid={`button-edit-deadline-${assessment.id}`}
+                    >
+                      <Pencil size={12} /> {progress.deadlineOverrideISO ? "Edit your date" : "Amend deadline"}
+                    </button>
+                    {editingDeadline === assessment.id && (
+                      <DeadlineEditor
+                        progress={progress}
+                        onSave={(iso, note) => {
+                          setOverride(assessment.id, iso, note);
+                          setEditingDeadline(null);
+                        }}
+                        onClear={() => {
+                          setOverride(assessment.id, null, undefined);
+                          setEditingDeadline(null);
+                        }}
+                        onCancel={() => setEditingDeadline(null)}
+                      />
+                    )}
                   </div>
                   <div style={{ textAlign: "right" }}>
                     <UrgencyBadge days={days} />
@@ -307,7 +392,7 @@ export default function DeadlinesPage({
             {cells.map((day) => {
               const key = `${day.getFullYear()}-${String(day.getMonth() + 1).padStart(2, "0")}-${String(day.getDate()).padStart(2, "0")}`;
               const inMonth = day.getMonth() === month.getMonth();
-              const dayItems = sorted.filter((m) => m.assessment.deadlineISO === key);
+              const dayItems = sorted.filter((m) => (m.progress.deadlineOverrideISO || m.assessment.deadlineISO) === key);
               return (
                 <div key={key} className={`calendar-cell ${!inMonth ? "muted-day" : ""} ${key === todayKey ? "today" : ""}`}>
                   <span className="calendar-number">{day.getDate()}</span>
