@@ -1,6 +1,6 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "wouter";
-import { ArrowLeft, BookOpen, ClipboardCheck, GraduationCap, ListChecks, Sparkles } from "lucide-react";
+import { ArrowLeft, BookOpen, ClipboardCheck, GraduationCap, ListChecks, Pencil, Sparkles, X } from "lucide-react";
 import { prettyDate } from "../App";
 import { getAssessment, getModuleForAssessment } from "../data/assessments";
 import {
@@ -10,6 +10,7 @@ import {
   type AssessmentProgressMap,
   type AssessmentStatus,
   daysRemaining,
+  effectiveDeadlineISO,
   getProgress,
   progressPercent,
   urgencyBand,
@@ -63,9 +64,13 @@ export default function AssessmentDetailPage({
 
   const progress = getProgress(assessmentProgress, id);
   const percent = progressPercent(assessment, progress);
-  const days = daysRemaining(assessment);
+  const effectiveISO = effectiveDeadlineISO(assessment, progress);
+  const days = daysRemaining(assessment, progress);
   const band = urgencyBand(days);
-  const timeline = useMemo(() => backwardsTimeline(assessment.deadlineISO, assessment.taskSteps.length), [assessment]);
+  const timeline = useMemo(() => backwardsTimeline(effectiveISO, assessment.taskSteps.length), [effectiveISO, assessment]);
+  const [editingDeadline, setEditingDeadline] = useState(false);
+  const [overrideDate, setOverrideDate] = useState(progress.deadlineOverrideISO || "");
+  const [overrideNote, setOverrideNote] = useState(progress.deadlineOverrideNote || "");
 
   const toggleStep = (title: string) => {
     setAssessmentProgress((all) => {
@@ -84,6 +89,19 @@ export default function AssessmentDetailPage({
     setAssessmentProgress((all) => ({ ...all, [id]: { ...getProgress(all, id), status } }));
   const setPriority = (priority: AssessmentPriority) =>
     setAssessmentProgress((all) => ({ ...all, [id]: { ...getProgress(all, id), priority } }));
+  const saveOverride = () => {
+    setAssessmentProgress((all) => ({
+      ...all,
+      [id]: { ...getProgress(all, id), deadlineOverrideISO: overrideDate || null, deadlineOverrideNote: overrideNote.trim() || undefined },
+    }));
+    setEditingDeadline(false);
+  };
+  const clearOverride = () => {
+    setAssessmentProgress((all) => ({ ...all, [id]: { ...getProgress(all, id), deadlineOverrideISO: null, deadlineOverrideNote: undefined } }));
+    setOverrideDate("");
+    setOverrideNote("");
+    setEditingDeadline(false);
+  };
 
   return (
     <div className="page-enter">
@@ -99,11 +117,46 @@ export default function AssessmentDetailPage({
 
       <section className="grid grid-3">
         <div className="card stats-card">
-          <div className="mini-label">Deadline</div>
+          <div className="mini-label">Deadline{progress.deadlineOverrideISO ? " (your date)" : ""}</div>
           <div className="stats-number" style={{ fontSize: 22 }}>
-            {assessment.deadlineISO ? prettyDate(assessment.deadlineISO, { day: "numeric", month: "short", year: "numeric" }) : "TBC"}
+            {effectiveISO ? prettyDate(effectiveISO, { day: "numeric", month: "short", year: "numeric" }) : "TBC"}
           </div>
-          <div className="stats-caption">{assessment.deadlineDisplay}</div>
+          <div className="stats-caption">
+            {progress.deadlineOverrideISO
+              ? `${progress.deadlineOverrideNote ? `${progress.deadlineOverrideNote} · ` : ""}Official: ${assessment.deadlineDisplay}`
+              : assessment.deadlineDisplay}
+          </div>
+          <button className="tiny-button" style={{ marginTop: 6, padding: 0 }} onClick={() => setEditingDeadline((v) => !v)} data-testid="button-edit-detail-deadline">
+            <Pencil size={12} /> {progress.deadlineOverrideISO ? "Edit your date" : "Amend deadline"}
+          </button>
+          {editingDeadline && (
+            <div style={{ marginTop: 10 }}>
+              <div className="field">
+                <label>Your date</label>
+                <input type="date" value={overrideDate} onChange={(e) => setOverrideDate(e.target.value)} aria-label="Amended deadline date" />
+              </div>
+              <div className="field" style={{ marginTop: 6 }}>
+                <label>Note (optional)</label>
+                <input value={overrideNote} onChange={(e) => setOverrideNote(e.target.value)} placeholder="e.g. Confirmed on Canvas" />
+              </div>
+              <div style={{ display: "flex", gap: 6, marginTop: 8, flexWrap: "wrap" }}>
+                <button className="primary-button" disabled={!overrideDate} onClick={saveOverride}>
+                  Save
+                </button>
+                {progress.deadlineOverrideISO && (
+                  <button className="outline-button" onClick={clearOverride}>
+                    <X size={13} /> Use official date
+                  </button>
+                )}
+                <button className="tiny-button" onClick={() => setEditingDeadline(false)}>
+                  Cancel
+                </button>
+              </div>
+              <p className="page-description" style={{ fontSize: 11, margin: "6px 0 0" }}>
+                This only changes what you see — the official source data stays as-is above.
+              </p>
+            </div>
+          )}
         </div>
         <div className={`card stats-card ${band.tone === "coral" ? "accent-coral" : band.tone === "apricot" ? "accent-apricot" : band.tone === "lilac" ? "accent-lilac" : band.tone === "sage" ? "accent-sage" : ""}`}>
           <div className="mini-label">Urgency</div>
