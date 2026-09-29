@@ -27,6 +27,15 @@ export type AssessmentProgress = {
   checkedSteps: string[];
   status: AssessmentStatus;
   priority: AssessmentPriority;
+  /**
+   * A student-entered date that overrides/supplements the officially-sourced deadline — for
+   * confirming a date once it's released on Canvas, or correcting one that's changed. Never
+   * replaces the original source data (assessment.deadlineISO / deadlineDisplay), which stays
+   * intact underneath so the official info is never lost.
+   */
+  deadlineOverrideISO?: string | null;
+  /** Optional note explaining the override, e.g. "Confirmed on Canvas" or "Moved by module lead". */
+  deadlineOverrideNote?: string;
 };
 
 export type AssessmentProgressMap = Record<string, AssessmentProgress>;
@@ -49,10 +58,16 @@ export function progressPercent(assessment: Assessment, progress: AssessmentProg
   return Math.round((done / assessment.taskSteps.length) * 100);
 }
 
-/** Days remaining, or null if the assessment has no known date to count down to. */
-export function daysRemaining(assessment: Assessment): number | null {
-  if (!assessment.deadlineISO) return null;
-  const ms = new Date(`${assessment.deadlineISO}T12:00:00`).getTime() - Date.now();
+/** The ISO date actually used for countdowns: a student's own override if set, else the sourced deadline. */
+export function effectiveDeadlineISO(assessment: Assessment, progress: AssessmentProgress): string | null {
+  return progress.deadlineOverrideISO || assessment.deadlineISO;
+}
+
+/** Days remaining, or null if there's no known date (official or student-entered) to count down to. */
+export function daysRemaining(assessment: Assessment, progress?: AssessmentProgress): number | null {
+  const iso = progress ? effectiveDeadlineISO(assessment, progress) : assessment.deadlineISO;
+  if (!iso) return null;
+  const ms = new Date(`${iso}T12:00:00`).getTime() - Date.now();
   return Math.ceil(ms / 86400000);
 }
 
