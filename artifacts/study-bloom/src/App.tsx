@@ -12,7 +12,7 @@ import DeadlinesPage from "./pages/DeadlinesPage";
 import AssessmentDetailPage from "./pages/AssessmentDetailPage";
 import ReadingListPage from "./pages/ReadingListPage";
 import type { AssessmentProgressMap } from "./lib/assessmentProgress";
-import { GRADED_ASSESSMENTS } from "./data/assessments";
+import { GRADED_ASSESSMENTS, type Assessment } from "./data/assessments";
 
 export type Task = { id: string; title: string; module: string; date: string; time?: string; duration?: number; done: boolean; color: string; kind?: "task" | "deadline" | "class" | "personal" };
 export type Goal = { id: string; title: string; detail: string; current: number; target: number; color: string };
@@ -302,9 +302,11 @@ function Dashboard({ tasks, setTasks, canvasLinks, setCanvasLinks, assessmentPro
   const remove = (id: string) => setTasks(all => all.filter(t => t.id !== id));
 
   const graded = GRADED_ASSESSMENTS.filter(a => assessmentProgress[a.id]?.status !== "Submitted");
-  const withDate = graded.filter(a => a.deadlineISO).sort((a, b) => (a.deadlineISO as string).localeCompare(b.deadlineISO as string));
+  const effectiveISO = (a: Assessment) => assessmentProgress[a.id]?.deadlineOverrideISO || a.deadlineISO;
+  const withDate = graded.filter(a => effectiveISO(a)).sort((a, b) => (effectiveISO(a) as string).localeCompare(effectiveISO(b) as string));
   const nextDeadline = withDate[0];
-  const nextDeadlineDays = nextDeadline?.deadlineISO ? Math.ceil((new Date(`${nextDeadline.deadlineISO}T12:00:00`).getTime() - Date.now()) / 86400000) : null;
+  const nextDeadlineIso = nextDeadline ? effectiveISO(nextDeadline) : null;
+  const nextDeadlineDays = nextDeadlineIso ? Math.ceil((new Date(`${nextDeadlineIso}T12:00:00`).getTime() - Date.now()) / 86400000) : null;
   const upcomingAssessments = withDate.slice(0, 5);
   const submittedCount = GRADED_ASSESSMENTS.filter(a => assessmentProgress[a.id]?.status === "Submitted").length;
   const semesterProgress = GRADED_ASSESSMENTS.length ? Math.round((submittedCount / GRADED_ASSESSMENTS.length) * 100) : 0;
@@ -329,9 +331,10 @@ function Dashboard({ tasks, setTasks, canvasLinks, setCanvasLinks, assessmentPro
       <div className="card">
         <div className="mini-label">Upcoming assessments</div>
         {upcomingAssessments.length ? <div className="list" style={{ marginTop: 10 }}>{upcomingAssessments.map(a => {
-          const days = a.deadlineISO ? Math.ceil((new Date(`${a.deadlineISO}T12:00:00`).getTime() - Date.now()) / 86400000) : null;
+          const iso = effectiveISO(a);
+          const days = iso ? Math.ceil((new Date(`${iso}T12:00:00`).getTime() - Date.now()) / 86400000) : null;
           return <Link key={a.id} href={`/deadlines/${a.id}`} className="task-row" data-testid={`link-dashboard-assessment-${a.id}`}>
-            <div className="task-copy"><div className="task-title">{a.moduleCode} · {a.title}</div><div className="task-meta">{a.deadlineISO ? prettyDate(a.deadlineISO) : "Date to confirm"} · {days !== null ? (days < 0 ? "Overdue" : `${days} day${days === 1 ? "" : "s"} left`) : ""}</div></div>
+            <div className="task-copy"><div className="task-title">{a.moduleCode} · {a.title}</div><div className="task-meta">{iso ? prettyDate(iso) : "Date to confirm"} · {days !== null ? (days < 0 ? "Overdue" : `${days} day${days === 1 ? "" : "s"} left`) : ""}</div></div>
           </Link>;
         })}</div> : <div className="empty-state"><CheckCircle2 size={24} /><p>Nothing dated is outstanding.</p></div>}
       </div>
